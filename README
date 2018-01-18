@@ -1,4 +1,4 @@
-Version 2.0
+Version 2.2
 
 REQUIRED MODS:
 SProps
@@ -7,33 +7,43 @@ HBOMBS Material Pack
 (tell me of any errors in case i forgot one)
 
 
-I was tired of dealing with schoolbus-sized nukes and unrealistic power yields when trying to make bombers and missiles, so i learned how to make a mod. I took HBOMBS, redid the code for most bombs and the shockwave and gave them small, handy little packages meant for Building. I also make 3 kinds of air-dropped bombs based on the real ones, because i make bombers a lot.
+I was tired of dealing with schoolbus-sized nukes and unrealistic power yields when trying to make bombers and missiles, so i learned how to make a mod. I took HBOMBS, redid the code for most bombs and the shockwave and gave them small, handy little packages meant for Building. I also make 3 kinds of air-dropped bombs based on the real ones, because i make bombers a lot. 
 
-All bombs use real nuclear weapons effects data from http://nuclearsecrecy.com/nukemap/ scaled down 1:12 to be actually usable in the game.
+All bombs use real nuclear weapons effects data from http://nuclearsecrecy.com/nukemap/ scaled down 1:12 to be actually usable in the game. 
 
 They are for all intents and purposes HBOMBS bombs, so the same settings that control HBOMBS control these.
 
-Bomb power: All bombs now have realistic blast and heat damage values from real data (ground burst), converted to Gmod units and scaled down 1:12. This means that the ranges for the effects of the explosion are realistic (enough), but divided by 12 from real life ranges.
+Bomb power: All bombs now have realistic blast and heat damage values from real data (ground burst), converted to Gmod units and scaled down 1:12. This means that the ranges for the effects of the explosion are realistic (enough), but divided by 12 from real life ranges. 
 
 Heat damage: The incinerate/ignite code in the bombs was completely redone. Now depending on how close you are from the bomb you will now either be burned slightly, be badly burned and maybe die, be burned to a crisp and die, or even be burned down to your bones. This depends on wether or not you are directly exposed to the heat flash, so hiding behind something will protect you from the flash burns as in real life. This also affects NPC's!
 
 Blast damage: Blast damage now follows realistic ranges and power, props close to the bomb can be charred (material change). Props very close to the explosion will simply vaporize.
 
-This is my first mod, so please advise me of any bugs or errors and give me feedback.
+Dial-a-yield: Some warheads and bombs have a selectable yield option, which means you use wire to specify which mode of explosion you want.
+
+This is my first mod, so please advise me of any bugs or errors and give me feedback. 
 All deserved credit for the original code and models goes to their respective authors.
 
+Note:
+kt = kilotons
+mt = megatons (1000 kilotons)
 
 In this mod you will find the following:
 REN-1 warhead (1 kiloton) (visuals of Davy Crockett)
 REN-10 warhead (10 kilotons) (visuals of Artillery shell)
-REN-20 warhead (20 kilotons) (visuals of Gadget)
-REN-100 warhead (100 kilotons) (visuals of Little Boy)
+REN-20 warhead (20 kilotons) (visuals of Fat Man)
+REN-50 warhead (50 kilotons) (visuals of Ivy King)
+REN-100 warhead (100 kilotons) (visuals of Gadget)
+REN-250 warhead (250 kilotons) (visuals of Little Boy)
 REN-500 warhead (500 kilotons) (visuals of Ivy Mike)
 REN-1000 warhead (1 megaton) (visuals of Castle Bravo)
 REN-5000 warhead (5 megatons) (visuals of Tsar Bomba)
+REN-TAC warhead - Tactical thermonuclear warhead with selectable yield, Modes are 1=1kt, 2=10kt, 3=20kt, 4=50kt, default 50kt
+REN-STRAT warhead - Strategic thermonuclear warhead with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default 1mt
 Mk7 Bomb (same thing as REN-10)
-B61 Bomb (same thing as REN-100)
-B83 Bomb (same thing as REN-1000)
+B61 Mod 7 bomb - Strategic thermonuclear bomb with selectable yield, Modes are 1=20kt, 2=50kt, 3=100kt, 4=250kt; default 100kt
+B61 Mod 12 bomb - Tactical thermonuclear bomb with selectable yield, Modes are 1=1kt, 2=10kt, 3=20kt, 4=50kt, default 50kt
+B83 bomb - Strategic thermonuclear bomb with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default 1mt
 
 
 FAQ
@@ -44,10 +54,14 @@ Q: Why are the bombs so small?
 A: Because that's about how big they are in real life. You don't need a bomb the size of a freaking 18-wheeler trailer to reach megatons of power, it's not 1952 anymore.
 
 Q: Why are the yields you give so scaled down? IE: why does the Tsar Bomba equivalent only say it's 5 megatons?
-A: Look, these bombs are stupidly scaled down. And they are terribly inconsistent in the original bomb mods (ie Little boy being more powerful than Fat Man, when it's really the opposite).The Tsar Bomba in the game is visually equivalent to the real Little Boy. In effects, it's even less powerful. The biggest GMod map i can find is about 860 meters diagonally, it would fit entirely within the fireball of a 400 kiloton explosion. This is how big these things are. The Tsar Bomba's power, 57 megatons (57,000 kilotons) is just mindboggling, like the wrath of god. Scaling them down 1:12 is the only way this can stay actually playable and not have the entire map obliterated by a 10kt nuke with real-life power. The new realistic power calculation give the bombs good and realistic power for our use.
+A: The Tsar Bomba in, say GBombs, is about visually equivalent to the real Little Boy. In effects, it's about really equivalent to just a 8-10 kiloton nuke in real life, and this insult to the Tsar angers the Lord of Megatons. The Tsar Bomba's power, 57 megatons (57,000 kilotons) is just mindboggling, like the wrath of god. Do not say it's name in vain. The biggest GMod map i can find is about 860 meters diagonally, it would fit entirely within the fireball of a real 400 kiloton explosion. This is how big these things are. With the 1:12 scale i'm now using, 5 megatons is about as big as you can get without everything on the map being instantly vaporized. The new realistic power calculation give the bombs good and realistic power for our use.
 
 Q: Any plans for the future?
-A: I want to make a warhead and a bomb that have selectable yields, which means you can use wire to set the bomb to 1, 10, 20 or 100 kilotons. This is something that really exists, so i'd like to have it included.
+This is my roadmap:
+DONE: realistic effect ranges
+DONE: more realistic flash-burn and ignition effects
+DONE: dial-a-yield weapons (use wire to select the yield of the nuke) - almost done
+FUTURE: different blast/fire effects dependent on wether it is an air or ground burst (as IRL)
 
 
 VARIABLES
