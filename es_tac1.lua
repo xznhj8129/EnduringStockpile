@@ -1,24 +1,24 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "hb_base_advanced_nuke" )
+DEFINE_BASECLASS( "es_base_multiyield_nuke" )
 
-ENT.Spawnable		            	 =  true     
-ENT.AdminSpawnable		             =  true 
-ENT.AdminOnly 						 =  true
+ENT.Spawnable                        =  true
+ENT.AdminSpawnable                   =  true
+ENT.AdminOnly                        =  false
 
-ENT.PrintName		                 =  "REN-5000 warhead (5 megatons)"
-ENT.Author			                 =  "snowfrog"
-ENT.Contact		                     =  ""
+ENT.PrintName                        =  "RENTAC-1 warhead (1-10-20-50 kilotons)"
+ENT.Author                           =  "snowfrog"
+ENT.Contact                          =  ""
 ENT.Category                         =  "Enduring Stockpile"
 
-ENT.Model                            =  "models/props_c17/canister_propane01a.mdl"
-ENT.Material                         =  "phoenix_storms/torpedo"
-ENT.Effect                           =  "hnuke1"                  
-ENT.EffectAir                        =  "hnuke1_airburst"                   
-ENT.EffectWater                      =  "hbomb_underwater"
-ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/tsar_detonate.mp3"
+ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x12.mdl"      
+ENT.Material                         =  "phoenix_storms/iron_rails"                                       
+ENT.Effect                           =  "hbomb_small"                  
+ENT.EffectAir                        =  "hbomb_small_airburst"                   
+ENT.EffectWater                      =  "h_water_huge"
 ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
 ENT.ActivationSound                  =  "buttons/button14.wav"     
+ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
 
 ENT.ShouldUnweld                     =  true
 ENT.ShouldIgnite                     =  false
@@ -31,34 +31,35 @@ ENT.Timed                            =  false
 -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
 -- All effects calculated from ground bursts
 -- Scale factor: 1:12
-ENT.TotalRadius                      =  10500 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
-ENT.DestroyRadius                    =  34300 -- 5psi range, all constraints break
-ENT.BlastRadius                      =  73100 -- 1.5psi range, unfreeze props
-ENT.ExplosionRadius                  =  80000 -- Max range at which things move
-ENT.FalloutRadius                    =  13400 -- 500rem range, fallout range
-ENT.VaporizeRadius                   =  36100 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-ENT.CremateRadius                    =  58200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-ENT.IgniteRadius                     =  93200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-ENT.Burn2Radius                      =  122500 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-ENT.Burn1Radius                      =  164100 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+ENT.Yield                            =  1   -- yield in kilotons
+ENT.TotalRadius                      =  400 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
+ENT.DestroyRadius                    =  2100 -- 5psi range, all constraints break
+ENT.BlastRadius                      =  4300 -- 1.5psi range, unfreeze props
+ENT.ExplosionRadius                  =  5000 -- Max range at which things move
+ENT.FalloutRadius                    =  3700 -- 500rem range, fallout range
+ENT.VaporizeRadius                   =  400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+ENT.CremateRadius                    =  1400 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+ENT.IgniteRadius                     =  2200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+ENT.Burn2Radius                      =  2900 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+ENT.Burn1Radius                      =  4200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
 
 ENT.ExplosionDamage                  =  500
 ENT.PhysForce                        =  2500
-ENT.FalloutBurst                     =  50
-ENT.MaxIgnitionTime                  =  5
+ENT.FalloutBurst                     =  25
+ENT.MaxIgnitionTime                  =  4
 ENT.Life                             =  25                                  
 ENT.MaxDelay                         =  2                                 
-ENT.TraceLength                      =  1000
-ENT.ImpactSpeed                      =  1300
-ENT.Mass                             =  2500
+ENT.TraceLength                      =  500
+ENT.ImpactSpeed                      =  700
+ENT.Mass                             =  100
 ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 
 ENT.DEFAULT_PHYSFORCE                = 255
 ENT.DEFAULT_PHYSFORCE_PLYAIR         = 25
 ENT.DEFAULT_PHYSFORCE_PLYGROUND      = 2555
-ENT.HBOWNER                          =  nil             -- don't you fucking touch this.
-ENT.Decal                            = "nuke_tsar"
+ENT.HBOWNER                          =  nil     
+ENT.Decal                            = "nuke_small"
 
 function ENT:Initialize()
  if (SERVER) then
@@ -82,7 +83,7 @@ function ENT:Initialize()
 	 self.Used     = false
 	 self.Arming = false
 	 self.Exploding = false
-	  if !(WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
+	  if !(WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate", "YieldMode" }) end
 	end
 end
 
@@ -162,6 +163,7 @@ function ENT:Explode()
          ent:SetVar("MAX_DESTROY",self.TotalRadius)
 		 ent:SetVar("SHOCKWAVE_INCREMENT",140)
 		 ent:SetVar("DELAY",0.01)
+		 ent:SetVar("SOUND", "gbombs_5/explosions/nuclear/nukeaudiobassspeed2.mp3")
 		 ent.trace=self.TraceLength
 		 ent.decal=self.Decal
 		 
@@ -200,22 +202,11 @@ function ENT:Explode()
 		 ent:Spawn()
 		 ent:Activate()
 		 ent:SetVar("HBOWNER", self.HBOWNER)
-		 ent:SetVar("MAX_RANGE",60000)
+		 ent:SetVar("MAX_RANGE",50000)
 		 ent:SetVar("SHOCKWAVE_INCREMENT",140)
 		 ent:SetVar("DELAY",0.01)
 		 ent:SetVar("SOUND", self.ExplosionSound)
 		 self:SetModel("models/gibs/scanner_gib02.mdl")
-	 
-         local ent = ents.Create("hb_shockwave_sound_lowsh")
-         ent:SetPos( pos ) 
-         ent:Spawn()
-         ent:Activate()
-         ent:SetVar("HBOWNER", self.HBOWNER)
-         ent:SetVar("MAX_RANGE",60000)
-         ent:SetVar("SHOCKWAVE_INCREMENT",160)
-         ent:SetVar("DELAY",0.01)
-         ent:SetVar("SOUND", "gbombs_5/explosions/nuclear/nukeaudio3.mp3")
-         self:SetModel("models/gibs/scanner_gib02.mdl") 
 		 
 		 self.Exploding = true
 		 self:StopParticles()

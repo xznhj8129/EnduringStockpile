@@ -1,24 +1,24 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "hb_base_advanced_nuke" )
+DEFINE_BASECLASS( "es_base_fixedyield_nuke" )
 
-ENT.Spawnable		            	 =  true         
-ENT.AdminSpawnable		             =  true 
-ENT.AdminOnly 						 =  false
+ENT.Spawnable                        =  true
+ENT.AdminSpawnable                   =  true
+ENT.AdminOnly                        =  false
 
-ENT.PrintName		                 =  "REN-20 warhead (20 kilotons)"
-ENT.Author			                 =  "snowfrog"
-ENT.Contact		                     =  ""
+ENT.PrintName                        =  "REN-50 warhead (50 kilotons)"
+ENT.Author                           =  "snowfrog"
+ENT.Contact                          =  ""
 ENT.Category                         =  "Enduring Stockpile"
 
-ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x24.mdl"   
-ENT.Material                         =  "phoenix_storms/iron_rails"                                          
-ENT.Effect                           =  "h_nuke3"                  
-ENT.EffectAir                        =  "h_nuke3_airburst"                   
+ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x24.mdl"       
+ENT.Material                         =  "phoenix_storms/iron_rails"                       
+ENT.Effect                           =  "h_nuke5"                  
+ENT.EffectAir                        =  "h_nuke5_airburst"                   
 ENT.EffectWater                      =  "hbomb_underwater"
 ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
 ENT.ActivationSound                  =  "buttons/button14.wav"  
-ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
+ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
 
 ENT.ShouldUnweld                     =  true
 ENT.ShouldIgnite                     =  false
@@ -31,16 +31,16 @@ ENT.Timed                            =  false
 -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
 -- All effects calculated from ground bursts
 -- Scale factor: 1:12
-ENT.TotalRadius                      =  1400 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
-ENT.DestroyRadius                    =  5500 -- 5psi range, all constraints break
-ENT.BlastRadius                      =  11600 -- 1.5psi range, unfreeze props
-ENT.ExplosionRadius                  =  20000 -- Max range at which things move
-ENT.FalloutRadius                    =  6200 -- 500rem range, fallout range
-ENT.VaporizeRadius                   =  2600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-ENT.CremateRadius                    =  4400 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-ENT.IgniteRadius                     =  84000 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-ENT.Burn2Radius                      =  11100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-ENT.Burn1Radius                      =  15400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+ENT.TotalRadius                      =  1700 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
+ENT.DestroyRadius                    =  7400 -- 5psi range, all constraints break
+ENT.BlastRadius                      =  15800 -- 1.5psi range, unfreeze props
+ENT.ExplosionRadius                  =  22500 -- Max range at which things move
+ENT.FalloutRadius                    =  7200 -- 500rem range, fallout range
+ENT.VaporizeRadius                   =  4100 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+ENT.CremateRadius                    =  6800 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+ENT.IgniteRadius                     =  12600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+ENT.Burn2Radius                      =  16600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+ENT.Burn1Radius                      =  23100 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
 
 ENT.ExplosionDamage                  =  500
 ENT.PhysForce                        =  2500
@@ -50,7 +50,7 @@ ENT.Life                             =  25
 ENT.MaxDelay                         =  2                                 
 ENT.TraceLength                      =  2000
 ENT.ImpactSpeed                      =  700
-ENT.Mass                             =  200
+ENT.Mass                             =  225
 ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 

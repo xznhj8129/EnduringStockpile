@@ -1,20 +1,20 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "hb_base_advanced_nuke" )
+DEFINE_BASECLASS( "es_base_fixedyield_nuke" )
 
-ENT.Spawnable		            	 =  true         
-ENT.AdminSpawnable		             =  true 
-ENT.AdminOnly 						 =  false
+ENT.Spawnable                        =  true
+ENT.AdminSpawnable                   =  true
+ENT.AdminOnly                        =  false
 
-ENT.PrintName		                 =  "REN-100 warhead (100 kilotons)"
+ENT.PrintName		                 =  "B61 bomb (100 kilotons)"
 ENT.Author			                 =  "snowfrog"
 ENT.Contact		                     =  ""
 ENT.Category                         =  "Enduring Stockpile"
 
-ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x30.mdl"     
-ENT.Material                         =  "phoenix_storms/iron_rails"                       
-ENT.Effect                           =  "h_nuke2"                  
-ENT.EffectAir                        =  "h_nuke2_airburst"                   
+ENT.Model                            =  "models/chappi/b61.mdl"       
+ENT.Material                         =  "phoenix_storms/fender_chrome"                                  
+ENT.Effect                           =  "h_nuke3"                  
+ENT.EffectAir                        =  "h_nuke3_airburst"                   
 ENT.EffectWater                      =  "hbomb_underwater"
 ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
 ENT.ActivationSound                  =  "buttons/button14.wav"    
@@ -50,7 +50,7 @@ ENT.Life                             =  25
 ENT.MaxDelay                         =  2                                 
 ENT.TraceLength                      =  1000
 ENT.ImpactSpeed                      =  1000
-ENT.Mass                             =  250
+ENT.Mass                             =  350
 ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 

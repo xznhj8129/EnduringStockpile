@@ -1,0 +1,83 @@
+W54         hbomb_small 1kt
+Grable/arty h_nuke      10kt
+Fat Man     hbomb       20kt
+Ivy King    h_nuke5     50kt
+Trinity     h_nuke3     100kt
+Little Boy  h_nuke2     250kt
+Ivy Mike    hnuke2      500kt
+CastleBravo h_nuke4     1mt
+Tsar        hnuke1      5mt
+
+REN-1 (1 kiloton)
+REN-10 (10 kilotons)
+REN-20 (20 kilotons)
+REN-50 (50 kilotons)
+REN-100 (100 kilotons)
+REN-250 (250 kilotons)
+REN-500 (500 kilotons)
+REN-1000 (1 megaton)
+REN-5000 (5 megatons)
+REN-TAC (dial-a-yield)
+REN-STRAT (dial-a-yield)
+B61 Mod 7 (dial-a-yield)
+
+REN-TAC (dial-a-yield 1-10-20-50 kt)
+REN-STRAT (dial-a-yield 50-100-250-500 kt)
+B61-7 20-50-100-250 kt
+B61-10 1-10-20-50-100 kt
+B61-12 1-10-20-50 kt
+B83 50-100-250-500-1000
+
+map width: 32250u
+1m = 52.493u
+
+models/Humans/corpse1.mdl
+models/Humans/Charple01.mdl
+models/player/skeleton.mdl
+
+cit4:TakeDamage(100, self)
+Entity:IsLineOfSightClear( Vector target ) 
+
+Peak overpressure 	Maximum Wind Speed	
+50 psi 	934 mph
+20 psi 	502 mph
+10 psi 	294 mph
+5 psi 	163 mph
+2 psi 	70 mph
+
+As a general guide, city areas are completely destroyed by overpressures of 5 psi, with heavy damage extending out at least to the 3 psi contour.
+These many different effects make it difficult to provide a simple rule of thumb for assessing the magnitude of injury produced by different blast intensities. A general guide is given below:
+Overpressure 	Physical Effects
+20 psi 	
+    Heavily built concrete buildings are severely damaged or demolished.
+10 psi 	
+    Reinforced concrete buildings are severely damaged or demolished.
+    Most people are killed.
+5 psi 	
+    Most buildings collapse.
+    Injuries are universal, fatalities are widespread.
+3 psi 	
+    Residential structures collapse.
+    Serious injuries are common, fatalities may occur.
+1 psi 	
+    Window glass shatters
+    Light injuries from fragments occur. 
+
+
+phoenix_storms/fender_chrome
+
+models/props_phx/torpedo.mdl
+models/chappi/b61.mdl
+models/thedoctor/napalm.mdl
+models/bombs/gbu/gbu10.mdl
+models/bombs/gbu/gbu16.mdl
+models/bombs/gbu/gbu16_fold.mdl
+models/sprops/misc/domes/size_2/dome_24x24.mdl
+models/sprops/geometry/sphere_12.mdl
+models/sprops/geometry/sphere_18.mdl
+models/sprops/geometry/sphere_24.mdl
+models/sprops/cylinders/size_5/cylinder_12x12.mdl
+models/sprops/cylinders/size_5/cylinder_12x18.mdl
+models/sprops/cylinders/size_5/cylinder_12x24.mdl
+models/sprops/cylinders/size_5/cylinder_12x30.mdl
+models/Mechanics/roboticslarge/a1.mdld
