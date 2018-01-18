@@ -17,16 +17,18 @@ REN-250 (250 kilotons)
 REN-500 (500 kilotons)
 REN-1000 (1 megaton)
 REN-5000 (5 megatons)
-REN-TAC (dial-a-yield)
-REN-STRAT (dial-a-yield)
-B61 Mod 7 (dial-a-yield)
+REN-TAC (tactical, dial-a-yield)
+REN-STRAT (strategic, dial-a-yield)
+Mk7 bomb (10 kilotons)
+B61 Mod 7 bomb (strategic, dial-a-yield)
+B61 Mod 12 bomb (tactical, dial-a-yield)
+B83 bomb (strategic, dial-a-yield)
 
-REN-TAC (dial-a-yield 1-10-20-50 kt)
-REN-STRAT (dial-a-yield 50-100-250-500 kt)
-B61-7 20-50-100-250 kt
-B61-10 1-10-20-50-100 kt
-B61-12 1-10-20-50 kt
-B83 50-100-250-500-1000
+REN-TAC 1-10-20-50
+REN-STRAT 100-250-500-1000
+B61-7 20-50-100-250
+B61-12 1-10-20-50
+B83 100-250-500-1000
 
 map width: 32250u
 1m = 52.493u

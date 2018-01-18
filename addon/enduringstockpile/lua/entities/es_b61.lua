@@ -1,24 +1,28 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "es_base_fixedyield_nuke" )
+DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
 ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true
 ENT.AdminOnly                        =  false
 
-ENT.PrintName		                 =  "B61 bomb (100 kilotons)"
+-- 20, 50, 100, 250 kilotons
+ENT.PrintName		                 =  "B61 Mod 7 bomb (strategic, dial-a-yield)"
 ENT.Author			                 =  "snowfrog"
 ENT.Contact		                     =  ""
 ENT.Category                         =  "Enduring Stockpile"
 
 ENT.Model                            =  "models/chappi/b61.mdl"       
 ENT.Material                         =  "phoenix_storms/fender_chrome"                                  
+ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
+ENT.ActivationSound                  =  "buttons/button14.wav"     
+
+ENT.DialAYield                       =  true
+ENT.Yield                            =  100   -- yield in kilotons 
 ENT.Effect                           =  "h_nuke3"                  
 ENT.EffectAir                        =  "h_nuke3_airburst"                   
 ENT.EffectWater                      =  "hbomb_underwater"
-ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
-ENT.ActivationSound                  =  "buttons/button14.wav"    
-ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/realnukewithrumbling.mp3" 
+ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/realnukewithrumbling.mp3"
 
 ENT.ShouldUnweld                     =  true
 ENT.ShouldIgnite                     =  false
@@ -48,17 +52,17 @@ ENT.FalloutBurst                     =  25
 ENT.MaxIgnitionTime                  =  4
 ENT.Life                             =  25                                  
 ENT.MaxDelay                         =  2                                 
-ENT.TraceLength                      =  1000
-ENT.ImpactSpeed                      =  1000
-ENT.Mass                             =  350
+ENT.TraceLength                      =  500
+ENT.ImpactSpeed                      =  700
+ENT.Mass                             =  750
 ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 
 ENT.DEFAULT_PHYSFORCE                = 255
 ENT.DEFAULT_PHYSFORCE_PLYAIR         = 25
 ENT.DEFAULT_PHYSFORCE_PLYGROUND      = 2555
-ENT.HBOWNER                          = nil     
-ENT.Decal                            = "nuke_medium"
+ENT.HBOWNER                          =  nil     
+ENT.Decal                            = "nuke_small"
 
 function ENT:Initialize()
  if (SERVER) then
@@ -82,14 +86,128 @@ function ENT:Initialize()
 	 self.Used     = false
 	 self.Arming = false
 	 self.Exploding = false
-	  if !(WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
+	 self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate", "YieldMode" })
+	 self.Outputs  = Wire_CreateOutputs(self, { "Yield" })
+     Wire_TriggerOutput(self, "Yield", self.Yield)
+     
 	end
+end
+
+
+function ENT:TriggerInput(iname, value)
+    if (!self:IsValid()) then return end
+    if (iname == "Detonate") then
+        if (value >= 1) then
+            if (!self.Exploded and self.Armed) then
+                if !self:IsValid() then return end
+                self.Exploded = true
+                self:Explode()
+            end
+        end
+    end
+    if (iname == "Arm") then
+        if (value >= 1) then
+            if (!self.Exploded and !self.Armed and !self.Arming) then
+                self:EmitSound(self.ActivationSound)
+                self:Arm()
+            end 
+        end
+    end		 
+    if iname == "YieldMode" then -- dial-a-yield selection function
+        local rounded = math.floor(value)
+        
+        if rounded == 1 then
+            self.Yield = 20
+            
+        elseif rounded == 2 then
+            self.Yield = 50
+            
+        elseif rounded == 3 then
+            self.Yield = 100
+            
+        elseif rounded >= 4 then
+            self.Yield = 250
+            
+        else
+            self.Yield = 100
+            
+        end
+        
+        Wire_TriggerOutput(self, "Yield", self.Yield)
+    end
 end
 
 function ENT:Explode()
      if !self.Exploded then return end
 	 if self.Exploding then return end
      local pos = self:LocalToWorld(self:OBBCenter())
+     
+     if self.Yield == 250 then
+        self.Effect                           =  "h_nuke2"
+        self.EffectAir                        =  "h_nuke2_airburst"
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio3.mp3"
+        self.TotalRadius                      =  3200 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
+        self.DestroyRadius                    =  12600 -- 5psi range, all constraints break
+        self.BlastRadius                      =  27000 -- 1.5psi range, unfreeze props
+        self.ExplosionRadius                  =  35000 -- Max range at which things move
+        self.FalloutRadius                    =  9200 -- 500rem range, fallout range
+        self.VaporizeRadius                   =  8800 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+        self.CremateRadius                    =  14500 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+        self.IgniteRadius                     =  25600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+        self.Burn2Radius                      =  33600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+        self.Burn1Radius                      =  46000 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        
+     elseif self.Yield == 20 then
+        self.Effect                           =  "hbomb"                  
+        self.EffectAir                        =  "hbomb_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
+        self.TotalRadius                      =  1400
+        self.DestroyRadius                    =  5500
+        self.BlastRadius                      =  11600
+        self.ExplosionRadius                  =  20000
+        self.FalloutRadius                    =  6200 
+        self.VaporizeRadius                   =  2600 
+        self.CremateRadius                    =  4400 
+        self.IgniteRadius                     =  8400 
+        self.Burn2Radius                      =  11100 
+        self.Burn1Radius                      =  15400 
+        
+     elseif self.Yield == 50 then
+        self.Effect                           =  "h_nuke5"                  
+        self.EffectAir                        =  "h_nuke5_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
+        self.TotalRadius                      =  1700
+        self.DestroyRadius                    =  7400
+        self.BlastRadius                      =  15800
+        self.ExplosionRadius                  =  22500
+        self.FalloutRadius                    =  7200
+        self.VaporizeRadius                   =  4100
+        self.CremateRadius                    =  6800
+        self.IgniteRadius                     =  12600
+        self.Burn2Radius                      =  16600
+        self.Burn1Radius                      =  23100
+        
+     else
+        self.Yield = 100
+        self.Effect                           =  "h_nuke3"
+        self.EffectAir                        =  "h_nuke3_airburst"
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/realnukewithrumbling.mp3"
+        self.TotalRadius                      =  2800 -- 200psi range or fireball size (whichever bigger), everything vaporized (1400 minimum for the removal to work)
+        self.DestroyRadius                    =  9300 -- 5psi range, all constraints break
+        self.BlastRadius                      =  19900 -- 1.5psi range, unfreeze props
+        self.ExplosionRadius                  =  25000 -- Max range at which things move
+        self.FalloutRadius                    =  8000 -- 500rem range, fallout range
+        self.VaporizeRadius                   =  5700 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+        self.CremateRadius                    =  9400 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+        self.IgniteRadius                     =  17100 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+        self.Burn2Radius                      =  22500 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+        self.Burn1Radius                      =  31100 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        
+     end
 	 
 	 for k, v in pairs(ents.FindInSphere(pos,self.Burn1Radius)) do
         local entdist = pos:Distance(v:GetPos())
@@ -194,7 +312,7 @@ function ENT:Explode()
 			ent.Burst = self.FalloutBurst
 			ent.RadRadius = self.FalloutRadius
 			end
-			
+         
 		 local ent = ents.Create("hb_shockwave_sound_lowsh")
 		 ent:SetPos( pos ) 
 		 ent:Spawn()

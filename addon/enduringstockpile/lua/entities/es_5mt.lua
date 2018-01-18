@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "es_base_fixedyield_nuke" )
+DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
 ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true
@@ -13,11 +13,14 @@ ENT.Category                         =  "Enduring Stockpile"
 
 ENT.Model                            =  "models/props_c17/canister_propane01a.mdl"
 ENT.Material                         =  "phoenix_storms/torpedo"
-ENT.Effect                           =  "hnuke1"                  
-ENT.EffectAir                        =  "hnuke1_airburst"                   
-ENT.EffectWater                      =  "hbomb_underwater"
 ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
 ENT.ActivationSound                  =  "buttons/button14.wav"     
+
+ENT.DialAYield                       =  false
+ENT.Yield                            =  5000   -- yield in kilotons 
+ENT.Effect                           =  "hnuke1"
+ENT.EffectAir                        =  "hnuke1_airburst"
+ENT.EffectWater                      =  "hbomb_underwater" 
 ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/tsar_detonate.mp3"
 
 ENT.ShouldUnweld                     =  true

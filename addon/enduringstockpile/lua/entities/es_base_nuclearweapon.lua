@@ -18,16 +18,19 @@ ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  "" 
 ENT.Category                         =  ""            
 
-ENT.Model                            =  ""            
-ENT.Effect                           =  ""            
-ENT.EffectAir                        =  ""           
-ENT.EffectWater                      =  ""            
-ENT.ExplosionSound                   =  ""            
+ENT.Model                            =  ""           
 ENT.ArmSound                         =  ""            
 ENT.ActivationSound                  =  ""    
 ENT.NBCEntity                        =  ""   
 ENT.GASENTITY                        =  ""   
 ENT.PARALIZentITY                    =  ""   
+
+ENT.DialAYield                       =  false
+ENT.Yield                            =  0   -- yield in kilotons         
+ENT.Effect                           =  ""
+ENT.EffectAir                        =  ""
+ENT.EffectWater                      =  ""
+ENT.ExplosionSound                   =  ""
 
 ENT.ShouldUnweld                     =  false         
 ENT.ShouldIgnite                     =  false         
@@ -61,7 +64,7 @@ ENT.FalloutBurst                     =  0
 ENT.MaxIgnitionTime                  =  5             
 ENT.Life                             =  20           
 ENT.MaxDelay                         =  2             
-ENT.TraceLength                      =  500           
+ENT.TraceLength                      =  500 -- range of "altimeter" to determine airburst or groundburst      
 ENT.ImpactSpeed                      =  500          
 ENT.Mass                             =  0                     
 ENT.ArmDelay                         =  2                      

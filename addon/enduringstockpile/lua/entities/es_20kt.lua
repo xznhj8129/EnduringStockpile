@@ -1,6 +1,6 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "es_base_fixedyield_nuke" )
+DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
 ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true
@@ -11,13 +11,16 @@ ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "Enduring Stockpile"
 
-ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x24.mdl"   
+ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x18.mdl"   
 ENT.Material                         =  "phoenix_storms/iron_rails"  
+ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
+ENT.ActivationSound                  =  "buttons/button14.wav"  
+
+ENT.DialAYield                       =  false
+ENT.Yield                            =  20   -- yield in kilotons  
 ENT.Effect                           =  "hbomb"                  
 ENT.EffectAir                        =  "hbomb_airburst"                   
 ENT.EffectWater                      =  "hbomb_underwater"
-ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
-ENT.ActivationSound                  =  "buttons/button14.wav"  
 ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
 
 ENT.ShouldUnweld                     =  true
