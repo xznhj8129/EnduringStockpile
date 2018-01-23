@@ -1,3 +1,10 @@
+TODO
+airbust/groundburst different effects ranges
+prompt radiation (5000 rem= dead, 1000 rem= 50%, 500 rem = 25%)
+fallout dependend on air/ground 
+shielded from shockwave if behind something?
+
+GUIDE
 W54         hbomb_small 1kt
 Grable/arty h_nuke      10kt
 Fat Man     hbomb       20kt
@@ -8,6 +15,7 @@ Ivy Mike    hnuke2      500kt
 CastleBravo h_nuke4     1mt
 Tsar        hnuke1      5mt
 
+ENTITIES
 REN-1 (1 kiloton)
 REN-10 (10 kilotons)
 REN-20 (20 kilotons)
@@ -24,16 +32,18 @@ B61 Mod 7 bomb (strategic, dial-a-yield)
 B61 Mod 12 bomb (tactical, dial-a-yield)
 B83 bomb (strategic, dial-a-yield)
 
+YIELDS
 REN-TAC 1-10-20-50
 REN-STRAT 100-250-500-1000
 B61-7 20-50-100-250
 B61-12 1-10-20-50
 B83 100-250-500-1000
 
+RANDOM NOTES
 map width: 32250u
 1m = 52.493u
 
-models/Humans/corpse1.mdl
+models/player/corpse1.mdl
 models/Humans/Charple01.mdl
 models/player/skeleton.mdl
 

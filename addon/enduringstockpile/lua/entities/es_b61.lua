@@ -54,7 +54,7 @@ ENT.Life                             =  25
 ENT.MaxDelay                         =  2                                 
 ENT.TraceLength                      =  500
 ENT.ImpactSpeed                      =  700
-ENT.Mass                             =  750
+ENT.Mass                             =  500
 ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 
@@ -252,7 +252,7 @@ function ENT:Explode()
                     v:Ignite(4,0)
                     
                 elseif entdist < self.Burn2Radius then
-                    v:SetModel("models/Humans/corpse1.mdl")
+                    v:SetModel("models/player/corpse1.mdl")
                     v:TakeDamage(50,self)
                     v:Ignite(4,0)
                     

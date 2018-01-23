@@ -249,7 +249,7 @@ function ENT:Explode()
                     v:Ignite(4,0)
                     
                 elseif entdist < self.Burn2Radius then
-                    v:SetModel("models/Humans/corpse1.mdl")
+                    v:SetModel("models/player/corpse1.mdl")
                     v:TakeDamage(50,self)
                     v:Ignite(4,0)
                     
