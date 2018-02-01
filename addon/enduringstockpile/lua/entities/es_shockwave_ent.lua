@@ -104,7 +104,7 @@ function ENT:Think()
                         end
                     end
 				 end
-				 if (v:IsPlayer()) then
+				 if (v:IsPlayer()) and (v:IsLineOfSightClear(self) or (self.CURRENTRANGE <= self.MAX_BREAK)) then
 					
 				     v:TakeDamageInfo(dmg)
 					 local mass = phys:GetMass()
@@ -115,7 +115,7 @@ function ENT:Think()
 					 v:SetVelocity( F_dir )		
 				 end
 
-				 if (v:IsPlayer()) and v:IsOnGround() then
+				 if (v:IsPlayer()) and v:IsOnGround() and (v:IsLineOfSightClear(self) or (self.CURRENTRANGE <= self.MAX_BREAK)) then
 				     v:TakeDamageInfo(dmg)
 					 local mass = phys:GetMass()
 					 local F_ang = self.DEFAULT_PHYSFORCE_PLYGROUND
@@ -124,7 +124,7 @@ function ENT:Think()
 					 local F_dir = (v:GetPos() - pos):GetNormal() * (self.DEFAULT_PHYSFORCE_PLYGROUND or 690)	 
 					 v:SetVelocity( F_dir )		
 				 end
-				 if (v:IsNPC()) then
+				 if (v:IsNPC()) and (v:IsLineOfSightClear(self) or (self.CURRENTRANGE <= self.MAX_BREAK)) then
 					 v:TakeDamageInfo(dmg)
 				 end
 			 i = i + 1

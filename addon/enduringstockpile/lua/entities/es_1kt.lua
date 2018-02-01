@@ -17,7 +17,7 @@ ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"
 ENT.ActivationSound                  =  "buttons/button14.wav"     
 
 ENT.DialAYield                       =  false
-ENT.Yield                            =  10   -- yield in kilotons
+ENT.Yield                            =  1   -- yield in kilotons
 ENT.Effect                           =  "hbomb_small"
 ENT.EffectAir                        =  "hbomb_small_airburst"
 ENT.EffectWater                      =  "h_water_huge"

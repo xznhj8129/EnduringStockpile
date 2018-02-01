@@ -102,11 +102,9 @@ function ENT:TriggerInput(iname, value)
 	 if (iname == "Detonate") then
          if (value >= 1) then
 		     if (!self.Exploded and self.Armed) then
-			     timer.Simple(math.Rand(0,self.MaxDelay),function()
-				     if !self:IsValid() then return end
-	                 self.Exploded = true
-			         self:Explode()
-				 end)
+				if !self:IsValid() then return end
+	            self.Exploded = true
+			    self:Explode()
 		     end
 		 end
 	 end
