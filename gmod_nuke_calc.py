@@ -315,6 +315,7 @@ exdata = {
 
 #parse nukemap data
 x=data.split('\n\n')
+powers = []
 c=0
 print ''
 print 'Real data'
@@ -325,6 +326,7 @@ for i in x:
     power = y.pop(0)
     testdata[power] = {}
     print power
+    powers.append(power)
     for j in range(len(y)):
         try:
             d = float(y[j].split(': ')[1].split(' km')[0])*1000
@@ -375,8 +377,19 @@ print ''
 print 'Gmod conversion'
 print '1:'+str(scalefactor),'scale'
 print 'Gmod standard units'
-for power in testdata:
+for power in powers:
     print ''
     print power
-    for i in testdata[power]:
-        print i,roundup(testdata[power][i] * uconv * scale)
+    print 'fireball',roundup(testdata[power]['fireball'] * uconv * scale)
+    print '200psi',roundup(testdata[power]['200psi'] * uconv * scale)
+    print '10psi',roundup(testdata[power]['10psi'] * uconv * scale)
+    print '5psi',roundup(testdata[power]['5psi'] * uconv * scale)
+    print '1.5psi',roundup(testdata[power]['1.5psi'] * uconv * scale)
+    print '5000rem',roundup(testdata[power]['5000rem'] * uconv * scale)
+    print '1000rem',roundup(testdata[power]['1000rem'] * uconv * scale)
+    print '500rem',roundup(testdata[power]['500rem'] * uconv * scale)
+    print 'burn5',roundup(testdata[power]['burn5'] * uconv * scale)
+    print 'burn4',roundup(testdata[power]['burn4'] * uconv * scale)
+    print 'burn3',roundup(testdata[power]['burn3'] * uconv * scale)
+    print 'burn2',roundup(testdata[power]['burn2'] * uconv * scale)
+    print 'burn1',roundup(testdata[power]['burn1'] * uconv * scale)

@@ -6,7 +6,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable		            	 =  false
 ENT.AdminSpawnable		             =  false     
 
-ENT.PrintName		                 =  "Fallout"        
+ENT.PrintName		                 =  "Radioactive Fallout"        
 ENT.Author			                 =  ""      
 ENT.Contact			                 =  ""      
           
@@ -43,32 +43,36 @@ function ENT:Think() -- why doesnt it work with NPC's?
                 --PrintMessage( HUD_PRINTCONSOLE, "Entity "..v:EntIndex().." not shielded" )
                 local dist = (self:GetPos() - v:GetPos()):Length()
                 local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
-                local time_modifier = math.pow((200-self.Bursts) / 200, 4)
+                local time_modifier = math.pow((200-self.Bursts) / 200, 6)
                 local damage = math.Clamp(15 * dist_modifier * time_modifier, 0.1, 15)
-                
-                if v.hazsuited==false then
+                local geigercount = math.Round(5000*dist_modifier*time_modifier)
+                if !v.hazsuited or (v.hazsuited and geigercount>1000) then
                     local dmg = DamageInfo()
                     dmg:SetDamage(damage)
                     dmg:SetDamageType(DMG_RADIATION)
                     if self.HBOWNER==nil or !self.HBOWNER:IsValid() then
                         self.HBOWNER=table.Random(player.GetAll())
                     end
-                    dmg:SetAttacker(self.HBOWNER)
+                    dmg:SetAttacker(self)
                     --PrintMessage( HUD_PRINTCONSOLE, "T: "..self.Bursts.." Dist: "..dist.." Damage: "..damage.." DM: "..dist_modifier.." TM: "..time_modifier )
                     if !v:IsNPC() then
-                        if damage >= 10 then
+                        if geigercount >= 1000 then
                             v:EmitSound("geiger/rad_extreme.wav", 100, 100)
-                        elseif damage >= 7 then
+                        elseif geigercount >= 400 then
+                            v:EmitSound("geiger/rad_veryhigh.wav", 100, 100)
+                        elseif geigercount >= 200 then
                             v:EmitSound("geiger/rad_high.wav", 100, 100)
-                        elseif damage >= 2 then
+                        elseif geigercount >= 100 then
                             v:EmitSound("geiger/rad_med.wav", 100, 100)
-                        elseif damage > 0 then
+                        elseif geigercount > 0 then
                             v:EmitSound("geiger/rad_low.wav", 100, 100)
                         end
                     end
                     v:TakeDamageInfo(dmg)
                 end
-                PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..math.Round(5000*dist_modifier*time_modifier).." rads/hr")
+                if v:IsPlayer() then
+                    PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..geigercount.." rads/hr")
+                end
             --else
                 --PrintMessage( HUD_PRINTCONSOLE, "Entity "..v:EntIndex().." is shielded" )
             end

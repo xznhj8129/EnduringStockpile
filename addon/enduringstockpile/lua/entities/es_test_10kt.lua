@@ -2,8 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  true         
-ENT.AdminSpawnable                   =  true 
+ENT.Spawnable                        =  false         
+ENT.AdminSpawnable                   =  false 
 ENT.AdminOnly                        =  false
 
 ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
@@ -19,14 +19,13 @@ ENT.ActivationSound                  =  "buttons/button14.wav"
 ENT.DialAYield                       =  false
 ENT.EnhancedRadiation                =  false -- is the bomb an Enhanced Radiation weapon aka "neutron bomb"
 ENT.Yield                            =  10   -- yield in kilotons
-ENT.FireballSize                     =  900  -- for trace air/ground burst determination, is ground burst if fireball touches ground
+ENT.FireballSize                     =  900  -- for trace air/ground burst ranging, is ground burst if fireball touches ground
 ENT.Effect                           =  "h_nuke"
 ENT.EffectAir                        =  "h_nuke_airburst"
 ENT.EffectWater                      =  "hbomb_underwater"
 ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
 
 ENT.ShouldUnweld                     =  true
-ENT.ShouldIgnite                     =  false
 ENT.ShouldExplodeOnImpact            =  true
 ENT.Flamable                         =  false
 ENT.UseRandomSounds                  =  false
@@ -34,10 +33,8 @@ ENT.Timed                            =  false
 
 ENT.TraceHitPos                      =  Vector(0,0,0)
 ENT.BurstType                        =  0  -- 0: ground, 1: air, 2: underwater
-ENT.AirburstHeight                   =  0
 ENT.ExplosionDamage                  =  500
 ENT.PhysForce                        =  2500
-ENT.FalloutBurst                     =  25
 ENT.MaxIgnitionTime                  =  4
 ENT.Life                             =  25                                  
 ENT.MaxDelay                         =  0
@@ -136,7 +133,6 @@ function ENT:Explode()
         self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
         self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
         self.BlastRadius                      =  15300 -- 1.5psi range, unfreeze props
-        self.ExplosionRadius                  =  17000 -- Max range at which things move
         self.VaporizeRadius                   =  2200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
         self.CremateRadius                    =  3700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
         self.IgniteRadius                     =  7400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
@@ -146,7 +142,6 @@ function ENT:Explode()
         self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
         self.DestroyRadius                    =  4400 -- 5psi range, all constraints break
         self.BlastRadius                      =  9300 -- 1.5psi range, unfreeze props
-        self.ExplosionRadius                  =  12000 -- Max range at which things move
         self.VaporizeRadius                   =  1900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
         self.CremateRadius                    =  3200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
         self.IgniteRadius                     =  6200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
@@ -154,70 +149,30 @@ function ENT:Explode()
         self.Burn1Radius                      =  11300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
     end
     self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+    self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
     
-    for k, v in pairs(ents.FindInSphere(pos,self.Burn1Radius)) do
-        local entdist = pos:Distance(v:GetPos())
-        if (v:IsValid() and !v:IsPlayer()) and !v:IsNPC() then
-            if v:IsValid() and v:GetPhysicsObject():IsValid() and entdist < self.IgniteRadius then
-                if entdist <= self.CremateRadius then
-                    v:Ignite(10,0)
-                    v:SetMaterial("models/props_debris/plasterwall009d")
-                else
-                    v:Ignite(5,0)
-                end
-            end
-        end
-        if (v:IsValid() or v:IsPlayer()) then
-            if (v:IsPlayer() or v:IsNPC()) then
-            
-                if entdist < self.VaporizeRadius then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    if v:IsPlayer() then
-                        --v:SetMaterial("models/props_debris/plasterwall009d")
-                        v:SetModel("models/player/skeleton.mdl")
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000000,self)
-                        v:Remove()
-                    end
-                    
-                elseif entdist < self.CremateRadius and v:IsLineOfSightClear(self) then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    v:SetModel("models/player/skeleton.mdl")
-                    --v:SetMaterial("models/props_debris/plasterwall009d")
-                    if v:IsPlayer() then
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000,self)
-                    end
-                    v:Ignite(10,0)
-                    
-                elseif entdist < self.IgniteRadius and v:IsLineOfSightClear(self) then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    v:SetModel("models/Humans/Charple01.mdl")
-                    if v:IsPlayer() then
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000,self)
-                    end
-                    v:Ignite(10,0)
-                    
-                elseif entdist < self.Burn2Radius and v:IsLineOfSightClear(self) then
-                    v:SetModel("models/player/corpse1.mdl")
-                    v:TakeDamage(50,self)
-                    v:Ignite(4,0)
-                    
-                elseif entdist < self.Burn1Radius and v:IsLineOfSightClear(self) then
-                    v:TakeDamage(10,self)
-                    v:Ignite(1,0)
-
-                end
-            end
-        end
-    end
+    local ent = ents.Create("es_flashburn_ent")
+    ent:SetPos( pos ) 
+    ent:Spawn()
+    ent:Activate()
+    ent:SetVar("HBOWNER", self.HBOWNER)
+    ent:SetVar("VaporizeRadius",self.VaporizeRadius)
+    ent:SetVar("CremateRadius",self.CremateRadius)
+    ent:SetVar("IgniteRadius",self.IgniteRadius)
+    ent:SetVar("Burn2Radius",self.Burn2Radius)
+    ent:SetVar("Burn1Radius",self.Burn1Radius)
+    
+    --local ent = ents.Create("es_base_prompt_radiation_ent")
+    --ent:SetPos( pos ) 
+    --ent:Spawn()
+    --ent:Activate()
+    --ent:Rad5000rem = self.Rad5000rem
+    --ent:Rad1000rem = self.Rad1000rem
+    --ent:Rad500rem = self.Rad500rem
     
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
+        
         local ent = ents.Create("es_shockwave_ent")
         ent:SetPos( pos ) 
         ent:Spawn()
@@ -231,6 +186,7 @@ function ENT:Explode()
         ent:SetVar("MAX_DESTROY",self.TotalRadius)
         ent:SetVar("SHOCKWAVE_INCREMENT",140)
         ent:SetVar("DELAY",0.01)
+        ent:SetVar("SOUND", self.ExplosionSound)
         ent.trace=self.TraceLength
         ent.decal=self.Decal
         
@@ -260,18 +216,9 @@ function ENT:Explode()
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()
-            ent.Burst = self.FalloutBurst
             ent.RadRadius = self.FalloutRadius
         end
-        
-        --local ent = ents.Create("es_base_prompt_radiation_ent")
-        --ent:SetPos( pos ) 
-        --ent:Spawn()
-        --ent:Activate()
-        --ent:Rad5000rem = self.Rad5000rem
-        --ent:Rad1000rem = self.Rad1000rem
-        --ent:Rad500rem = self.Rad500rem
-            
+ 
         local ent = ents.Create("hb_shockwave_sound_lowsh")
         ent:SetPos( pos ) 
         ent:Spawn()
@@ -310,7 +257,6 @@ function ENT:Explode()
             end
     elseif self.BurstType == 2 then -- underwater burst
         ParticleEffect(self.EffectWater, self.TraceHitPos, Angle(0,0,0), nil)
-        self:Remove()
     end
 end
 
