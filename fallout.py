@@ -16,39 +16,7 @@ def calc_rads(dist, t, falloutradius, maxt):
     rads = round(5000*dist_mod*time_mod)
     return rads
 
-"""
-t = np.arange(1, 5001, 1)
-radius = float(5000)
-damage = []
-for dist in range(5000):
-    relation = np.clip((radius-dist) / radius, 0, 1)
-    dmg = (relation)
-    damage.append(dmg)
-
-plt.title("radiation damage per second")
-plt.plot(t, damage, color="blue", label="Original")
-plt.xlabel('Distance')
-plt.ylabel('Damage')
-plt.show()
-
-maxt = 200
-t = np.arange(1, maxt+1, 1)
-raddam = 15
-damage = []
-for time in range(0,maxt):
-    d2 = (float(maxt) - time) / float(maxt)
-    d2 = d2**4
-    #rel2 = np.clip(d2, 0, 1)
-    dmg = d2 * raddam
-    dmg2 = np.clip(dmg, 1, 15)
-    damage.append(dmg2)
-plt.title("radiation damage over time")
-plt.plot(t, damage, color="blue", label="Original")
-#plt.plot(t, dam2, color="red", label="New")
-plt.xlabel('Time')
-plt.ylabel('Damage')
-plt.show()
-"""
+# approx 0.003 damage/sec/rad
 maxt = 200
 radius = 8400
 t = np.arange(1, maxt+1, 1)
