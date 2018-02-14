@@ -1,7 +1,5 @@
 TODO
-airbust/groundburst different effects ranges
 prompt radiation (5000 rem= dead, 1000 rem= 50%, 500 rem = 25%)
-fallout dependend on air/ground 
 shielded from shockwave if behind something?
 enhanced radiation bomb
 
@@ -47,6 +45,7 @@ map width: 32250u
 models/player/corpse1.mdl
 models/Humans/Charple01.mdl
 models/player/skeleton.mdl
+models/humans/charple01.mdl
 
 cit4:TakeDamage(100, self)
 Entity:IsLineOfSightClear( Vector target ) 

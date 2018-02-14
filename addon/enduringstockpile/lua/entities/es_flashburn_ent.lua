@@ -45,51 +45,48 @@ function ENT:Think()
                 end
             end
         end
-        if (v:IsValid() or v:IsPlayer()) then
-            if (v:IsPlayer() or v:IsNPC()) then
-            
-                if entdist < self.VaporizeRadius then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    if v:IsPlayer() then
-                        --v:SetMaterial("models/props_debris/plasterwall009d")
-                        v:SetModel("models/player/skeleton.mdl")
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000000,self)
-                        v:Remove()
-                    end
-                    
-                elseif entdist < self.CremateRadius and v:IsLineOfSightClear(self) then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    v:SetModel("models/player/skeleton.mdl")
+        if v:IsValid() and  ((v:IsPlayer() and !v:HasGodMode()) or v:IsNPC()) then
+            if entdist < self.VaporizeRadius then
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
+                v:SetModel("models/player/skeleton.mdl")
+                if v:IsPlayer() then
                     --v:SetMaterial("models/props_debris/plasterwall009d")
-                    if v:IsPlayer() then
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000,self)
-                    end
-                    v:Ignite(10,0)
-                    
-                elseif entdist < self.IgniteRadius and v:IsLineOfSightClear(self) then
-                    ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                    v:SetModel("models/player/Charple01.mdl")
-                    if v:IsPlayer() then
-                        v:Kill()
-                    else
-                        v:TakeDamage(1000,self)
-                    end
-                    v:Ignite(10,0)
-                    
-                elseif entdist < self.Burn2Radius and v:IsLineOfSightClear(self) then
-                    v:SetModel("models/player/corpse1.mdl")
-                    v:TakeDamage(50,self)
-                    v:Ignite(4,0)
-                    
-                elseif entdist < self.Burn1Radius and v:IsLineOfSightClear(self) then
-                    v:TakeDamage(10,self)
-                    v:Ignite(1,0)
-
+                    v:Kill()
+                else
+                    v:TakeDamage(1000000,self)
+                    v:Remove()
                 end
+                
+            elseif entdist < self.CremateRadius and v:IsLineOfSightClear(self) then
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
+                v:SetModel("models/player/skeleton.mdl")
+                --v:SetMaterial("models/props_debris/plasterwall009d")
+                if v:IsPlayer() then
+                    v:Kill()
+                else
+                    v:TakeDamage(1000,self)
+                end
+                v:Ignite(10,0)
+                
+            elseif entdist < self.IgniteRadius and v:IsLineOfSightClear(self) then
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
+                v:SetModel("models/player/Charple01.mdl")
+                if v:IsPlayer() then
+                    v:Kill()
+                else
+                    v:TakeDamage(1000,self)
+                end
+                v:Ignite(10,0)
+                
+            elseif entdist < self.Burn2Radius and v:IsLineOfSightClear(self) then
+                v:SetModel("models/player/corpse1.mdl")
+                v:TakeDamage(40,self)
+                v:Ignite(4,0)
+                
+            elseif entdist < self.Burn1Radius and v:IsLineOfSightClear(self) then
+                v:TakeDamage(10,self)
+                v:Ignite(1,0)
+
             end
         end
     end

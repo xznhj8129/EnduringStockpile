@@ -25,7 +25,7 @@ function ENT:Initialize()
      end
 end
 
-function ENT:Think() -- why doesnt it work with NPC's?
+function ENT:Think()
 	
 	if (SERVER) then
 	if !self:IsValid() then return end
@@ -71,7 +71,7 @@ function ENT:Think() -- why doesnt it work with NPC's?
                     v:TakeDamageInfo(dmg)
                 end
                 if v:IsPlayer() then
-                    PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..geigercount.." rads/hr")
+                    v:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..geigercount.." rads/hr")
                 end
             --else
                 --PrintMessage( HUD_PRINTCONSOLE, "Entity "..v:EntIndex().." is shielded" )
