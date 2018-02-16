@@ -47,9 +47,18 @@ RADIATION
 DPS as a function of total dose
 
 PROMPT RADIATION
-overhead cover = shielded from scattered rays = -25%
 no line of sight, not covered = -50%
 no los, covered = -100%
+
+Prompt Radiation:
+Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually reaches further. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays back at you. Being shielded overhead and not in line of sight will only expose you to 20% the dose, gamma rays are extremely penetrative and still find a way to reach you, but it's much less. A hazmat suit will cut your dose by half.
+
+Radiation model:
+Each player has a value that stores the dose he has accumulated. Each Rad you have accumulated will deal you 0.01 damage per second. If not exposed to any radiation, this dose will decrease by 10 every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level (per hr = per minute, so that number divided by 60 is the rads/second). Exposures above 200 rads will start killing you very quickly. 
+
+Fallout:
+Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An option will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout. 
+
 
 
 RADIATION BOMB POWER

@@ -209,7 +209,7 @@ function ENT:Think()
                         time_modifier = math.pow((200-(self.Bursts-9)) / 200, 6)
                     end
                     local raddose = math.Round((5000*dist_modifier*time_modifier))
-                    
+                    local exposure = raddose/10
                     addRads(v,exposure/8)
                 end
             end
