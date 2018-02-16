@@ -130,35 +130,6 @@ function ENT:Think()
     if (SERVER) then
         if !self:IsValid() then return end
         local pos = self:GetPos()
-        --[[for k, v in pairs(ents.FindInSphere(pos,self.RadRadius)) do
-            if (v:IsPlayer() and v:Alive()) or (v:IsNPC() and v:Health()>0) then
-                -- tracer to find if entity is in the open
-                local tracedata    = {}
-                tracedata.start    = v:GetPos() + Vector(0,0,100)
-                tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
-                tracedata.filter   = self.Entity
-                local trace = util.TraceLine(tracedata)
-                if !trace.HitWorld then -- not shielded
-                    local dist = (self:GetPos() - v:GetPos()):Length()
-                    local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
-                    if self.Bursts<9 then
-                        time_modifier = self.Bursts / 9
-                    else
-                        time_modifier = math.pow((200-(self.Bursts-9)) / 200, 6)
-                    end
-                    local raddose = math.Round((5000*dist_modifier*time_modifier))
-                    
-                    if !v.hazsuited or (v.hazsuited and raddose>1000) then
-                        local exposure = raddose/10
-                        if v.hazsuited then
-                            exposure = exposure/2
-                        end
-                        addRads(v,exposure/8)
-                        --PrintMessage( HUD_PRINTCONSOLE, "Rads/sec: "..math.Round(exposure))
-                    end
-                end
-            end
-        end]]--
         
         for _, ply in pairs( player.GetAll() ) do
             local dist = (self:GetPos() - ply:GetPos()):Length()
@@ -180,11 +151,11 @@ function ENT:Think()
                     local raddose = math.Round((5000*dist_modifier*time_modifier))
                     
                     if !ply.hazsuited or (ply.hazsuited and raddose>1000) then
-                        local exposure = raddose/10
+                        local exposure = raddose/60
                         if ply.hazsuited then
                             exposure = exposure/2
                         end
-                        addRads(ply,exposure/8)
+                        addRads(ply,exposure/4)
                         --PrintMessage( HUD_PRINTCONSOLE, "Rads/sec: "..math.Round(exposure))
                     end
                 end
@@ -209,8 +180,8 @@ function ENT:Think()
                         time_modifier = math.pow((200-(self.Bursts-9)) / 200, 6)
                     end
                     local raddose = math.Round((5000*dist_modifier*time_modifier))
-                    local exposure = raddose/10
-                    addRads(v,exposure/8)
+                    local exposure = raddose/60
+                    addRads(v,exposure/4)
                 end
             end
         end
