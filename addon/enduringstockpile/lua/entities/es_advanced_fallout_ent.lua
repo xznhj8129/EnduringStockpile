@@ -161,7 +161,7 @@ function ENT:Think()
                 end
             end
         end
-        
+
         for _, v in pairs( ents.FindByClass("npc_*") ) do
             local dist = (self:GetPos() - v:GetPos()):Length()
             if dist<self.RadRadius and v:IsNPC() and v:Health()>0 then
