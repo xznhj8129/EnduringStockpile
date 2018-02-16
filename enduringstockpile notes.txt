@@ -1,7 +1,12 @@
 TODO
+settings panel
+    choose between old and advanced fallout/ARS
+    set fallout halflife
+icons
 prompt radiation (5000 rem= dead, 1000 rem= 50%, 500 rem = 25%)
-shielded from shockwave if behind something?
-enhanced radiation bomb
+review shockwave
+review EMP
+finetune fallout
 
 GUIDE
 W54         hbomb_small 1kt
@@ -37,6 +42,28 @@ REN-STRAT 100-250-500-1000
 B61-7 20-50-100-250
 B61-12 1-10-20-50
 B83 100-250-500-1000
+
+RADIATION
+DPS as a function of total dose
+
+PROMPT RADIATION
+overhead cover = shielded from scattered rays = -25%
+no line of sight, not covered = -50%
+no los, covered = -100%
+
+
+RADIATION BOMB POWER
+1kt     3.31111111111e+24
+10kt    3.11710999999e+25
+20kt    6.41111111111e+25
+50kt    1.50111111111e+26
+100kt   2.74111111111e+26
+250kt   6.31111111111e+26
+500kt   1.07111111111e+27
+1mt     1.74111111111e+27
+5mt     5.61111111111e+27
+
+
 
 RANDOM NOTES
 map width: 32250u

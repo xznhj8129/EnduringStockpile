@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName                        =  "B61 Mod 12 bomb (tactical, dial-a-yield)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/bombs/gbu/gbu10.mdl"
 ENT.Material                         =  "phoenix_storms/fender_chrome"
@@ -18,7 +18,7 @@ ENT.ActivationSound                  =  "buttons/button14.wav"
 
 ENT.DialAYield                       =  true -- 1, 10, 20, 50 kilotons
 ENT.EnhancedRadiation                =  false -- is the bomb an Enhanced Radiation weapon aka "neutron bomb"
-ENT.Yield                            =  1   -- yield in kilotons
+ENT.Yield                            =  50   -- yield in kilotons
 
 ENT.ShouldUnweld                     =  true
 ENT.ShouldExplodeOnImpact            =  true
@@ -109,7 +109,7 @@ function ENT:TriggerInput(iname, value)
             self.Yield = 50
             
         else
-            self.Yield = 1
+            self.Yield = 50
             
         end
         
@@ -122,17 +122,10 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    if self.Yield == 10 then
-        self.FireballSize = 700
-        
-    elseif self.Yield == 20 then
-        self.FireballSize = 900
-        
-    elseif self.Yield == 50 then
-        self.FireballSize = 1300
-        
-    else
-        self.FireballSize = 400
+    if self.Yield == 10 then self.FireballSize = 700
+    elseif self.Yield == 20 then self.FireballSize = 900
+    elseif self.Yield == 50 then self.FireballSize = 1300
+    else self.FireballSize = 400
     end
     
     if(self:WaterLevel() >= 1) then  -- explosion height type determination

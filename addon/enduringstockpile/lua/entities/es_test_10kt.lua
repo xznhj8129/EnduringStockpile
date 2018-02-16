@@ -2,14 +2,14 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  false         
-ENT.AdminSpawnable                   =  false 
+ENT.Spawnable                        =  true         
+ENT.AdminSpawnable                   =  true 
 ENT.AdminOnly                        =  false
 
 ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x18.mdl"     
 ENT.Material                         =  "phoenix_storms/iron_rails"  
@@ -129,6 +129,7 @@ function ENT:Explode()
     self.Rad5000rem                       =  3700 -- 5000rem initial radiation range, death within a minute
     self.Rad1000rem                       =  4900 -- 1000rem initial radiation range, death within 5 minutes
     self.Rad500rem                        =  5500 -- 500rem range, 50-50 death within 5 minutes
+    self.RadPower                         =  3.1066e+25 -- flux of prompt radiation pulse
     if self.BurstType == 1 then -- airburst
         self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
         self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
@@ -162,13 +163,14 @@ function ENT:Explode()
     ent:SetVar("Burn2Radius",self.Burn2Radius)
     ent:SetVar("Burn1Radius",self.Burn1Radius)
     
-    --local ent = ents.Create("es_base_prompt_radiation_ent")
-    --ent:SetPos( pos ) 
-    --ent:Spawn()
-    --ent:Activate()
-    --ent:Rad5000rem = self.Rad5000rem
-    --ent:Rad1000rem = self.Rad1000rem
-    --ent:Rad500rem = self.Rad500rem
+    local ent = ents.Create("es_base_prompt_radiation_ent")
+    ent:SetPos( pos ) 
+    ent:Spawn()
+    ent:Activate()
+    ent:SetVar("RadPower",self.RadPower)
+    ent:SetVar("Rad5000rem",self.Rad5000rem)
+    ent:SetVar("Rad1000rem",self.Rad1000rem)
+    ent:SetVar("Rad500rem",self.Rad500rem)
     
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
@@ -205,14 +207,7 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
-            --local ent = ents.Create("hb_base_radiation_draw_ent")
-            --ent:SetPos( pos ) 
-            --ent:Spawn()
-            --ent:Activate()
-            --ent.Burst = 120
-            --ent.RadRadius = self.FalloutRadius
-            
-            local ent = ents.Create("es_base_fallout_ent")
+            local ent = ents.Create("es_advanced_fallout_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()

@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName		                 =  "B61 Mod 7 bomb (strategic, dial-a-yield)"
 ENT.Author			                 =  "snowfrog"
 ENT.Contact		                     =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/chappi/b61.mdl"       
 ENT.Material                         =  "phoenix_storms/fender_chrome"                                  

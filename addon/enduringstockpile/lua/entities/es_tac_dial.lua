@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName                        =  "REN-TAC warhead (tactical, dial-a-yield)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x24.mdl"
 ENT.Material                         =  "phoenix_storms/iron_rails"

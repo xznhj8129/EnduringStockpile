@@ -12,13 +12,19 @@ def rad_dmg(dist, t, falloutradius, maxt):
 def calc_rads(dist, t, falloutradius, maxt):
     raddmg = 15
     dist_mod = np.clip((falloutradius-float(dist)) / float(falloutradius), 0, 1)
-    time_mod = math.pow((float(maxt) - time) / float(maxt), 6)
-    rads = round(5000*dist_mod*time_mod)
+    t1 = time / float(9)
+    t2 = math.pow((float(maxt) - (time-9)) / float(maxt), 6)
+    if time<9:
+        time_mod = t1
+    else:
+        time_mod = t2
+    rads = round(5000*dist_mod*time_mod*dist_mod)
     return rads
 
 # approx 0.003 damage/sec/rad
 maxt = 200
 radius = 8400
+"""
 t = np.arange(1, maxt+1, 1)
 d1 = []
 d2 = []
@@ -41,7 +47,7 @@ plt.legend(loc='upper right', frameon=True)
 plt.xlabel('Seconds')
 plt.ylabel('Damage/second')
 plt.show()
-
+"""
 d1 = []
 d2 = []
 d3 = []
@@ -55,7 +61,7 @@ for time in range(0,maxt):
     d4.append(calc_rads(5000, time, radius, 200))
     d5.append(calc_rads(7500, time, radius, 200))
     line.append(1000)
-plt.title("20 kilotons ground blast, rads/hr")
+plt.title("20 kilotons ground blast, rads")
 plt.plot(t, d1, color="red", label="500 distance from ground zero")
 plt.plot(t, d2, color="orange", label="2000 distance from ground zero")
 plt.plot(t, d3, color="yellow", label="3500 distance from ground zero")

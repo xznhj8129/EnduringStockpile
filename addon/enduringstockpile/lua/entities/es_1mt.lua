@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  true
 ENT.PrintName                        =  "REN-1000 warhead (1 megaton)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/props_c17/oildrum001.mdl"   
 ENT.Material                         =  "phoenix_storms/torpedo"             

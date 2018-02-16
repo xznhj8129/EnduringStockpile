@@ -3,8 +3,8 @@ AddCSLuaFile()
 DEFINE_BASECLASS( "base_anim" )
 
 
-ENT.Spawnable                         =  false
-ENT.AdminSpawnable                    =  false     
+ENT.Spawnable                        =  false
+ENT.AdminSpawnable                   =  false     
 
 ENT.PrintName                        =  "Blast Shockwave"        
 ENT.Author                           =  "snowfrog"      
@@ -68,15 +68,11 @@ function ENT:Think()
             local i = 0
             while i < v:GetPhysicsObjectCount() do
                 local dmg = DamageInfo()
-                dmg:SetDamage(math.random(5,25))
                 dmg:SetDamageType(DMG_BLAST)
-                if self.HBOWNER == nil then
-                    self.HBOWNER = table.Random(player.GetAll())
+                if self.HBOWNER == nil or !self.HBOWNER:IsValid() then
+                    self.HBOWNER = self
                 end
-                if !self.HBOWNER:IsValid() then
-                    self.HBOWNER = table.Random(player.GetAll())
-                end
-                dmg:SetAttacker(self)
+                dmg:SetAttacker(self.HBOWNER)
                 phys = v:GetPhysicsObjectNum(i)
                 
                 if phys:IsValid() and !v:IsPlayer() and !v:IsNPC() then
@@ -105,12 +101,14 @@ function ENT:Think()
                 end
                 
                 if v:IsLineOfSightClear(self) or self.CURRENTRANGE <= self.MAX_BREAK then
+                    local dist = (pos - v:GetPos()):Length()
+                    local blastdmg = math.Clamp((self.CURRENTRANGE - dist) / self.CURRENTRANGE, 0, 1) * 50
+                    dmg:SetDamage(blastdmg)
                     if (v:IsPlayer()) then
                         
                         v:TakeDamageInfo(dmg)
                         local mass = phys:GetMass()
                         local F_ang = self.DEFAULT_PHYSFORCE_PLYAIR
-                        local dist = (pos - v:GetPos()):Length()
                         local relation = math.Clamp((self.CURRENTRANGE - dist) / self.CURRENTRANGE, 0, 1)
                         local F_dir = (v:GetPos() - pos):GetNormal() * (self.DEFAULT_PHYSFORCE_PLYAIR or 690)
                         v:SetVelocity( F_dir )        
@@ -120,7 +118,6 @@ function ENT:Think()
                         v:TakeDamageInfo(dmg)
                         local mass = phys:GetMass()
                         local F_ang = self.DEFAULT_PHYSFORCE_PLYGROUND
-                        local dist = (pos - v:GetPos()):Length()
                         local relation = math.Clamp((self.CURRENTRANGE - dist) / self.CURRENTRANGE, 0, 1)
                         local F_dir = (v:GetPos() - pos):GetNormal() * (self.DEFAULT_PHYSFORCE_PLYGROUND or 690)    
                         v:SetVelocity( F_dir )        

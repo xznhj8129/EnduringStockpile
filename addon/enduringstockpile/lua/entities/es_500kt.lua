@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName                        =  "REN-500 warhead (500 kilotons)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/Mechanics/roboticslarge/a1.mdl"     
 ENT.Material                         =  "phoenix_storms/iron_rails"

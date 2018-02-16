@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName                        =  "REN-20 warhead (20 kilotons)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x18.mdl"   
 ENT.Material                         =  "phoenix_storms/iron_rails"  

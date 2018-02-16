@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  false
 ENT.PrintName		                 =  "Mk7 bomb (10 kilotons)"
 ENT.Author			                 =  "snowfrog"
 ENT.Contact		                     =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/bombs/gbu/gbu16_fold.mdl"
 ENT.Material                         =  "phoenix_storms/fender_chrome"

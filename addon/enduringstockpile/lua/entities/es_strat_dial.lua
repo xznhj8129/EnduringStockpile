@@ -9,7 +9,7 @@ ENT.AdminOnly                        =  true
 ENT.PrintName                        =  "REN-STRAT warhead (strategic, dial-a-yield)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
-ENT.Category                         =  "Enduring Stockpile"
+ENT.Category                         =  "EnduringStockpile"
 
 ENT.Model                            =  "models/Mechanics/roboticslarge/a1.mdl"       
 ENT.Material                         =  "phoenix_storms/iron_rails"                                      
