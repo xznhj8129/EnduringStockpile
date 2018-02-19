@@ -36,6 +36,38 @@ Thermal radiation radius (3rd degree burns): 0.6 km
 Thermal radiation radius (2nd degree burns (50%)): 0.79 km
 Thermal radiation radius (1st degree burns (50%)): 1.12 km
 
+5kt
+Fireball radius: 150 m
+Air blast radius (200 psi): 140 m
+Air blast radius (20 psi): 370 m
+Air blast radius (10 psi): 0.53 km
+Air blast radius (5 psi): 0.78 km
+Air blast radius (1.5 psi): 1.67 km
+Radiation radius (5000 rem): 0.72 km
+Radiation radius (1000 rem): 0.98 km
+Radiation radius (500 rem): 1.11 km
+Thermal radiation radius (100 cal/cm2): 300 m
+Thermal radiation radius (35 cal/cm2): 0.5 km 
+Thermal radiation radius (3rd degree burns): 1.03 km
+Thermal radiation radius (2nd degree burns (50%)): 1.36 km
+Thermal radiation radius (1st degree burns (50%)): 1.89 km
+
+5kt air best
+Fireball radius: 120 m
+Air blast radius (200 psi): 140 m
+Air blast radius (20 psi): 480 m
+Air blast radius (10 psi): 0.75 km
+Air blast radius (5 psi): 1.19 km
+Air blast radius (1.5 psi): 2.77 km
+Radiation radius (5000 rem): 0.72 km 
+Radiation radius (1000 rem): 0.98 km 
+Radiation radius (500 rem): 1.11 km
+Thermal radiation radius (100 cal/cm2): 360 m 
+Thermal radiation radius (35 cal/cm2): 0.6 km
+Thermal radiation radius (3rd degree burns): 1.23 km 
+Thermal radiation radius (2nd degree burns (50%)): 1.61 km
+Thermal radiation radius (1st degree burns (50%)): 2.25 km 
+
 10kt
 Fireball radius: 200 m 
 Air blast radius (200 psi): 170 m 

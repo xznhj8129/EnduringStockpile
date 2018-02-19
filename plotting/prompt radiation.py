@@ -34,9 +34,9 @@ def rad_dose(p,r):
 #10kt = 3.11710999999e+25
 #250kt = 1.15745639974e+27
 
-r5000 = 10800
-r1000 = 12600
-r500 = 13400
+r5000 = 3200
+r1000 = 4300
+r500 = 4900
 
 dose = 500
 d = 0
@@ -54,12 +54,13 @@ while d<dose:
         mod=mod*10
 print p, d
 print
+p=p*8
 distlist = [r5000,r1000,r500]
 for i in range(1,200):
     dist = i*float(100)
     dose = rad_dose(p,dist)
-    if dist in distlist:
-        print 'dist',dist,':', dose,'rads'
-    #print dist, dose
+    #if dist in distlist:
+        #print 'dist',dist,':', dose,'rads'
+    print dist, dose
 print 'power', p
 print 'mod',mod

@@ -3,10 +3,12 @@ settings panel
     choose between old and advanced fallout/ARS
     set fallout halflife
 icons
-prompt radiation (5000 rem= dead, 1000 rem= 50%, 500 rem = 25%)
 review shockwave
 review EMP
-finetune fallout
+finetune fallout (ENW, p 390-404)
+geiger counter wire ent
+neutron bomb
+neutron activation
 
 GUIDE
 W54         hbomb_small 1kt
@@ -19,8 +21,21 @@ Ivy Mike    hnuke2      500kt
 CastleBravo h_nuke4     1mt
 Tsar        hnuke1      5mt
 
+Effects
+1kt     hbomb_small_a
+5kt     hbomb_small
+10kt    h_nuke
+20kt    hbomb
+50kt    h_nuke5
+100kt   h_nuke3
+250kt   h_nuke2
+500kt   hnuke2
+1mt     h_nuke4
+5mt     hnuke1
+
 ENTITIES
 REN-1 (1 kiloton)
+REN-5 (5 kilotons)
 REN-10 (10 kilotons)
 REN-20 (20 kilotons)
 REN-50 (50 kilotons)
@@ -37,32 +52,54 @@ B61 Mod 12 bomb (tactical, dial-a-yield)
 B83 bomb (strategic, dial-a-yield)
 
 YIELDS
-REN-TAC 1-10-20-50
-REN-STRAT 100-250-500-1000
-B61-7 20-50-100-250
-B61-12 1-10-20-50
-B83 100-250-500-1000
+REN-TAC     1-10-20-50
+REN-STRAT   100-250-500-1000
+B61-7       20-50-100-250
+B61-12      1-10-20-50
+B83         100-250-500-1000
 
 RADIATION
 DPS as a function of total dose
+5% chance to die per second per 1000 rads
+
+NEUTRON BOMB
+Radiation flux 8x normal
+Blast/Thermal power 1/2 normal
+
+NEUTRON ACTIVATION
+Props become radioactive
+Function of mass?
 
 PROMPT RADIATION
 no line of sight, not covered = -50%
 no los, covered = -100%
 
 Prompt Radiation:
-Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually reaches further. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays back at you. Being shielded overhead and not in line of sight will only expose you to 20% the dose, gamma rays are extremely penetrative and still find a way to reach you, but it's much less. A hazmat suit will cut your dose by half.
+Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually outranges them. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays at you from the sky. Being shielded overhead and not in line of sight will only expose you to 20% the dose; gamma rays are extremely penetrative and still find a way to reach you, but it's much less. A hazmat suit will further cut your dose by half.
 
 Radiation model:
 Each player has a value that stores the dose he has accumulated. Each Rad you have accumulated will deal you 0.01 damage per second. If not exposed to any radiation, this dose will decrease by 10 every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level (per hr = per minute, so that number divided by 60 is the rads/second). Exposures above 200 rads will start killing you very quickly. 
 
 Fallout:
-Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An option will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout. 
+Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An slider will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout. 
+
+
+MENU
+Easy Arm Toggle
+Fragility Toggle
+Flash Toggle
+Fallout Toggle
+Basic or Advanced Fallout
+Should bombs create Prompt Radiation Burst
+Fallout length slider (1min - 120min)
+EMP Toggle
+Geiger Counter sound
 
 
 
 RADIATION BOMB POWER
 1kt     3.31111111111e+24
+5kt     1.60111111111e+25
 10kt    3.11710999999e+25
 20kt    6.41111111111e+25
 50kt    1.50111111111e+26
@@ -77,6 +114,9 @@ RADIATION BOMB POWER
 RANDOM NOTES
 map width: 32250u
 1m = 52.493u
+
+ents.FindByModel
+models/props_lab/powerbox02d.mdl
 
 models/player/corpse1.mdl
 models/Humans/Charple01.mdl

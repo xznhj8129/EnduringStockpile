@@ -1,0 +1,89 @@
+THANK YOU DIVRAN
+
+local rads = {}
+local function addRads(ply,r)
+    rads[ply:UniqueID()] = (rads[ply:UniqueID()] or 0) + r
+end
+local function removeRads(ply,r)
+    rads[ply:UniqueID()] = math.max(0,(rads[ply:UniqueID()] or 0) - r)
+end
+hook.Add("PlayerDeath","enduringstockpile_rads_death",function(ply) rads[ply:UniqueID()] = nil end)
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+local NPCs = {}
+timer.Create("find_npcs",1,0,function() NPCs = ents.FindByClass("npc_*") end)
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+timer.Create("unique timer name",1,0,function() some code end)
+heres the timer
+the first string find_npcs is the name of the timer. this must be unique for all timers on the whole server, so usually you wanna include the name of the addon
+second parameter is the number 1 which means how fast the timer should run in seconds
+third parameter 0 is how many times it should run before it never runs again, with 0 being infinite times
+
+--timer.Exists( "TimerName" ) ) then (not needed)
+
+all this i can simply put in the es-fallout_ent.lua file, outside the functions, and it will automatically run forever
+
+only thing to keep in mind is I wrote my own ENT:Think function in there, and if your entity already has a think function then whichever one is farther down in the file will overwrite the previous
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+-- this function initializes the table on each player
+local function makePlyTable(ply)
+    if not ply.EnduringStockpile then
+        ply.EnduringStockpile = {
+            Rads = 0,
+            -- put any more options here if you wanna keep track of other values
+        }
+    end
+end
+
+-- just some helper functions
+local function addRads(ply,r)
+    makePlyTable(ply)
+    ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
+end
+local function removeRads(ply,r)
+    makePlyTable(ply)
+    ply.EnduringStockpile.Rads = math.max(0,ply.EnduringStockpile.Rads - r)
+end
+local function getRads(ply)
+    makePlyTable(ply)
+    return ply.EnduringStockpile.Rads                       
+end
+
+timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infinite repetitions
+    for _, ply in pairs( player.GetAll() ) do
+        if ply.EnduringStockpile then
+            local rads = getRads(ply)
+            if rads > 0 then
+                -- do damage calculations depending on dose here
+                -- maybe like this
+                ply:TakeDamage( rads * 0.05, ply, ply )
+
+                -- make the player a little bit less radioactive now
+                removeRads( ply, math.max(rads * 0.01,10) )
+            end
+        end
+    end
+end)
+
+function ENT:Think()
+    local pos = self:GetPos()
+    for _, ply in pairs( player.GetAll() ) do
+        local distance = ply:GetPos():Distance(pos)
+        if distance <= self.Radius then
+            -- add rads depending on distance here
+            -- for example
+            local rads = self.Rads / (distance / 10)
+            addRads(ply,rads)
+        end
+    end
+
+    self:NextThink(CurTime() + 1) -- next think in 1 second
+    return true
+end

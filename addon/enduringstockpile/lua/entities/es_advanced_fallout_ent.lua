@@ -84,7 +84,16 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
                 --dmg:SetDamageType(DMG_RADIATION)
                 --dmg:SetAttacker(ENT)
                 --ply:TakeDamageInfo(dmg)
-                ply:TakeDamage(rads * 0.01, ply, ply )
+                local raddamage = rads/4 * 0.01
+                ply:TakeDamage(math.random((raddamage/2),(raddamage*2)), ply, ply )
+                if rads > 1000 then
+                    local ctd = math.Round((rads/20000)*100)
+                    local draw = math.random(0,100)
+                    if draw <= ctd then
+                        ply:Kill()
+                    end
+                end
+                --
             end
             if recentrads > 0 then
                 ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..math.Round(recentrads*10).." rads/hr")
@@ -99,9 +108,8 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
                 elseif (recentrads*10) > 0 then
                     ply:EmitSound("geiger/rad_low.wav", 100, 100)
                 end
-            else
-                removeRads(ply, 10)
             end
+            removeRads(ply, math.random(5,10))
             
         else
             makePlyTable(ply)
@@ -113,11 +121,17 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
             local rads, recentrads = getRads(v)
             
             if rads > 0 then
-                v:TakeDamage(rads * 0.01, v, v )
+                local raddamage = rads/4 * 0.01
+                v:TakeDamage(math.random((raddamage/2),(raddamage*2)), v, v )
+                if rads > 1000 then
+                    local ctd = math.Round((rads/20000)*100)
+                    local draw = math.random(0,100)
+                    if draw <= ctd then
+                        v:TakeDamage(1000000, v, v )
+                    end
+                end
             end
-            if recentrads == 0 then
-                removeRads(v, 10)
-            end
+            removeRads(v, math.random(5,10))
             
         else
             makePlyTable(v)
@@ -155,13 +169,13 @@ function ENT:Think()
                         if ply.hazsuited then
                             exposure = exposure/2
                         end
-                        addRads(ply,exposure/4)
+                        addRads(ply,exposure)
                         --PrintMessage( HUD_PRINTCONSOLE, "Rads/sec: "..math.Round(exposure))
                     end
                 end
             end
         end
-
+        
         for _, v in pairs( ents.FindByClass("npc_*") ) do
             local dist = (self:GetPos() - v:GetPos()):Length()
             if dist<self.RadRadius and v:IsNPC() and v:Health()>0 then
@@ -181,7 +195,7 @@ function ENT:Think()
                     end
                     local raddose = math.Round((5000*dist_modifier*time_modifier))
                     local exposure = raddose/60
-                    addRads(v,exposure/4)
+                    addRads(v,exposure)
                 end
             end
         end
