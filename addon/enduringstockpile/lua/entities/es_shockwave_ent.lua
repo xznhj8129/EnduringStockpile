@@ -69,10 +69,10 @@ function ENT:Think()
             while i < v:GetPhysicsObjectCount() do
                 local dmg = DamageInfo()
                 dmg:SetDamageType(DMG_BLAST)
-                if self.HBOWNER == nil or !self.HBOWNER:IsValid() then
-                    self.HBOWNER = self
-                end
-                dmg:SetAttacker(self.HBOWNER)
+                --if self.HBOWNER == nil or !self.HBOWNER:IsValid() then
+                --    self.HBOWNER = self
+                --end
+                dmg:SetAttacker(self)
                 phys = v:GetPhysicsObjectNum(i)
                 
                 if phys:IsValid() and !v:IsPlayer() and !v:IsNPC() then

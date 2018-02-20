@@ -45,19 +45,24 @@ function ENT:Think()
                 end
             end
         end
-        if v:IsValid() and  ((v:IsPlayer() and !v:HasGodMode()) or v:IsNPC()) then
-            if entdist < self.VaporizeRadius then
-                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                v:SetModel("models/player/skeleton.mdl")
+        if v:IsValid() and  ((v:IsPlayer() and !v:HasGodMode()) or v:IsNPC()) and v:Health()>0 then
+            if entdist < 0 then
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,v,0)
+                if v:IsPlayer() then
+                    v:SetModel("models/player/skeleton.mdl")
+                end
                 local dmg = DamageInfo()
                 dmg:SetDamage(1000000)
                 dmg:SetDamageType(DMG_DISSOLVE)
                 dmg:SetAttacker(self)
                 v:TakeDamageInfo(dmg)
+                v:Remove()
                 
             elseif entdist < self.CremateRadius and v:IsLineOfSightClear(self) then
-                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                v:SetModel("models/player/skeleton.mdl")
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,v,0)
+                if v:GetClass()=="npc_citizen" or v:IsPlayer() then
+                    v:SetModel("models/player/skeleton.mdl")
+                end
                 local dmg = DamageInfo()
                 dmg:SetDamage(1000000)
                 dmg:SetDamageType(DMG_BURN)
@@ -66,8 +71,10 @@ function ENT:Think()
                 v:Ignite(10,0)
                 
             elseif entdist < self.IgniteRadius and v:IsLineOfSightClear(self) then
-                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,ent,0)
-                v:SetModel("models/player/Charple01.mdl")
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,v,0)
+                if v:GetClass()=="npc_citizen" or v:IsPlayer() then
+                    v:SetModel("models/player/Charple01.mdl")
+                end
                 local dmg = DamageInfo()
                 dmg:SetDamage(1000000)
                 dmg:SetDamageType(DMG_BURN)
@@ -76,7 +83,10 @@ function ENT:Think()
                 v:Ignite(10,0)
                 
             elseif entdist < self.Burn2Radius and v:IsLineOfSightClear(self) then
-                v:SetModel("models/player/corpse1.mdl")
+                ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,v,0)
+                if v:GetClass()=="npc_citizen" or v:IsPlayer() then
+                    v:SetModel("models/player/corpse1.mdl")
+                end
                 local dmg = DamageInfo()
                 dmg:SetDamage(40)
                 dmg:SetDamageType(DMG_BURN)

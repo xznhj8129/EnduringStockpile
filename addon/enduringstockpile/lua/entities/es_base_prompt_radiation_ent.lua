@@ -55,57 +55,59 @@ function ENT:Think()
     
     for _, ply in pairs( player.GetAll() ) do
             -- tracer to find if entity is in the open
-        local tracedata    = {}
-        tracedata.start    = ply:GetPos() + Vector(0,0,100)
-        tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
-        tracedata.filter   = self.Entity
-        local trace = util.TraceLine(tracedata)
-        local dist = (self:GetPos() - ply:GetPos()):Length()
-        local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
-        local effectivedose = 0
-        if ply:IsLineOfSightClear(self) then --not shielded, line of sight
-            effectivedose = promptdose
-            --PrintMessage( HUD_PRINTCONSOLE, "Not shielded, LOS")
-        elseif !ply:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
-            effectivedose = promptdose*0.5
-            --PrintMessage( HUD_PRINTCONSOLE, "Not shielded, no LOS")
-        elseif (dist>self.Rad5000rem and dist<self.Rad500rem*2) and !ply:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-            effectivedose = promptdose*0.2
-            --PrintMessage( HUD_PRINTCONSOLE, "Shielded, no LOS")
-        elseif dist<=self.Rad5000rem then
-            effectivedose = promptdose
-            --PrintMessage( HUD_PRINTCONSOLE, "In 5000rem range")
+        if ply:Alive() then
+            local tracedata    = {}
+            tracedata.start    = ply:GetPos() + Vector(0,0,100)
+            tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
+            tracedata.filter   = self.Entity
+            local trace = util.TraceLine(tracedata)
+            local dist = (self:GetPos() - ply:GetPos()):Length()
+            local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
+            local effectivedose = 0
+            if ply:IsLineOfSightClear(self) then --not shielded, line of sight
+                effectivedose = promptdose
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
+            elseif !ply:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
+                effectivedose = promptdose*0.5
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
+            elseif !ply:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
+                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4)
+                --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
+            end
+            if ply.hazsuited then
+                effectivedose = effectivedose*0.5
+            end
+            if effectivedose>0 then
+                addRads(ply,effectivedose)
+            end
+            PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
         end
-        if ply.hazsuited then
-            effectivedose = effectivedose*0.5
-        end
-        if effectivedose>0 then
-            addRads(ply,effectivedose)
-        end
-        PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
     end
     
     for _, v in pairs( ents.FindByClass("npc_*") ) do
-            -- tracer to find if entity is in the open
-        local tracedata    = {}
-        tracedata.start    = v:GetPos() + Vector(0,0,100)
-        tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
-        tracedata.filter   = self.Entity
-        local trace = util.TraceLine(tracedata)
-        local dist = (self:GetPos() - v:GetPos()):Length()
-        local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
-        local effectivedose = 0
-        if v:IsLineOfSightClear(self) then --not shielded, line of sight
-            effectivedose = promptdose
-        elseif !v:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
-            effectivedose = promptdose*0.5
-        elseif (dist>self.Rad5000rem and dist<self.Rad500rem*2) and !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-            effectivedose = promptdose*0.2
-        elseif dist<=self.Rad5000rem then
-            effectivedose = promptdose
-        end
-        if effectivedose>0 then
-            addRads(v,effectivedose)
+        -- tracer to find if entity is in the open
+        if v:Health()>0 then
+            local tracedata    = {}
+            tracedata.start    = v:GetPos() + Vector(0,0,100)
+            tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
+            tracedata.filter   = self.Entity
+            local trace = util.TraceLine(tracedata)
+            local dist = (self:GetPos() - v:GetPos()):Length()
+            local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
+            local effectivedose = 0
+            if v:IsLineOfSightClear(self) then --not shielded, line of sight
+                effectivedose = promptdose
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
+            elseif !v:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
+                effectivedose = promptdose*0.5
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
+            elseif !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
+                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4)
+                --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
+            end
+            if effectivedose>0 then
+                addRads(v,effectivedose)
+            end
         end
     end
 	self:Remove()

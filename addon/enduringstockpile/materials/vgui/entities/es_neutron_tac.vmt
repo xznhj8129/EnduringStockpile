@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/entities/es_neutron_tac"
+	"$nolod" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

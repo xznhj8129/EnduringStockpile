@@ -97,13 +97,17 @@ function ENT:TriggerInput(iname, value)
         local rounded = math.floor(value)
         
         if rounded == 1 then
-            self.Yield = 10
+            self.Yield = 5
             
         elseif rounded == 2 then
+            self.Yield = 10
+            
+        elseif rounded == 3 then
             self.Yield = 20
             
-        elseif rounded >= 3 then
+        elseif rounded >= 4 then
             self.Yield = 50
+            
             
         else
             self.Yield = 1
@@ -119,7 +123,10 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    if self.Yield == 10 then
+    if self.Yield == 5 then
+        self.FireballSize = 600
+        
+    elseif self.Yield == 10 then
         self.FireballSize = 700
         
     elseif self.Yield == 20 then
@@ -179,9 +186,10 @@ function ENT:Explode()
         self.EffectAir                        =  "h_nuke_airburst"                   
         self.EffectWater                      =  "hbomb_underwater"
         self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
-        self.Rad5000rem                       =  3700 -- 5000rem initial radiation range, death within a minute
-        self.Rad1000rem                       =  4900 -- 1000rem initial radiation range, death within 5 minutes
-        self.Rad500rem                        =  5500 -- 500rem range, 50-50 death within 5 minutes
+        self.Rad5000rem                       =  3700 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  4900 -- 1000rem initial radiation range
+        self.Rad500rem                        =  5500 -- 500rem range
+        self.RadPower                         =  3.11710999999e+25 -- flux of prompt radiation pulse
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
@@ -209,9 +217,10 @@ function ENT:Explode()
         self.EffectAir                        =  "hbomb_airburst"                   
         self.EffectWater                      =  "hbomb_underwater"
         self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
-        self.Rad5000rem                       =  4300 -- 5000rem initial radiation range, death within a minute
-        self.Rad1000rem                       =  5600 -- 1000rem initial radiation range, death within 5 minutes
-        self.Rad500rem                        =  6200 -- 500rem range, 50-50 death within 5 minutes
+        self.Rad5000rem                       =  4300 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  5600 -- 1000rem initial radiation range
+        self.Rad500rem                        =  6200 -- 500rem range
+        self.RadPower                         =  6.41111111111e+25 -- flux of prompt radiation pulse
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  1200 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  8300 -- 5psi range, all constraints break
@@ -239,9 +248,10 @@ function ENT:Explode()
         self.EffectAir                        =  "h_nuke5_airburst"                   
         self.EffectWater                      =  "hbomb_underwater"
         self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
-        self.Rad5000rem                       =  5100 -- 5000rem initial radiation range, death within a minute
-        self.Rad1000rem                       =  6600 -- 1000rem initial radiation range, death within 5 minutes
-        self.Rad500rem                        =  7200 -- 500rem range, 50-50 death within 5 minutes
+        self.Rad5000rem                       =  5100 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  6600 -- 1000rem initial radiation range
+        self.Rad500rem                        =  7200 -- 500rem range
+        self.RadPower                         =  1.50111111111e+26 -- flux of prompt radiation pulse
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  1300 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  11200 -- 5psi range, all constraints break
@@ -264,15 +274,47 @@ function ENT:Explode()
         self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
         self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
         
-    else
-        self.Yield = 1
+    elseif self.Yield == 5 then
         self.Effect                           =  "hbomb_small"                  
         self.EffectAir                        =  "hbomb_small_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
+        self.Rad5000rem                       =  3200 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  4300 -- 1000rem initial radiation range
+        self.Rad500rem                        =  4900 -- 500rem range
+        self.RadPower                         =  1.60111111111e+25 -- flux of prompt radiation pulse
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  600 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  5300 -- 5psi range, all constraints break
+            self.BlastRadius                      =  12200 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  1600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  2700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  5400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  7100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  9900 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  3500 -- 5psi range, all constraints break
+            self.BlastRadius                      =  7400 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  1400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  2200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  4600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  6000 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  8300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
+        
+    else
+        self.Yield = 1
+        self.Effect                           =  "hbomb_small_a"                  
+        self.EffectAir                        =  "hbomb_small_airburst_a"                   
         self.EffectWater                      =  "h_water_huge"
         self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
-        self.Rad5000rem                       =  2300 -- 5000rem initial radiation range, death within a minute
-        self.Rad1000rem                       =  3200 -- 1000rem initial radiation range, death within 5 minutes
-        self.Rad500rem                        =  3700 -- 500rem range, 50-50 death within 5 minutes
+        self.Rad5000rem                       =  2300 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  3200 -- 1000rem initial radiation range
+        self.Rad500rem                        =  3700 -- 500rem range
+        self.RadPower                         =  3.31111111111e+24 -- flux of prompt radiation pulse
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  3100 -- 5psi range, all constraints break
@@ -307,6 +349,15 @@ function ENT:Explode()
     ent:SetVar("IgniteRadius",self.IgniteRadius)
     ent:SetVar("Burn2Radius",self.Burn2Radius)
     ent:SetVar("Burn1Radius",self.Burn1Radius)
+    
+    local ent = ents.Create("es_base_prompt_radiation_ent")
+    ent:SetPos( pos ) 
+    ent:Spawn()
+    ent:Activate()
+    ent:SetVar("RadPower",self.RadPower)
+    ent:SetVar("Rad5000rem",self.Rad5000rem)
+    ent:SetVar("Rad1000rem",self.Rad1000rem)
+    ent:SetVar("Rad500rem",self.Rad500rem)
     
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
@@ -343,20 +394,12 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
-            local ent = ents.Create("es_base_fallout_ent")
+            local ent = ents.Create("es_advanced_fallout_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
         end
-        
-        --local ent = ents.Create("es_base_prompt_radiation_ent")
-        --ent:SetPos( pos ) 
-        --ent:Spawn()
-        --ent:Activate()
-        --ent:Rad5000rem = self.Rad5000rem
-        --ent:Rad1000rem = self.Rad1000rem
-        --ent:Rad500rem = self.Rad500rem
  
         local ent = ents.Create("hb_shockwave_sound_lowsh")
         ent:SetPos( pos ) 

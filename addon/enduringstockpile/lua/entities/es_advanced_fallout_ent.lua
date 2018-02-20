@@ -79,12 +79,6 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
             
             if rads > 0 then
                 PrintMessage( HUD_PRINTCONSOLE, "Dosimeter "..rads )
-                --local dmg = DamageInfo()
-                --dmg:SetDamage(rads * 0.01)
-                --dmg:SetDamageType(DMG_RADIATION)
-                --dmg:SetAttacker(ENT)
-                --ply:TakeDamageInfo(dmg)
-                local raddamage = rads/4 * 0.01
                 ply:TakeDamage(math.random((raddamage/2),(raddamage*2)), ply, ply )
                 if rads > 1000 then
                     local ctd = math.Round((rads/20000)*100)
@@ -121,7 +115,6 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
             local rads, recentrads = getRads(v)
             
             if rads > 0 then
-                local raddamage = rads/4 * 0.01
                 v:TakeDamage(math.random((raddamage/2),(raddamage*2)), v, v )
                 if rads > 1000 then
                     local ctd = math.Round((rads/20000)*100)

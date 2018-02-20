@@ -74,14 +74,7 @@ PROMPT RADIATION
 no line of sight, not covered = -50%
 no los, covered = -100%
 
-Prompt Radiation:
-Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually outranges them. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays at you from the sky. Being shielded overhead and not in line of sight will only expose you to 20% the dose; gamma rays are extremely penetrative and still find a way to reach you, but it's much less. A hazmat suit will further cut your dose by half.
 
-Radiation model:
-Each player has a value that stores the dose he has accumulated. Each Rad you have accumulated will deal you 0.01 damage per second. If not exposed to any radiation, this dose will decrease by 10 every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level (per hr = per minute, so that number divided by 60 is the rads/second). Exposures above 200 rads will start killing you very quickly. 
-
-Fallout:
-Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An slider will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout. 
 
 
 MENU
@@ -106,7 +99,7 @@ RADIATION BOMB POWER
 100kt   2.74111111111e+26
 250kt   6.31111111111e+26
 500kt   1.07111111111e+27
-1mt     1.74111111111e+27
+1mt     1.84111111111e+27
 5mt     5.61111111111e+27
 
 
@@ -169,3 +162,83 @@ models/sprops/cylinders/size_5/cylinder_12x18.mdl
 models/sprops/cylinders/size_5/cylinder_12x24.mdl
 models/sprops/cylinders/size_5/cylinder_12x30.mdl
 models/Mechanics/roboticslarge/a1.mdld
+
+
+neutron bomb powers
+1kt
+fireball 200
+200psi 200
+10psi 700
+5psi 1100
+1.5psi 2200
+
+burn5 200
+burn4 600
+burn3 1100
+burn2 1500
+burn1 2100
+
+1kt air best
+fireball 200
+200psi 200
+10psi 1000
+5psi 1600
+1.5psi 3600
+
+burn5 400
+burn4 600
+burn3 1400
+burn2 1800
+burn1 2500
+
+5kt
+fireball 400
+200psi 400
+10psi 1200
+5psi 1800
+1.5psi 3700
+
+burn5 700
+burn4 1100
+burn3 2300
+burn2 3000
+burn1 4200
+
+5kt air best
+fireball 300
+200psi 400
+10psi 1700
+5psi 2700
+1.5psi 6100
+
+burn5 800
+burn4 1400
+burn3 2700
+burn2 3600
+burn1 5000
+
+10kt
+fireball 500
+200psi 400
+10psi 1500
+5psi 2200
+1.5psi 4700
+
+burn5 1000
+burn4 1600
+burn3 3100
+burn2 4100
+burn1 5700
+
+10kt air best
+fireball 400
+200psi 400
+10psi 2100
+5psi 3300
+1.5psi 7700
+
+burn5 1100
+burn4 1900
+burn3 3700
+burn2 4900
+burn1 6700

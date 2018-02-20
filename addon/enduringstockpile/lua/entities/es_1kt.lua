@@ -20,8 +20,8 @@ ENT.DialAYield                       =  false
 ENT.EnhancedRadiation                =  false -- is the bomb an Enhanced Radiation weapon aka "neutron bomb"
 ENT.Yield                            =  1   -- yield in kilotons
 ENT.FireballSize                     =  400  -- for trace air/ground burst ranging, is ground burst if fireball touches ground
-ENT.Effect                           =  "hbomb_small"
-ENT.EffectAir                        =  "hbomb_small_airburst"
+ENT.Effect                           =  "hbomb_small_a"
+ENT.EffectAir                        =  "hbomb_small_airburst_a"
 ENT.EffectWater                      =  "h_water_huge"
 ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
 
@@ -126,9 +126,9 @@ function ENT:Explode()
     -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
     -- Airburst calculated for all effects at optimal height (unrealistic but stopgap)
     -- Scale factor: 1:12
-    self.Rad5000rem                       =  2300 -- 5000rem initial radiation range, death within a minute
-    self.Rad1000rem                       =  3200 -- 1000rem initial radiation range, death within 5 minutes
-    self.Rad500rem                        =  3700 -- 500rem range, 50-50 death within 5 minutes
+    self.Rad5000rem                       =  2300 -- 5000rem initial radiation range
+    self.Rad1000rem                       =  3200 -- 1000rem initial radiation range
+    self.Rad500rem                        =  3700 -- 500rem range
     self.RadPower                         =  3.311e+24  -- flux of prompt radiation pulse
     if self.BurstType == 1 then -- airburst
         self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
@@ -163,7 +163,6 @@ function ENT:Explode()
     ent:SetVar("Burn2Radius",self.Burn2Radius)
     ent:SetVar("Burn1Radius",self.Burn1Radius)
     
-    --[[
     local ent = ents.Create("es_base_prompt_radiation_ent")
     ent:SetPos( pos ) 
     ent:Spawn()
@@ -172,7 +171,7 @@ function ENT:Explode()
     ent:SetVar("Rad5000rem",self.Rad5000rem)
     ent:SetVar("Rad1000rem",self.Rad1000rem)
     ent:SetVar("Rad500rem",self.Rad500rem)
-    ]]--
+    
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
         local ent = ents.Create("es_shockwave_ent")
@@ -207,7 +206,7 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
-            local ent = ents.Create("es_base_fallout_ent")
+            local ent = ents.Create("es_advanced_fallout_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()

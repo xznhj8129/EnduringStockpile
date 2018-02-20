@@ -2,8 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  true         
-ENT.AdminSpawnable                   =  true 
+ENT.Spawnable                        =  false        
+ENT.AdminSpawnable                   =  false 
 ENT.AdminOnly                        =  false
 
 ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
@@ -126,9 +126,9 @@ function ENT:Explode()
     -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
     -- Airburst calculated for all effects at optimal height (unrealistic but stopgap)
     -- Scale factor: 1:12
-    self.Rad5000rem                       =  3700 -- 5000rem initial radiation range, death within a minute
-    self.Rad1000rem                       =  4900 -- 1000rem initial radiation range, death within 5 minutes
-    self.Rad500rem                        =  5500 -- 500rem range, 50-50 death within 5 minutes
+    self.Rad5000rem                       =  3700 -- 5000rem initial radiation range
+    self.Rad1000rem                       =  4900 -- 1000rem initial radiation range
+    self.Rad500rem                        =  5500 -- 500rem range
     self.RadPower                         =  3.1066e+25 -- flux of prompt radiation pulse
     if self.BurstType == 1 then -- airburst
         self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)

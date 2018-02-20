@@ -1,16 +1,15 @@
 Build-friendly nukes with realistic effects
-Version 3.0
+Version 4.0
 
-This mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only the full-sized bombs were available) and somewhat unrealistic and arbitrary effects and power. This is a modification of HBOMBS, which is itself a modification of Gbombs (if you're the author of either, contact me). I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use significantly different code from regular nukes for more realistic effects, based on real-life research and scientific models. Some adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod yet still much more realistic than any other nuke mod.
-This is my first mod, so please advise me of any bugs or errors and give me feedback. 
-All deserved credit for the original code and models goes to their respective authors, i just copied their work and added my touch to it.
+This mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only the full-sized bombs were available) and somewhat unrealistic and arbitrary effects and power. I started making my own mod for simpler building, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, which is itself a modification of Gbombs (if you're the author of either, contact me). I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use totally different code from regular nukes for more realistic effects, based on real-life research and scientific models. Adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod, yet their retain the right power scaling and effects of real-life, miles ahead of any other nuke mod currently out.
+This is my first mod, so please advise me of any bugs or errors and give me feedback.
+All deserved credit for the original code and models goes to their respective authors, i just improved on their work.
 
 REQUIRED MODS:
 Wiremod (for dial-a-yield bombs)
 SProps
 HBOMBS Base Pack
 HBOMBS Material Pack
-(tell me of any errors in case i forgot one)
 
 FEATURES:
 Bomb power: All bombs now have realistic blast and heat damage values from real data (ground burst), converted to Gmod units and scaled down 1:12. This means that the ranges for the effects of the explosion are realistic (enough), but divided by 12 from real life ranges. A bomb will have more powerful blast effects if it is exploded in the air, but produce no fallout.
@@ -19,11 +18,22 @@ Heat damage: The incinerate/ignite code in the bombs was completely redone. Now 
 
 Blast damage: Blast damage now follows realistic ranges and power, props and entities very close to ground zero will simply vaporize. 
 
-Dial-a-yield: Some warheads and bombs have a selectable yield option, which means you use wire to specify which mode of explosion you want.
+Dial-a-yield: Some warheads and bombs have a selectable yield option, which means you use wire to specify the power of explosion you want.
 
-Fallout: Fallout now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. Compared to normal Gbombs fallout it lasts longer but drops in intensity quite quickly. An option will be added for long decay for those who want more realistic consequences. Airbursts (bombs exploding in the air) do not produce fallout. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!)
+Radiation model:
+Each player has a value that stores the radioactivity dose he has accumulated. Each Rad you have accumulated will deal you 0.01 damage per second. If not exposed to any radiation, this dose will decrease up to 10 units every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level (per hr = per minute, so that number divided by 60 is the rads/second). Exposures above 200 rads will start killing you very quickly. 
 
-[Future update, v4.0] Prompt Radiation: When a nuclear bomb explodes, it instantly produces a powerful burst of radiation that can kill instantly as well as make people sick. This is more pronounced on smaller yield nukes, and a low-yield tactical Enhanced Radiation "Neutron" warhead which takes advantage of this effect has been added.
+Fallout: Fallout now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. Compared to normal Gbombs fallout it lasts longer but drops in intensity quite quickly. An option will be added for long decay for those who want more realistic consequences. Airbursts (bombs exploding in the air) do not produce fallout. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout is deadly, so make sure to quickly take cover! You can disable it in the HBOMBS menu.
+
+Prompt Radiation:
+Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually outranges them. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays at you from the sky. Being shielded overhead and not in line of sight will only expose you to a fraction of the dose; gamma rays are extremely penetrative and still find a way to reach you, but it's much less. A hazmat suit will further cut your dose by half. The calculations are subject to some adjustments on next updates.
+
+Fallout:
+Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An slider will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout, the height at which it is considered an airburst depends on the size of the fireball, thus the explosion's power. The calculations are subject to some adjustments on next updates.
+
+Enhanced Radiaiton Weapons:
+New in 4.0, this is a small tactical warhead that uses an Enhanced Radiation device, commonly known as a Neutron Bomb. This bomb trades blast and heat power for a stronger burst of radiation, making it more lethal against players or NPC's while not having as powerful an explosion as normal bombs. A 1kt ERW has only half the power of a normal 1kt bomb, but the radiation power of a 5kt device; 5kt has the radiation power of a 10kt; and a 10kt that of a 20kt. They tend to be on the smaller scale of nukes, being intended for battlefield use, so 10kt is about the most powerful they come. The REN-ERTAC has 3 modes, 1kt, 5kt and 10kt.
+
 
 REFERENCES:
 Nukemap by Alex Wellerstein nuclearsecrecy.com/nukemap/
@@ -34,7 +44,8 @@ kt = kilotons (1000 tons of TNT)
 mt = megatons (1000 kilotons)
 
 In this mod you will find the following:
-REN-1 warhead (1 kiloton) (visuals of Davy Crockett)
+REN-1 warhead (1 kiloton) (visuals of Davy Crockett, no flash)
+REN-5 warhead (5 kilotons) (visuals of Davy Crockett, with flash)
 REN-10 warhead (10 kilotons) (visuals of Artillery shell)
 REN-20 warhead (20 kilotons) (visuals of Fat Man)
 REN-50 warhead (50 kilotons) (visuals of Ivy King)
@@ -43,12 +54,13 @@ REN-250 warhead (250 kilotons) (visuals of Little Boy)
 REN-500 warhead (500 kilotons) (visuals of Ivy Mike)
 REN-1000 warhead (1 megaton) (visuals of Castle Bravo)
 REN-5000 warhead (5 megatons) (visuals of Tsar Bomba)
-REN-TAC warhead - Tactical warhead with selectable yield, Modes are 1=1kt, 2=10kt, 3=20kt, 4=50kt, default 1kt
-REN-STRAT warhead - Strategic warhead with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default 100kt
-Mk7 Bomb (same thing as REN-10)
-B61 Mod 7 bomb - Strategic bomb with selectable yield, Modes are 1=20kt, 2=50kt, 3=100kt, 4=250kt; default 100kt
-B61 Mod 12 bomb - Tactical bomb with selectable yield, Modes are 1=1kt, 2=10kt, 3=20kt, 4=50kt, default 50kt
-B83 bomb - Strategic bomb with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default 1mt
+REN-TAC warhead - Tactical warhead with selectable yield, Modes are 0=1kt, 1=5kt, 2=10kt, 3=20kt, 4=50kt, default (0)=1kt
+REN-STRAT warhead - Strategic warhead with selectable yield, Modes are 0=100kt, 1=250kt, 2=500kt, 3=1mt, default (0)=100kt
+REN-ERTAC warhead - Enhanced Radiation tactical warhead (neutron bomb), Modes are 0=1kt, 1=5kt, 2=10kt, default (0)=1kt
+Mk12 Bomb - Tactical bomb, same thing as REN-10
+B61 Mod 7 bomb - Strategic bomb with selectable yield, Modes are 1=20kt, 2=50kt, 3=100kt, 4=250kt; default (0)=100kt
+B61 Mod 12 bomb - Tactical bomb with selectable yield, Modes are 1=1kt, 2=5kt, 3=10kt, 4=20kt, 5=50kt, default (0)=50kt
+B83 bomb - Strategic bomb with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default (0)=1mt
 
 
 FAQ
@@ -65,10 +77,10 @@ Q: Why are the yields you give so scaled down? IE: why does the Tsar Bomba equiv
 A: The Tsar Bomba in, say GBombs, is about visually equivalent to the real Little Boy. In effects, it's about really equivalent to just a 8-10 kiloton nuke in real life, and this insult to the Tsar angers the Lord of Megatons. The Tsar Bomba's power, 57 megatons (57,000 kilotons) is just mindboggling, like the wrath of god. The biggest GMod map i can find is about 860 meters diagonally, it would fit entirely within the fireball of a real 400 kiloton explosion. This is how big these things are. With the 1:12 scale i'm now using, 5 megatons is about as big as you can get without everything on the map being instantly vaporized (just barely). The new realistic power calculation give the bombs good and realistic power for our use.
 
 Q: The bombs are overpowered!
-A: Overpowered... realistic... nuclear... weapons... Think about that for a second. If you think there's something that could be adjusted for better effects and playability, tell me about it.
+A: Overpowered... realistic... nuclear... weapons... Think about that for a second. If you think there's something that could be adjusted for better effects and playability, tell me about it, but being overpowered is kind of the entire thing with nukes. 
 
 Q: Can you make the Tsar Bomba/This specific bomb/Some fantasy bomb?
-A: No. That's not the point of this. 
+A: No. The point of this mod is realism.
 
 Q: Any plans for the future?
 This is my roadmap:
@@ -77,9 +89,11 @@ DONE: more realistic flash-burn and ignition effects
 DONE: dial-a-yield weapons (use wire to select the yield of the nuke)
 DONE: realistic fallout with decay and dependent on ground/water or air burst
 DONE: different blast/fire effect range dependent on wether it was ground or air burst (as IRL)
-TO DO: rework blast shockwave
-TO DO: icons!
-TO DO: prompt radiation burst and neutron bombs
-TO DO: make it all a standalone mod that doesn't need HBOMBS with a control panel including flash effect toggle
+DONE: icons!
+DONE: prompt radiation burst and neutron bombs
+TO DO: protection against radioactivity such as pills or something
+TO DO: wire geiger counter that outputs the current radiation level in it's location
+TO DO: improve blast shockwave
+TO DO: control panel
 
 Github: https://github.com/snow-frog/EnduringStockpile/
