@@ -37,14 +37,34 @@ local function makePlyTable(ply)
         ply.EnduringStockpile = {
             Rads = 0,
             RadsPerSecond = 0,
+            GeigerSound = 1,
+            GeigerRads = 0,
+            GeigerRPS = 0,
         }
     end
 end
 
 local function addRads(ply,r)
     makePlyTable(ply)
-    ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
-    ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + r
+    local raddose = r*60
+    if ply.IsPlayer() then
+        if !ply.hazsuited or (ply.hazsuited and raddose>1000) then
+            if ply.hazsuited then
+                ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + ((raddose-1000)/60)/2
+                ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + ((raddose-1000)/60)/2
+            else
+                ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
+                ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + r
+            end
+        end
+    else
+        ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
+        ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + r
+    end
+end
+local function addGeigerRads(ply,r)
+    makePlyTable(ply)
+    ply.EnduringStockpile.GeigerRPS = ply.EnduringStockpile.GeigerRPS + r
 end
 
 function ENT:Think()
@@ -71,14 +91,12 @@ function ENT:Think()
                 effectivedose = promptdose*0.5
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
             elseif !ply:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4)
+                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
                 --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
-            end
-            if ply.hazsuited then
-                effectivedose = effectivedose*0.5
             end
             if effectivedose>0 then
                 addRads(ply,effectivedose)
+                addGeigerRads(ply,effectivedose*4*60)
             end
             PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
         end
@@ -102,7 +120,7 @@ function ENT:Think()
                 effectivedose = promptdose*0.5
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
             elseif !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4)
+                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
                 --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
             end
             if effectivedose>0 then

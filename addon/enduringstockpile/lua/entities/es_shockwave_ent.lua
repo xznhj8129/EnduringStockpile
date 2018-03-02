@@ -34,6 +34,7 @@ if SERVER then
         self.DEFAULT_PHYSFORCE_PLYGROUND = self:GetVar("DEFAULT_PHYSFORCE_PLYGROUND")
         self.SHOCKWAVEDAMAGE = self:GetVar("SHOCKWAVE_DAMAGE")
         self.allowtrace=true
+        self.FirstStage=false
     end
 end
 function ENT:Trace()
@@ -63,6 +64,17 @@ function ENT:Think()
         self:Trace()
         self.allowtrace=false
     end
+    --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
+    if !self.FirstStage then
+        for k, v in pairs(ents.FindInSphere(pos,self.MAX_DESTROY)) do
+            local phys = v:GetPhysicsObject()
+            if IsValid(phys) and !v:IsPlayer() and !v:IsNPC() then
+                v:Remove()
+            end
+        end
+        self.FirstStage = true
+    end
+    
     for k, v in pairs(ents.FindInSphere(pos,self.CURRENTRANGE)) do
         if (v:IsValid() or v:IsPlayer()) then
             local i = 0
@@ -76,27 +88,23 @@ function ENT:Think()
                 phys = v:GetPhysicsObjectNum(i)
                 
                 if phys:IsValid() and !v:IsPlayer() and !v:IsNPC() then
-                    if (self.CURRENTRANGE <= self.MAX_DESTROY) then
-                        v:Remove()
-                    else
-                        local mass = phys:GetMass()
-                        local F_ang = self.DEFAULT_PHYSFORCE
-                        local dist = (pos - v:GetPos()):Length()
-                        local relation = math.Clamp((self.CURRENTRANGE - dist) / self.CURRENTRANGE, 0, 1)
-                        local F_dir = (v:GetPos() - pos):GetNormal() * (self.DEFAULT_PHYSFORCE or 690)
-                        phys:Wake()
-                        phys:EnableMotion(true)
-                        phys:AddAngleVelocity(Vector(F_ang, F_ang, F_ang) * relation)
-                        phys:AddVelocity(F_dir) 
-                        if (self.CURRENTRANGE <= self.MAX_BREAK) and (GetConVar("hb_shockwave_unfreeze"):GetInt() >= 1) then
-                            if !v.isWacAircraft then
-                               constraint.RemoveAll(v)
-                            end
+                    local mass = phys:GetMass()
+                    local F_ang = self.DEFAULT_PHYSFORCE
+                    local dist = (pos - v:GetPos()):Length()
+                    local relation = math.Clamp((self.CURRENTRANGE - dist) / self.CURRENTRANGE, 0, 1)
+                    local F_dir = (v:GetPos() - pos):GetNormal() * (self.DEFAULT_PHYSFORCE or 690)
+                    phys:Wake()
+                    phys:EnableMotion(true)
+                    phys:AddAngleVelocity(Vector(F_ang, F_ang, F_ang) * relation)
+                    phys:AddVelocity(F_dir) 
+                    if (self.CURRENTRANGE <= self.MAX_BREAK) and (GetConVar("hb_shockwave_unfreeze"):GetInt() >= 1) then
+                        if !v.isWacAircraft then
+                           constraint.RemoveAll(v)
                         end
-                        
-                        if (v:GetClass()=="func_breakable" or class=="func_breakable_surf" or class=="func_physbox") then
-                           v:Fire("Break", 0)
-                        end
+                    end
+                    
+                    if (v:GetClass()=="func_breakable" or class=="func_breakable_surf" or class=="func_physbox") then
+                       v:Fire("Break", 0)
                     end
                 end
                 

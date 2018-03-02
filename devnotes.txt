@@ -1,0 +1,6 @@
+DEVNOTES
+4.0
+-fixed geiger rad display system
+-reworked shockwave annihilaiton zone
+-added convars to control fallout length
+-put radiation damage to CTakeDamageInfo again, put generic instead of radiation damage because of annoying flash

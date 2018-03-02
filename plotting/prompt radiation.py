@@ -32,7 +32,7 @@ def inverse_square(p,r):
 def rad_dose(p,r):
     return inverse_square(p, r)/math.pow(r,3.8)
 def rad_dose2(p,r):
-    return inverse_square(p, r)/math.pow(r,4)
+    return inverse_square(p, r)/math.pow(r,4.2)
 #10kt = 3.11710999999e+25
 #250kt = 1.15745639974e+27
 
@@ -67,16 +67,14 @@ for i in range(1,200):
     dose2 = rad_dose2(p,dist)
     dd.append(dose)
     dd2.append(dose2)
-    dd3.append(dose/2)
     #if i in distlist:
     #    print 'dist',i,':', dose,'rads'
-    print dist, round(dose),round(dose/2), round(dose2)
+    print dist, round(dose), round(dose2)
 print 'power', p
 print 'mod',mod
 plt.title("Rads for distance")
 plt.semilogy(range(1,200), dd, color="red")
 plt.semilogy(range(1,200), dd2, color="blue")
-plt.semilogy(range(1,200), dd3, color="black")
 plt.xlabel('Distance')
 plt.ylabel('Dose (rads)')
 plt.show()

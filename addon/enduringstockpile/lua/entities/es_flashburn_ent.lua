@@ -46,7 +46,7 @@ function ENT:Think()
             end
         end
         if v:IsValid() and  ((v:IsPlayer() and !v:HasGodMode()) or v:IsNPC()) and v:Health()>0 then
-            if entdist < 0 then
+            if (entdist < self.VaporizeRadius and v:IsLineOfSightClear(self)) or (entdist < self.VaporizeRadius/2)then
                 ParticleEffectAttach("nuke_player_vaporize_fatman",PATTACH_POINT_FOLLOW,v,0)
                 if v:IsPlayer() then
                     v:SetModel("models/player/skeleton.mdl")
