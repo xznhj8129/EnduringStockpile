@@ -72,6 +72,33 @@ function ENT:Think()
 	if (SERVER) then
 	if !self:IsValid() then return end
 	local pos = self:GetPos()
+
+    for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl") ) do
+            -- tracer to find if vity is in the open
+        if v.GeigerCounter == 1 then
+            local tracedata    = {}
+            tracedata.start    = v:GetPos() + Vector(0,0,100)
+            tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)
+            tracedata.filter   = self.Entity
+            local trace = util.TraceLine(tracedata)
+            local dist = (self:GetPos() - v:GetPos()):Length()
+            local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
+            local effectivedose = 0
+            if v:IsLineOfSightClear(self) then --not shielded, line of sight
+                effectivedose = promptdose
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
+            elseif !v:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
+                effectivedose = promptdose*0.5
+                --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
+            elseif !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
+                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
+                --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
+            end
+            if effectivedose>0 then
+                v.RadCount = v.RadCount + effectivedose*4*60
+            end
+        end
+    end
     
     for _, ply in pairs( player.GetAll() ) do
             -- tracer to find if entity is in the open

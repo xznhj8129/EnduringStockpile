@@ -208,6 +208,28 @@ function ENT:Think()
         
         local falloutlen = GetConVar("es_falloutlength"):GetInt()
         
+        for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
+            if v.GeigerCounter == 1 then
+                -- tracer to find if entity is in the open
+                local tracedata    = {}
+                tracedata.start    = v:GetPos() + Vector(0,0,80)
+                tracedata.endpos   = tracedata.start - Vector(0, 0, -4000)
+                tracedata.filter   = self.Entity
+                local trace = util.TraceLine(tracedata)
+                if !trace.HitWorld then -- not shielded
+                    local dist = (self:GetPos() - v:GetPos()):Length()
+                    local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
+                    if self.Bursts<9 then
+                        time_modifier = self.Bursts / 9
+                    else
+                        time_modifier = math.pow(((200*falloutlen)-(self.Bursts-9)) / (200*falloutlen), 6)
+                    end
+                    local raddose = math.Round((5000*dist_modifier*time_modifier))
+                    v.RadCount = v.RadCount + raddose
+                end
+            end
+        end
+        
         for _, ply in pairs( player.GetAll() ) do
             local dist = (self:GetPos() - ply:GetPos()):Length()
             if dist<self.RadRadius and ply:IsPlayer() and ply:Alive() then
