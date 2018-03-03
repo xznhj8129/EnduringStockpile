@@ -41,6 +41,15 @@ function ENT:Initialize()
  end
 end
 
+function ENT:Explode()
+end
+
+function ENT:OnTakeDamage(dmginfo)
+end
+
+function ENT:PhysicsCollide( data, physobj )
+end
+
 function ENT:SpawnFunction( ply, tr )
      if ( not tr.Hit ) then return end
      self.GBOWNER = ply
