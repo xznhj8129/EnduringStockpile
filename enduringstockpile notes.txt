@@ -69,12 +69,20 @@ Blast/Thermal power 1/2 normal
 NEUTRON ACTIVATION
 Props become radioactive
 Function of mass?
+LAG
 
 PROMPT RADIATION
 no line of sight, not covered = -50%
 no los, covered = -100%
 
+SUITS
+Combat NBC MOPP suit
+    80% speed
+    500 rad treshhold
 
+Heavy lead-lined suit
+    50% speed
+    1000 rad treshhold
 
 
 MENU

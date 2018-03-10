@@ -124,18 +124,23 @@ function ENT:Explode()
     
     if self.Yield == 5 then
         self.FireballSize = 600
+        self.Decal = "nuke_small"
         
     elseif self.Yield == 10 then
         self.FireballSize = 700
+        self.Decal = "nuke_medium"
         
     elseif self.Yield == 20 then
         self.FireballSize = 900
+        self.Decal = "nuke_medium"
         
     elseif self.Yield == 50 then
         self.FireballSize = 1300
+        self.Decal = "nuke_medium"
         
     else
         self.FireballSize = 400
+        self.Decal = "nuke_small"
     end
     
     if(self:WaterLevel() >= 1) then  -- explosion height type determination
@@ -378,7 +383,7 @@ function ENT:Explode()
         ent.trace=self.TraceLength
         ent.decal=self.Decal
         
-        local ent = ents.Create("hb_shockwave_ent_nounfreeze")
+        local ent = ents.Create("es_shockwave_ent_nounfreeze")
         ent:SetPos( pos ) 
         ent:Spawn()
         ent:Activate()
@@ -398,6 +403,12 @@ function ENT:Explode()
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
+            
+            local ent = ents.Create("es_rad_crater_ent")
+            ent:SetPos( pos ) 
+            ent:Spawn()
+            ent:Activate()
+            ent.RadRadius = self.FireballSize
         end
  
         local ent = ents.Create("hb_shockwave_sound_lowsh")

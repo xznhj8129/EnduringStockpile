@@ -47,7 +47,7 @@ ENT.DEFAULT_PHYSFORCE                = 255
 ENT.DEFAULT_PHYSFORCE_PLYAIR         = 25
 ENT.DEFAULT_PHYSFORCE_PLYGROUND      = 2555
 ENT.HBOWNER                          = nil             -- don't you fucking touch this.
-ENT.Decal                            = "nuke_big"
+ENT.Decal                            = "nuke_tsar"
 
 function ENT:Initialize()
  if (SERVER) then
@@ -191,7 +191,7 @@ function ENT:Explode()
         ent.trace=self.TraceLength
         ent.decal=self.Decal
         
-        local ent = ents.Create("hb_shockwave_ent_nounfreeze")
+        local ent = ents.Create("es_shockwave_ent_nounfreeze")
         ent:SetPos( pos ) 
         ent:Spawn()
         ent:Activate()
@@ -211,6 +211,12 @@ function ENT:Explode()
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
+            
+            local ent = ents.Create("es_rad_crater_ent")
+            ent:SetPos( pos ) 
+            ent:Spawn()
+            ent:Activate()
+            ent.RadRadius = self.FireballSize
         end
             
          local ent = ents.Create("hb_shockwave_rumbling")

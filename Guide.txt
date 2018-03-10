@@ -19,16 +19,15 @@ EMP
 
 3. Weapons Provided
 
-Warheads
+Fixed-Yield Generic Warheads
 
 REN-1 
 Low-yield tactical device, very small and light. Useful for small missiles, rockets, bombs and nuclear suitcases.
 
-Yield:
-Weight:
-Model:
-Visual effect: 
-(1 kiloton) (visuals of Davy Crockett, no flash)
+Yield: 1 kiloton
+Weight: 
+Model: 
+Visual effect: HBOMBS Davy Crockett whitout flash
 
 Yield modes: None, fixed 1kt
 
@@ -64,6 +63,8 @@ REN-1000
 (1 megaton) (visuals of Castle Bravo)
 REN-5000
 (5 megatons) (visuals of Tsar Bomba)
+
+Variable-Yield Generic Warheads
 REN-TAC
 Tactical warhead with selectable yield, Modes are 0=1kt, 1=5kt, 2=10kt, 3=20kt, 4=50kt, default (0)=1kt
 
@@ -75,7 +76,7 @@ Strategic warhead with selectable yield, Modes are 0=100kt, 1=250kt, 2=500kt, 3=
 REN-ERTAC
 Enhanced Radiation tactical warhead (neutron bomb), Modes are 0=1kt, 1=5kt, 2=10kt, default (0)=1kt
 
-Aircraft Bombs
+Real Aircraft Bombs
 Mk12 Bomb
 Tactical bomb, same thing as REN-10
 B61 Mod 7 bomb

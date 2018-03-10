@@ -192,7 +192,7 @@ function ENT:Explode()
         ent.trace=self.TraceLength
         ent.decal=self.Decal
         
-        local ent = ents.Create("hb_shockwave_ent_nounfreeze")
+        local ent = ents.Create("es_shockwave_ent_nounfreeze")
         ent:SetPos( pos ) 
         ent:Spawn()
         ent:Activate()
@@ -212,6 +212,12 @@ function ENT:Explode()
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
+            
+            local ent = ents.Create("es_rad_crater_ent")
+            ent:SetPos( pos ) 
+            ent:Spawn()
+            ent:Activate()
+            ent.RadRadius = self.FireballSize
         end
             
         local ent = ents.Create("hb_shockwave_sound_lowsh")

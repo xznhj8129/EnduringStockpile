@@ -6,7 +6,7 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable                         =  false
 ENT.AdminSpawnable                    =  false
 
-ENT.PrintName                         =  "Radioactive Fallout"
+ENT.PrintName                         =  "Radioactive Crater"
 ENT.Author                            =  "snowfrog"
 ENT.Contact                           =  ""
 
@@ -195,7 +195,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 end)
 
 
--- fallout entity
+-- crater entity
 function ENT:Think()
     
     if (SERVER) then
@@ -217,7 +217,7 @@ function ENT:Think()
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
-                    -- tracer to find how far entity is from ground (fallout is settled dust)
+                    -- tracer to find how far entity is from ground
                     local tracedata2    = {}
                     tracedata2.start    = v:GetPos() + Vector(0,0,0)
                     tracedata2.endpos   = tracedata2.start - Vector(0, 0, 2000)
@@ -231,12 +231,8 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(9*falloutlen) then
-                            time_modifier = self.Bursts / (9*falloutlen)
-                        else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-9)) / (200*falloutlen), 6)
-                        end
-                        local raddose = math.Round((5000 * dist_modifier * time_modifier * v_dist_modifier))
+                        time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
+                        local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
                         v.RadCount = v.RadCount + raddose
                     end
                 end
@@ -253,7 +249,7 @@ function ENT:Think()
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
-                    -- tracer to find how far entity is from ground (fallout is settled dust)
+                    -- tracer to find how far entity is from ground
                     local tracedata2    = {}
                     tracedata2.start    = ply:GetPos() + Vector(0,0,0)
                     tracedata2.endpos   = tracedata2.start - Vector(0, 0, 2000)
@@ -268,12 +264,8 @@ function ENT:Think()
                         local dist = (self:GetPos() - ply:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(9*falloutlen) then
-                            time_modifier = self.Bursts / (9*falloutlen)
-                        else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-9)) / (200*falloutlen), 6)
-                        end
-                        local raddose = math.Round((5000 * dist_modifier * time_modifier * v_dist_modifier))
+                        time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
+                        local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
                         local exposure = raddose/60
                         --PrintMessage( HUD_PRINTCONSOLE, "RD "..raddose )
                         addGeigerRads(ply,raddose)
@@ -293,7 +285,7 @@ function ENT:Think()
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
-                    -- tracer to find how far entity is from ground (fallout is settled dust)
+                    -- tracer to find how far entity is from ground
                     local tracedata2    = {}
                     tracedata2.start    = v:GetPos() + Vector(0,0,0)
                     tracedata2.endpos   = tracedata2.start - Vector(0, 0, 2000)
@@ -307,12 +299,8 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(9*falloutlen) then
-                            time_modifier = self.Bursts / (9*falloutlen)
-                        else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-9)) / (200*falloutlen), 6)
-                        end
-                        local raddose = math.Round((5000 * dist_modifier * time_modifier * v_dist_modifier))
+                        time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
+                        local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
                         local exposure = raddose/60
                         addRads(v,exposure)
                     end
@@ -321,7 +309,7 @@ function ENT:Think()
         end
         
         self.Bursts = self.Bursts + 0.25
-        if (self.Bursts >= (120*falloutlen)) then
+        if (self.Bursts >= (300*falloutlen)) then
             self:Remove()
         end
         self:NextThink(CurTime() + 0.25)

@@ -123,20 +123,171 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    if self.Yield == 5 then
+        if self.Yield == 1 then
+        self.Effect                           =  "hbomb_small_a"                  
+        self.EffectAir                        =  "hbomb_small_airburst_a"                   
+        self.EffectWater                      =  "h_water_huge"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
+        self.Rad5000rem                       =  2300 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  3200 -- 1000rem initial radiation range
+        self.Rad500rem                        =  3700 -- 500rem range
+        self.RadPower                         =  3.31111111111e+24 -- flux of prompt radiation pulse
+        self.FireballSize = 400
+        self.Decal = "nuke_small"
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  3100 -- 5psi range, all constraints break
+            self.BlastRadius                      =  7100 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  700 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  1200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  2700 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  3500 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  4900 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  2100 -- 5psi range, all constraints break
+            self.BlastRadius                      =  4300 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  1100 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  2200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  2900 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  4200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
+
+    elseif self.Yield == 5 then
+        self.Effect                           =  "hbomb_small"                  
+        self.EffectAir                        =  "hbomb_small_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
+        self.Rad5000rem                       =  3200 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  4300 -- 1000rem initial radiation range
+        self.Rad500rem                        =  4900 -- 500rem range
+        self.RadPower                         =  1.60111111111e+25 -- flux of prompt radiation pulse
         self.FireballSize = 600
+        self.Decal = "nuke_small"
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  600 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  5300 -- 5psi range, all constraints break
+            self.BlastRadius                      =  12200 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  1600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  2700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  5400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  7100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  9900 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  3500 -- 5psi range, all constraints break
+            self.BlastRadius                      =  7400 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  1400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  2200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  4600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  6000 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  8300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
         
-    elseif self.Yield == 10 then
+    elseif self.Yield == 10 then                                   
+        self.Effect                           =  "h_nuke"                  
+        self.EffectAir                        =  "h_nuke_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
+        self.Rad5000rem                       =  3700 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  4900 -- 1000rem initial radiation range
+        self.Rad500rem                        =  5500 -- 500rem range
+        self.RadPower                         =  3.11710999999e+25 -- flux of prompt radiation pulse
         self.FireballSize = 700
+        self.Decal = "nuke_medium"
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
+            self.BlastRadius                      =  15300 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  2200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  3700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  7400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  9700 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  13400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  4400 -- 5psi range, all constraints break
+            self.BlastRadius                      =  9300 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  1900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  3200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  6200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  8100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  11300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
         
     elseif self.Yield == 20 then
+        self.Effect                           =  "hbomb"                  
+        self.EffectAir                        =  "hbomb_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
+        self.Rad5000rem                       =  4300 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  5600 -- 1000rem initial radiation range
+        self.Rad500rem                        =  6200 -- 500rem range
+        self.RadPower                         =  6.41111111111e+25 -- flux of prompt radiation pulse
         self.FireballSize = 900
+        self.Decal = "nuke_medium"
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  1200 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  8300 -- 5psi range, all constraints break
+            self.BlastRadius                      =  19300 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  3200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  5200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  10000 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  13100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  18200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  1400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  5500 -- 5psi range, all constraints break
+            self.BlastRadius                      =  11600 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  2600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  4400 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  8400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  11100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  15400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
         
     elseif self.Yield == 50 then
+        self.Effect                           =  "h_nuke5"                  
+        self.EffectAir                        =  "h_nuke5_airburst"                   
+        self.EffectWater                      =  "hbomb_underwater"
+        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
+        self.Rad5000rem                       =  5100 -- 5000rem initial radiation range
+        self.Rad1000rem                       =  6600 -- 1000rem initial radiation range
+        self.Rad500rem                        =  7200 -- 500rem range
+        self.RadPower                         =  1.50111111111e+26 -- flux of prompt radiation pulse
         self.FireballSize = 1300
+        self.Decal = "nuke_medium"
+        if self.BurstType == 1 then -- airburst
+            self.TotalRadius                      =  1300 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  11200 -- 5psi range, all constraints break
+            self.BlastRadius                      =  26100 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  4900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  8100 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  14900 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  19600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  27200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        else -- ground/water burst
+            self.TotalRadius                      =  1700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+            self.DestroyRadius                    =  7400 -- 5psi range, all constraints break
+            self.BlastRadius                      =  15800 -- 1.5psi range, unfreeze props
+            self.VaporizeRadius                   =  4100 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+            self.CremateRadius                    =  6800 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+            self.IgniteRadius                     =  12600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+            self.Burn2Radius                      =  16600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+            self.Burn1Radius                      =  23100 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        end
+        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
+        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
         
-    else
-        self.FireballSize = 400
     end
     
     if(self:WaterLevel() >= 1) then  -- explosion height type determination
@@ -178,165 +329,7 @@ function ENT:Explode()
             --PrintMessage( HUD_PRINTCONSOLE, "Airburst")
         end
         local hitdist = pos:Distance(trace.HitPos)
-        --PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
-    end
-     
-    if self.Yield == 10 then                                   
-        self.Effect                           =  "h_nuke"                  
-        self.EffectAir                        =  "h_nuke_airburst"                   
-        self.EffectWater                      =  "hbomb_underwater"
-        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
-        self.Rad5000rem                       =  3700 -- 5000rem initial radiation range
-        self.Rad1000rem                       =  4900 -- 1000rem initial radiation range
-        self.Rad500rem                        =  5500 -- 500rem range
-        self.RadPower                         =  3.11710999999e+25 -- flux of prompt radiation pulse
-        if self.BurstType == 1 then -- airburst
-            self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
-            self.BlastRadius                      =  15300 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  2200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  3700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  7400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  9700 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  13400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        else -- ground/water burst
-            self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  4400 -- 5psi range, all constraints break
-            self.BlastRadius                      =  9300 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  1900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  3200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  6200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  8100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  11300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        end
-        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
-        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
-        
-    elseif self.Yield == 20 then
-        self.Effect                           =  "hbomb"                  
-        self.EffectAir                        =  "hbomb_airburst"                   
-        self.EffectWater                      =  "hbomb_underwater"
-        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
-        self.Rad5000rem                       =  4300 -- 5000rem initial radiation range
-        self.Rad1000rem                       =  5600 -- 1000rem initial radiation range
-        self.Rad500rem                        =  6200 -- 500rem range
-        self.RadPower                         =  6.41111111111e+25 -- flux of prompt radiation pulse
-        if self.BurstType == 1 then -- airburst
-            self.TotalRadius                      =  1200 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  8300 -- 5psi range, all constraints break
-            self.BlastRadius                      =  19300 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  3200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  5200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  10000 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  13100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  18200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        else -- ground/water burst
-            self.TotalRadius                      =  1400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  5500 -- 5psi range, all constraints break
-            self.BlastRadius                      =  11600 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  2600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  4400 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  8400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  11100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  15400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        end
-        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
-        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
-        
-    elseif self.Yield == 50 then
-        self.Effect                           =  "h_nuke5"                  
-        self.EffectAir                        =  "h_nuke5_airburst"                   
-        self.EffectWater                      =  "hbomb_underwater"
-        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio2.mp3"
-        self.Rad5000rem                       =  5100 -- 5000rem initial radiation range
-        self.Rad1000rem                       =  6600 -- 1000rem initial radiation range
-        self.Rad500rem                        =  7200 -- 500rem range
-        self.RadPower                         =  1.50111111111e+26 -- flux of prompt radiation pulse
-        if self.BurstType == 1 then -- airburst
-            self.TotalRadius                      =  1300 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  11200 -- 5psi range, all constraints break
-            self.BlastRadius                      =  26100 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  4900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  8100 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  14900 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  19600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  27200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        else -- ground/water burst
-            self.TotalRadius                      =  1700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  7400 -- 5psi range, all constraints break
-            self.BlastRadius                      =  15800 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  4100 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  6800 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  12600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  16600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  23100 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        end
-        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
-        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
-        
-    elseif self.Yield == 5 then
-        self.Effect                           =  "hbomb_small"                  
-        self.EffectAir                        =  "hbomb_small_airburst"                   
-        self.EffectWater                      =  "hbomb_underwater"
-        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
-        self.Rad5000rem                       =  3200 -- 5000rem initial radiation range
-        self.Rad1000rem                       =  4300 -- 1000rem initial radiation range
-        self.Rad500rem                        =  4900 -- 500rem range
-        self.RadPower                         =  1.60111111111e+25 -- flux of prompt radiation pulse
-        if self.BurstType == 1 then -- airburst
-            self.TotalRadius                      =  600 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  5300 -- 5psi range, all constraints break
-            self.BlastRadius                      =  12200 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  1600 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  2700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  5400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  7100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  9900 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        else -- ground/water burst
-            self.TotalRadius                      =  700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  3500 -- 5psi range, all constraints break
-            self.BlastRadius                      =  7400 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  1400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  2200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  4600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  6000 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  8300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        end
-        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
-        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
-        
-    else
-        self.Yield = 1
-        self.Effect                           =  "hbomb_small_a"                  
-        self.EffectAir                        =  "hbomb_small_airburst_a"                   
-        self.EffectWater                      =  "h_water_huge"
-        self.ExplosionSound                   =  "gbombs_5/explosions/nuclear/NukeAudioBass.mp3"
-        self.Rad5000rem                       =  2300 -- 5000rem initial radiation range
-        self.Rad1000rem                       =  3200 -- 1000rem initial radiation range
-        self.Rad500rem                        =  3700 -- 500rem range
-        self.RadPower                         =  3.31111111111e+24 -- flux of prompt radiation pulse
-        if self.BurstType == 1 then -- airburst
-            self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  3100 -- 5psi range, all constraints break
-            self.BlastRadius                      =  7100 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  700 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  1200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  2700 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  3500 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  4900 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        else -- ground/water burst
-            self.TotalRadius                      =  400 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
-            self.DestroyRadius                    =  2100 -- 5psi range, all constraints break
-            self.BlastRadius                      =  4300 -- 1.5psi range, unfreeze props
-            self.VaporizeRadius                   =  400 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-            self.CremateRadius                    =  1100 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-            self.IgniteRadius                     =  2200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-            self.Burn2Radius                      =  2900 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-            self.Burn1Radius                      =  4200 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
-        end
-        self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
-        self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
-        
+        PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
     end
     
     local ent = ents.Create("es_flashburn_ent")
@@ -379,7 +372,7 @@ function ENT:Explode()
         ent.trace=self.TraceLength
         ent.decal=self.Decal
         
-        local ent = ents.Create("hb_shockwave_ent_nounfreeze")
+        local ent = ents.Create("es_shockwave_ent_nounfreeze")
         ent:SetPos( pos ) 
         ent:Spawn()
         ent:Activate()
@@ -399,6 +392,12 @@ function ENT:Explode()
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
+            
+            local ent = ents.Create("es_rad_crater_ent")
+            ent:SetPos( pos ) 
+            ent:Spawn()
+            ent:Activate()
+            ent.RadRadius = self.FireballSize
         end
  
         local ent = ents.Create("hb_shockwave_sound_lowsh")
