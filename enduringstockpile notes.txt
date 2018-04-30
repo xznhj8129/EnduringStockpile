@@ -79,10 +79,12 @@ SUITS
 Combat NBC MOPP suit
     80% speed
     500 rad treshhold
+    50% reduction
 
 Heavy lead-lined suit
     50% speed
     1000 rad treshhold
+    75% reduction
 
 
 MENU
