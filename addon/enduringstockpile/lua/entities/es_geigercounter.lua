@@ -36,8 +36,10 @@ function ENT:Initialize()
     self.GeigerCounter = 1
     self.RadCount = 0
     self.RadsPerHour = 0
-    self.Outputs  = Wire_CreateOutputs(self, { "RadsPerHour" })
-    Wire_TriggerOutput(self, "RadsPerHour", self.RadsPerHour)
+    self.ClickSound = 0
+    self.Outputs  = Wire_CreateOutputs(self, { "RadsPerMin" })
+	self.Inputs   = Wire_CreateInputs(self, { "Sound" })
+    Wire_TriggerOutput(self, "RadsPerMin", self.RadCount)
  end
 end
 
@@ -62,12 +64,35 @@ function ENT:SpawnFunction( ply, tr )
      return ent
 end
 
+function ENT:TriggerInput(iname, value)
+     if (!self:IsValid()) then return end
+	 if (iname == "Sound") then
+         if (value >= 1) then
+		     self.ClickSound = 1
+		 else
+		    self.ClickSound = 0
+		 end
+	 end	 
+end 
+
 function ENT:Think(ply) 
     self.spawned = true
     if (SERVER) then
         if !self:IsValid() then return end
-        self.RadsPerHour = self.RadCount/4
-        Wire_TriggerOutput(self, "RadsPerHour", self.RadsPerHour)
+        Wire_TriggerOutput(self, "RadsPerMin", self.RadCount)
+        if (self.ClickSound == 1) then
+	        if (self.RadCount) >= 1000 then
+		        self:EmitSound("geiger/rad_extreme.wav", 100, 100)
+	        elseif (self.RadCount) >= 400 then
+		        self:EmitSound("geiger/rad_veryhigh.wav", 100, 100)
+	        elseif (self.RadCount) >= 200 then
+		        self:EmitSound("geiger/rad_high.wav", 100, 100)
+	        elseif (self.RadCount) >= 100 then
+		        self:EmitSound("geiger/rad_med.wav", 100, 100)
+	        elseif (self.RadCount) > 0 then
+		        self:EmitSound("geiger/rad_low.wav", 100, 100)
+	        end
+	    end
         self.RadCount = 0
         self:NextThink(CurTime() + 1)
         return true

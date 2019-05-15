@@ -31,42 +31,6 @@ function ENT:Initialize()
      end
 end
 
--- this function initializes the table on each player
-local function makePlyTable(ply)
-    if not ply.EnduringStockpile then
-        ply.EnduringStockpile = {
-            Rads = 0,
-            RadsPerSecond = 0,
-            GeigerSound = 1,
-            GeigerRads = 0,
-            GeigerRPS = 0,
-        }
-    end
-end
-
-local function addRads(ply,r)
-    makePlyTable(ply)
-    local raddose = r*60
-    if ply.IsPlayer() then
-        if !ply.hazsuited or (ply.hazsuited and raddose>1000) then
-            if ply.hazsuited then
-                ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + ((raddose-1000)/60)/2
-                ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + ((raddose-1000)/60)/2
-            else
-                ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
-                ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + r
-            end
-        end
-    else
-        ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + r
-        ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + r
-    end
-end
-local function addGeigerRads(ply,r)
-    makePlyTable(ply)
-    ply.EnduringStockpile.GeigerRPS = ply.EnduringStockpile.GeigerRPS + r
-end
-
 function ENT:Think()
 	
 	if (SERVER) then
@@ -102,7 +66,7 @@ function ENT:Think()
     
     for _, ply in pairs( player.GetAll() ) do
             -- tracer to find if entity is in the open
-        if ply:Alive() then
+        if ply:Alive() and !ply:HasGodMode() then
             local tracedata    = {}
             tracedata.start    = ply:GetPos() + Vector(0,0,100)
             tracedata.endpos   = tracedata.start - Vector(0, 0, -2000)

@@ -22,27 +22,24 @@ EMP
 Fixed-Yield Generic Warheads
 
 REN-1 
-Low-yield tactical device, very small and light. Useful for small missiles, rockets, bombs and nuclear suitcases.
+    Low-yield tactical device, very small and light. Useful for small missiles, rockets, bombs and nuclear suitcases.
 
-Yield: 1 kiloton
-Weight: 
-Model: 
-Visual effect: HBOMBS Davy Crockett whitout flash
+    Yield modes: Fixed 1 kiloton
 
-Yield modes: None, fixed 1kt
+    Visual effect: HBOMBS Davy Crockett whitout flash
 
-Effects
-    Fireball Size:
-    Annihilation radius:
-    Destruction radius:
-    Blast radius:
-    Vaporization radius:
-    Cremation radius:
-    3rd degree radius:
-    2nd degree burn radius:
-    1st degree burn radius:
-    Radiation flux:
-    Fallout radius:
+    Effects (ground/airburst)
+        Fireball Size: 400
+        Annihilation radius: 400/400
+        Destruction radius: 2100/3100
+        Blast radius: 4300/7100
+        Vaporization radius: 400/700
+        Cremation radius: 1100/1200
+        3rd degree burn radius: 2200/2700
+        2nd degree burn radius: 2900/3500
+        1st degree burn radius: 4200/4900
+        Radiation flux: 3.311e+24
+        Fallout radius: 2200
 
 
 REN-5 

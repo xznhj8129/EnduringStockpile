@@ -108,7 +108,6 @@ function ENT:TriggerInput(iname, value)
         elseif rounded >= 4 then
             self.Yield = 50
             
-            
         else
             self.Yield = 1
             

@@ -1,3 +1,24 @@
+DEVNOTES
+
+-fixed geiger rad display system
+-reworked shockwave annihilaiton zone
+-added convars to control fallout length
+-put radiation damage to CTakeDamageInfo again, put generic instead of radiation damage because of annoying flash
+-need to fix airburst tracer collision with non-world
+-fallout power now depends also on distance from ground (within 2000u)
+-fixed decals on selectable-yield bombs
+-added crater entity for surface bursts like fallout but with no buildup/raindown period, straight decay; size is fireballsize
+-still need to figure out HUD
+-dirty bomb
+-autorun hooks and radiation think
+-always spawn explosion at fireball ground
+-permanent health loss from total exposure
+-radioactive waste
+-iodine/rad-X
+-hazmat suit
+-liquidator biorobot suit
+-neutron activation?
+
 TODO
 settings panel
     choose between old and advanced fallout/ARS
@@ -171,4 +192,14 @@ models/sprops/cylinders/size_5/cylinder_12x18.mdl
 models/sprops/cylinders/size_5/cylinder_12x24.mdl
 models/sprops/cylinders/size_5/cylinder_12x30.mdl
 models/Mechanics/roboticslarge/a1.mdld
+iodine: models/props_lab/jar01b.mdl
+chunk: models/props_debris/concrete_spawnchunk001c.mdl
+dosimeter: models/Items/battery.mdl
+dirty bomb: models/props/de_train/barrel.mdl
+
+lua_openscript_cl 
+
+
+v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK!
+
 
