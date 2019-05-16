@@ -21,7 +21,6 @@ ENT.Flamable                         =  false
 ENT.UseRandomSounds                  =  false
 ENT.UseRandomModels                  =  false
 ENT.Timed                            =  false
-ENT.RandomAngles                     =  false          -- If this is false, the bomblets will spawn facing the general bomb direction.
 
 ENT.Bursts                           =  1
 ENT.RadRadius                        =  750
@@ -68,12 +67,10 @@ function ENT:Think()
         for _, ply in pairs( player.GetAll() ) do
             local dist = (self:GetPos() - ply:GetPos()):Length()
             if dist<self.RadRadius and ply:IsPlayer() and ply:Alive() and ply:IsLineOfSightClear(self) then
-                --PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..v_dist)
                 local dist = (self:GetPos() - ply:GetPos()):Length()
                 local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                 local raddose = math.Round((200 * dist_modifier))
                 local exposure = raddose/60
-                --PrintMessage( HUD_PRINTCONSOLE, "RD "..raddose )
                 addGeigerRads(ply,raddose)
                 addRads(ply,exposure)
             end
@@ -81,7 +78,7 @@ function ENT:Think()
         
         for _, v in pairs( ents.FindByClass("npc_*") ) do
             local dist = (self:GetPos() - v:GetPos()):Length()
-            if dist<self.RadRadius and v:IsNPC() and v:Health()>0 and ply:IsLineOfSightClear(self) then
+            if dist<self.RadRadius and v:IsNPC() and v:Health()>0 and v:IsLineOfSightClear(self) then
                 local dist = (self:GetPos() - v:GetPos()):Length()
                 local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                 local raddose = math.Round((200 * dist_modifier))

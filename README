@@ -4,6 +4,10 @@ Version 1.5
 1.5 CHANGELOG:
 
     Picked it up again and did some internally significant tweaks for radiation to be more realistic. Now radiation does a little less damage on the lower ends but is absolutely DEADLY at higher doses (which you can easily get in seconds if you fuck around in radioactive craters and immediate fallout). It now does a little less immediate damage to health, but it also now does PERMANENT damage, so even if you survive a big dose you will have a health penalty until you die because your chromosomes are damaged. This also happens for low-level irradiation over long periods of time.
+    
+    Other changes, you now spawn with no dosimeter, so you won't know your exposure level nor radiation level whitout getting one. Just press E on it to equip it.
+    
+    Added two anti-radiation drugs, not 100% realistic but useful for gameplay. Iodine will cut down your Rad absorption by 25% for 2 minutes. Does not stack. Rad-Away, will increase your Rad elimination rate for 2 minutes at the cost of 25HP. Does not stack.
 
     I'll add icons when i can get VTF plugins to work on Linux. Modding on linux is hell on earth, absolutely no tool works. I can't upload this to the workshop yet for this reason...
 
@@ -13,8 +17,11 @@ Version 1.5
     - Permanent chromosonal damage to health for large accumulated doses
     - Geiger counter now accurate and can emit sound if wired on
     - You are no longer protected from the crater if you are underground, there's supposed to be a crater there anyway
-    - Added radioactive waste barrel
-    - Added dirty bomb
+    - Added Radioactive waste barrel
+    - Added Dirty bomb
+    - Added Dosimeter
+    - Added Iodine
+    - Added Rad-Away
 
 
 DESCRIPTION:

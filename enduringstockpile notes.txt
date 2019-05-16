@@ -14,10 +14,6 @@ DEVNOTES
 -always spawn explosion at fireball ground
 -permanent health loss from total exposure
 -radioactive waste
--iodine/rad-X
--hazmat suit
--liquidator biorobot suit
--neutron activation?
 
 TODO
 settings panel
@@ -27,9 +23,12 @@ icons
 review shockwave
 review EMP
 finetune fallout (ENW, p 390-404)
-geiger counter wire ent
-neutron bomb
 neutron activation
+iodine/rad-X
+hazmat suit
+liquidator biorobot suit
+neutron activation?
+cognitive effects from high doses (vomiting, blurred vision, ect)
 
 GUIDE
 W54         hbomb_small 1kt
@@ -99,13 +98,11 @@ no los, covered = -100%
 SUITS
 Combat NBC MOPP suit
     80% speed
-    500 rad treshhold
-    50% reduction
+    75% reduction
 
 Heavy lead-lined suit
     50% speed
-    1000 rad treshhold
-    75% reduction
+    90% reduction
 
 
 MENU
