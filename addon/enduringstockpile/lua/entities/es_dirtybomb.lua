@@ -10,7 +10,7 @@ ENT.Author			                 =  "Business Cat + snowfrog"
 ENT.Contact		                     =  "nah"
 ENT.Category                         =  "EnduringStockpile"
 
-ENT.Model                            =  "models/slyfo/barrel_unrefined.mdl"
+ENT.Model                            =  "models/props/de_train/barrel.mdl"
 ENT.Effect                           =  "h_500lb"                  
 ENT.EffectAir                        =  "h_500lb_air"                   
 ENT.EffectWater                      =  "h_water_small"
