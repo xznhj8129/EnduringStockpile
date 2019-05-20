@@ -18,6 +18,11 @@ function addRads(ply,r)
         ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + raddose
         ply.EnduringStockpile.TotalDose = ply.EnduringStockpile.TotalDose + raddose
         ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + raddose
+    else
+        
+        ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + raddose
+        ply.EnduringStockpile.TotalDose = ply.EnduringStockpile.TotalDose + raddose
+        ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + raddose
         
     end
 end
@@ -185,7 +190,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 				
 		        if recentrads <= rads then
 			        if ply.EnduringStockpile.radaway then
-			            PrintMessage( HUD_PRINTCONSOLE, "RAT "..ply.EnduringStockpile.radawaytime)
+			            --PrintMessage( HUD_PRINTCONSOLE, "RAT "..ply.EnduringStockpile.radawaytime)
 		                removeRads(ply, math.random(5,20))
 		                ply.EnduringStockpile.radawaytime = ply.EnduringStockpile.radawaytime - 1
 		                if ply.EnduringStockpile.radawaytime <= 0 then
@@ -206,20 +211,20 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
     for _, v in pairs( ents.FindByClass("npc_*") ) do
         if v.EnduringStockpile then
             local rads, recentrads = getRads(v)
-            
             if rads > 0 then
                 local raddamage = rads * 0.001
-				
 				local dmg = DamageInfo()
 				dmg:SetDamage(raddamage)
                 dmg:SetDamageType(DMG_RADIATION)
                 dmg:SetAttacker(v)
                 v:TakeDamageInfo(dmg)
+				
 				if rads > 2000 then
 					local ctd = math.Round((rads/100000)*1000)
 					local draw = math.random(0,1000)
 					if draw <= ctd then
-						v:Kill()
+				        dmg:SetDamage(1000000)
+                        v:TakeDamageInfo(dmg)
 					end
 				end
             end
