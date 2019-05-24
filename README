@@ -26,7 +26,11 @@ Version 1.5
 
 DESCRIPTION:
 
-This mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only gigantic early bombs and one-off test articles; no modern deployed models) and somewhat unrealistic and arbitrary effects and power. I started making my own mod for simpler building, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, which is itself a modification of Gbombs (if you're the author of either, contact me). I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use totally different code from regular nukes for more realistic effects, based on real-life research and scientific models. Adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod, yet their retain the right power scaling and effects of real-life, miles ahead of any other nuke mod currently out. The radiation model is also much more advanced than anything else out there, using inspiration from real-life effects of radiation.
+Realistic nuclear weapons, effects and radiation!
+
+This mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only gigantic early bombs and one-off test articles; no modern real-life deployed models) and somewhat unrealistic and arbitrary effects and power. I forked HBOMBS and started making some new entities, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, it's more of an expansion to it than a stand-alone mod for now, i never modded for Gmod before and didn't know Lua so i started from that. Much credit to it's author, this mod owes a lot to him. 
+
+I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use totally different code from regular nukes for more realistic effects, based on real-life research and scientific models. Adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod, yet their retain the right power scaling and effects of real-life, miles ahead of any other nuke mod currently out. The radiation model is also much more advanced than anything else out there, using inspiration from real-life effects of radiation. 
 
 It is in constant work and will be continually updated for better realism.
 This is my first mod, so please advise me of any bugs or errors and give me feedback. 
@@ -43,7 +47,7 @@ Bomb power: All bombs now have realistic blast and heat damage values from real 
 
 Heat damage: The incinerate/ignite code in the bombs was completely redone. Now depending on how close you are from the bomb you will now either be burned slightly, be badly burned and maybe die, be burned to a crisp and die, or even be burned down to your bones. This depends on wether or not you are directly exposed to the heat flash, so hiding behind something will protect you from the flash burns as in real life. This also affects NPC's! Props close to the bomb will catch fire and be charred (material change).
 
-Blast damage: Blast damage now follows realistic ranges and power, props and entities very close to ground zero will simply vaporize. 
+Blast damage: Blast damage now follows realistic ranges and power, props and entities very close to ground zero will simply vaporize. Work in progress.
 
 Dial-a-yield: Some warheads and bombs have a selectable yield option just like in real life, which means you use wire to specify the power of explosion you want.
 

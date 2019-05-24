@@ -61,7 +61,7 @@ dd=[]
 dd2=[]
 dd3=[]
 distlist = [r5000,r1000,r500]
-for i in range(1,200):
+for i in range(1,2000):
     dist = i*100
     dose = rad_dose(p,dist)
     dose2 = rad_dose2(p,dist)
@@ -73,8 +73,8 @@ for i in range(1,200):
 print 'power', p
 print 'mod',mod
 plt.title("Rads for distance")
-plt.semilogy(range(1,200), dd, color="red")
-plt.semilogy(range(1,200), dd2, color="blue")
+plt.semilogy(range(1,2000), dd, color="red")
+plt.semilogy(range(1,2000), dd2, color="blue")
 plt.xlabel('Distance')
 plt.ylabel('Dose (rads)')
 plt.show()

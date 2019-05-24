@@ -2,24 +2,24 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  false        
-ENT.AdminSpawnable                   =  false 
+ENT.Spawnable                        =  true         
+ENT.AdminSpawnable                   =  true 
 ENT.AdminOnly                        =  false
 
-ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
-ENT.Author                           =  "snowfrog"
-ENT.Contact                          =  ""
+ENT.PrintName		                 =  "Mk12 bomb (10 kilotons)"
+ENT.Author			                 =  "snowfrog"
+ENT.Contact		                     =  ""
 ENT.Category                         =  "EnduringStockpile"
 
-ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x18.mdl"     
-ENT.Material                         =  "phoenix_storms/iron_rails"  
-ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
-ENT.ActivationSound                  =  "buttons/button14.wav"  
+ENT.Model                            =  "models/bombs/gbu/gbu16_fold.mdl"
+ENT.Material                         =  "phoenix_storms/fender_chrome"
+ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"
+ENT.ActivationSound                  =  "buttons/button14.wav"
 
 ENT.DialAYield                       =  false
 ENT.EnhancedRadiation                =  false -- is the bomb an Enhanced Radiation weapon aka "neutron bomb"
 ENT.Yield                            =  10   -- yield in kilotons
-ENT.FireballSize                     =  900  -- for trace air/ground burst ranging, is ground burst if fireball touches ground
+ENT.FireballSize                     =  700  -- for trace air/ground burst ranging, is ground burst if fireball touches ground
 ENT.Effect                           =  "h_nuke"
 ENT.EffectAir                        =  "h_nuke_airburst"
 ENT.EffectWater                      =  "hbomb_underwater"
@@ -113,13 +113,13 @@ function ENT:Explode()
         
         if trace.HitWorld then
             self.BurstType = 0
-            PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
+            --PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
         else 
             self.BurstType = 1   
-            PrintMessage( HUD_PRINTCONSOLE, "Airburst")
+            --PrintMessage( HUD_PRINTCONSOLE, "Airburst")
         end
         local hitdist = pos:Distance(trace.HitPos)
-        PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
+        --PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
     end
     
     -- Nuclear effects variables
@@ -131,7 +131,7 @@ function ENT:Explode()
     self.Rad500rem                        =  5500 -- 500rem range
     self.RadPower                         =  3.1066e+25 -- flux of prompt radiation pulse
     if self.BurstType == 1 then -- airburst
-        self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
+        self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
         self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
         self.BlastRadius                      =  15300 -- 1.5psi range, unfreeze props
         self.VaporizeRadius                   =  2200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
@@ -140,7 +140,7 @@ function ENT:Explode()
         self.Burn2Radius                      =  9700 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
         self.Burn1Radius                      =  13400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
     else -- ground/water burst
-        self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
+        self.TotalRadius                      =  800 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
         self.DestroyRadius                    =  4400 -- 5psi range, all constraints break
         self.BlastRadius                      =  9300 -- 1.5psi range, unfreeze props
         self.VaporizeRadius                   =  1900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
@@ -174,7 +174,6 @@ function ENT:Explode()
     
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
-        
         local ent = ents.Create("es_effect_shockwave_ent")
         ent:SetPos( pos ) 
         ent:Spawn()
@@ -219,7 +218,7 @@ function ENT:Explode()
             ent:Activate()
             ent.RadRadius = self.FireballSize
         end
- 
+            
         local ent = ents.Create("hb_shockwave_sound_lowsh")
         ent:SetPos( pos ) 
         ent:Spawn()

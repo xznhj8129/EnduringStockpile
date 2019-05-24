@@ -2,11 +2,11 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  false        
-ENT.AdminSpawnable                   =  false 
+ENT.Spawnable                        =  true         
+ENT.AdminSpawnable                   =  true 
 ENT.AdminOnly                        =  false
 
-ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
+ENT.PrintName                        =  "REN-10 warhead (10 kilotons)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"

@@ -1,7 +1,0 @@
-"UnlitGeneric"
-{
-	"$basetexture" "vgui/entities/es_b61-12_dial"
-	"$nolod" 1
-	"$vertexalpha" 1
-	"$vertexcolor" 1
-}

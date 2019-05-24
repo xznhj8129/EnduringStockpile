@@ -23,8 +23,9 @@ ENT.UseRandomModels                  =  false
 ENT.Timed                            =  false
 
 ENT.Bursts                           =  1
-ENT.RadRadius                        =  750
+ENT.RadRadius                        =  1000
 ENT.Mass                             =  200
+ENT.RadPower                         =  2000
 
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
 
@@ -58,8 +59,9 @@ function ENT:Think()
         for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
             if v.GeigerCounter == 1 then
                 local dist = (self:GetPos() - v:GetPos()):Length()
-                local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
-                local raddose = math.Round((200 * dist_modifier))
+                --local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
+                --local raddose = math.Round((200 * dist_modifier))
+                local raddose = self.RadPower * inversesquare(dist)
                 v.RadCount = v.RadCount + raddose
             end
         end
@@ -68,8 +70,9 @@ function ENT:Think()
             local dist = (self:GetPos() - ply:GetPos()):Length()
             if dist<self.RadRadius and ply:IsPlayer() and ply:Alive() and ply:IsLineOfSightClear(self) then
                 local dist = (self:GetPos() - ply:GetPos()):Length()
-                local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
-                local raddose = math.Round((200 * dist_modifier))
+                --local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
+                --local raddose = math.Round((200 * dist_modifier))
+                local raddose = self.RadPower * inversesquare(dist)
                 local exposure = raddose/60
                 addGeigerRads(ply,raddose)
                 addRads(ply,exposure)
@@ -80,8 +83,9 @@ function ENT:Think()
             local dist = (self:GetPos() - v:GetPos()):Length()
             if dist<self.RadRadius and v:IsNPC() and v:Health()>0 and v:IsLineOfSightClear(self) then
                 local dist = (self:GetPos() - v:GetPos()):Length()
-                local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
-                local raddose = math.Round((200 * dist_modifier))
+                --local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
+                --local raddose = math.Round((200 * dist_modifier))
+                local raddose = self.RadPower * inversesquare(dist)
                 local exposure = raddose/60
                 addRads(v,exposure)
             end

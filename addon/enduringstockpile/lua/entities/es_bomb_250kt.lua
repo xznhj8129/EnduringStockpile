@@ -2,28 +2,28 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
-ENT.Spawnable                        =  false        
-ENT.AdminSpawnable                   =  false 
+ENT.Spawnable                        =  true
+ENT.AdminSpawnable                   =  true
 ENT.AdminOnly                        =  false
 
-ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
+ENT.PrintName                        =  "REN-250 warhead (250 kilotons)"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
 
-ENT.Model                            =  "models/sprops/cylinders/size_5/cylinder_12x18.mdl"     
-ENT.Material                         =  "phoenix_storms/iron_rails"  
+ENT.Model                            =  "models/Mechanics/roboticslarge/a1.mdl"
+ENT.Material                         =  "phoenix_storms/iron_rails"
 ENT.ArmSound                         =  "npc/roller/mine/rmine_blip3.wav"            
-ENT.ActivationSound                  =  "buttons/button14.wav"  
+ENT.ActivationSound                  =  "buttons/button14.wav"     
 
 ENT.DialAYield                       =  false
 ENT.EnhancedRadiation                =  false -- is the bomb an Enhanced Radiation weapon aka "neutron bomb"
-ENT.Yield                            =  10   -- yield in kilotons
-ENT.FireballSize                     =  900  -- for trace air/ground burst ranging, is ground burst if fireball touches ground
-ENT.Effect                           =  "h_nuke"
-ENT.EffectAir                        =  "h_nuke_airburst"
+ENT.Yield                            =  250   -- yield in kilotons  
+ENT.FireballSize                     =  2500 -- for trace air/ground burst ranging, is ground burst if fireball touches ground                      
+ENT.Effect                           =  "h_nuke2"
+ENT.EffectAir                        =  "h_nuke2_airburst"
 ENT.EffectWater                      =  "hbomb_underwater"
-ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio1.mp3"
+ENT.ExplosionSound                   =  "gbombs_5/explosions/nuclear/nukeaudio3.mp3"
 
 ENT.ShouldUnweld                     =  true
 ENT.ShouldExplodeOnImpact            =  true
@@ -37,42 +37,42 @@ ENT.ExplosionDamage                  =  500
 ENT.PhysForce                        =  2500
 ENT.MaxIgnitionTime                  =  4
 ENT.Life                             =  25                                  
-ENT.MaxDelay                         =  0
-ENT.ImpactSpeed                      =  500
-ENT.Mass                             =  150
-ENT.ArmDelay                         =  1
+ENT.MaxDelay                         =  2
+ENT.ImpactSpeed                      =  700
+ENT.Mass                             =  350
+ENT.ArmDelay                         =  1   
 ENT.Timer                            =  0
 
 ENT.DEFAULT_PHYSFORCE                = 255
 ENT.DEFAULT_PHYSFORCE_PLYAIR         = 25
 ENT.DEFAULT_PHYSFORCE_PLYGROUND      = 2555
-ENT.HBOWNER                          = nil     
-ENT.Decal                            = "nuke_medium"
+ENT.HBOWNER                          = nil
+ENT.Decal                            = "nuke_big"
 
 function ENT:Initialize()
  if (SERVER) then
-    self:SetModel(self.Model)
-    self:SetMaterial(self.Material)
-    self:PhysicsInit( SOLID_VPHYSICS )
-    self:SetSolid( SOLID_VPHYSICS )
-    self:SetMoveType( MOVETYPE_VPHYSICS )
-    self:SetUseType( ONOFF_USE ) -- doesen't fucking work
-    local phys = self:GetPhysicsObject()
-    if (phys:IsValid()) then
-        phys:SetMass(self.Mass)
-        phys:Wake()
+     self:SetModel(self.Model)
+     self:SetMaterial(self.Material)
+	 self:PhysicsInit( SOLID_VPHYSICS )
+	 self:SetSolid( SOLID_VPHYSICS )
+	 self:SetMoveType( MOVETYPE_VPHYSICS )
+	 self:SetUseType( ONOFF_USE ) -- doesen't fucking work
+	 local phys = self:GetPhysicsObject()
+	 if (phys:IsValid()) then
+		 phys:SetMass(self.Mass)
+		 phys:Wake()
      end 
-    if(self.Dumb) then
-        self.Armed    = true
-    else
-        self.Armed    = false
-    end
-    self.Exploded = false
-    self.Used     = false
-    self.Arming = false
-    self.Exploding = false
-    if !(WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
-    end
+	 if(self.Dumb) then
+	     self.Armed    = true
+	 else
+	     self.Armed    = false
+	 end
+	 self.Exploded = false
+	 self.Used     = false
+	 self.Arming = false
+	 self.Exploding = false
+	  if !(WireAddon == nil) then self.Inputs   = Wire_CreateInputs(self, { "Arm", "Detonate" }) end
+	end
 end
 
 function ENT:Explode()
@@ -113,41 +113,41 @@ function ENT:Explode()
         
         if trace.HitWorld then
             self.BurstType = 0
-            PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
+            --PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
         else 
             self.BurstType = 1   
-            PrintMessage( HUD_PRINTCONSOLE, "Airburst")
+            --PrintMessage( HUD_PRINTCONSOLE, "Airburst")
         end
         local hitdist = pos:Distance(trace.HitPos)
-        PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
+        --PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
     end
     
     -- Nuclear effects variables
     -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
     -- Airburst calculated for all effects at optimal height (unrealistic but stopgap)
     -- Scale factor: 1:12
-    self.Rad5000rem                       =  3700 -- 5000rem initial radiation range
-    self.Rad1000rem                       =  4900 -- 1000rem initial radiation range
-    self.Rad500rem                        =  5500 -- 500rem range
-    self.RadPower                         =  3.1066e+25 -- flux of prompt radiation pulse
+    self.Rad5000rem                       =  6900 -- 5000rem initial radiation range
+    self.Rad1000rem                       =  8500 -- 1000rem initial radiation range
+    self.Rad500rem                        =  9200 -- 500rem range
+    self.RadPower                         =  6.31111111111e+26 -- flux of prompt radiation pulse
     if self.BurstType == 1 then -- airburst
-        self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
-        self.DestroyRadius                    =  6600 -- 5psi range, all constraints break
-        self.BlastRadius                      =  15300 -- 1.5psi range, unfreeze props
-        self.VaporizeRadius                   =  2200 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-        self.CremateRadius                    =  3700 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-        self.IgniteRadius                     =  7400 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-        self.Burn2Radius                      =  9700 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-        self.Burn1Radius                      =  13400 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        self.TotalRadius                      =  2500 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+        self.DestroyRadius                    =  19200 -- 5psi range, all constraints break
+        self.BlastRadius                      =  44700 -- 1.5psi range, unfreeze props
+        self.VaporizeRadius                   =  10500 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+        self.CremateRadius                    =  17200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+        self.IgniteRadius                     =  30200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+        self.Burn2Radius                      =  39700 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+        self.Burn1Radius                      =  54300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
     else -- ground/water burst
-        self.TotalRadius                      =  800 -- 200psi range, everything vaporized (1400 minimum for the removal to work)
-        self.DestroyRadius                    =  4400 -- 5psi range, all constraints break
-        self.BlastRadius                      =  9300 -- 1.5psi range, unfreeze props
-        self.VaporizeRadius                   =  1900 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
-        self.CremateRadius                    =  3200 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
-        self.IgniteRadius                     =  6200 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
-        self.Burn2Radius                      =  8100 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
-        self.Burn1Radius                      =  11300 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
+        self.TotalRadius                      =  2500 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
+        self.DestroyRadius                    =  12600 -- 5psi range, all constraints break
+        self.BlastRadius                      =  27000 -- 1.5psi range, unfreeze props
+        self.VaporizeRadius                   =  8800 -- 5th degree burn range (100 cal/cm^2), player/npc is just gone
+        self.CremateRadius                    =  14500 -- 4th degree burn range (35 cal/cm2), player becomes skeleton
+        self.IgniteRadius                     =  25600 -- 3rd degree burn range (8 cal/cm^2), player becomes crispy, things ignite
+        self.Burn2Radius                      =  33600 -- 2nd degree burn range (5 cal/cm^2), player becomes burn victim
+        self.Burn1Radius                      =  46000 -- 1st degree burn range (3 cal/cm^2), player catches fire for 1sec
     end
     self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
     self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
@@ -174,7 +174,6 @@ function ENT:Explode()
     
     timer.Simple(0.1, function()
         if !self:IsValid() then return end 
-        
         local ent = ents.Create("es_effect_shockwave_ent")
         ent:SetPos( pos ) 
         ent:Spawn()
@@ -219,13 +218,23 @@ function ENT:Explode()
             ent:Activate()
             ent.RadRadius = self.FireballSize
         end
- 
+        
+        local ent = ents.Create("hb_shockwave_rumbling")
+        ent:SetPos( pos ) 
+        ent:Spawn()
+        ent:Activate()
+        ent:SetVar("HBOWNER", self.HBOWNER)
+        ent:SetVar("MAX_RANGE",100000)
+        ent:SetVar("SHOCKWAVE_INCREMENT",140)
+        ent:SetVar("DELAY",0.01)
+        ent:SetVar("SOUND", self.ExplosionSound)
+        
         local ent = ents.Create("hb_shockwave_sound_lowsh")
         ent:SetPos( pos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("HBOWNER", self.HBOWNER)
-        ent:SetVar("MAX_RANGE",50000)
+        ent:SetVar("MAX_RANGE",100000)
         ent:SetVar("SHOCKWAVE_INCREMENT",140)
         ent:SetVar("DELAY",0.01)
         ent:SetVar("SOUND", self.ExplosionSound)
@@ -262,13 +271,13 @@ function ENT:Explode()
 end
 
 function ENT:SpawnFunction( ply, tr )
-    if ( !tr.Hit ) then return end
-    self.HBOWNER = ply
-    local ent = ents.Create( self.ClassName )
-    ent:SetPhysicsAttacker(ply)
-    ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
-    ent:Spawn()
-    ent:Activate()
+     if ( !tr.Hit ) then return end
+	 self.HBOWNER = ply
+     local ent = ents.Create( self.ClassName )
+	 ent:SetPhysicsAttacker(ply)
+     ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
+     ent:Spawn()
+     ent:Activate()
 
-    return ent
+     return ent
 end

@@ -93,6 +93,17 @@ function clearRads(ply)
     ply.EnduringStockpile.radawaytime = 0
 end
 
+function inversesquare( d )
+    local distance = d / 52.521
+    local is = 1 / math.pow(distance, 2)
+    return is
+end
+
+function halflife( quantity , t, hln)
+    local remaining = quantity * math.pow(float(0.5), t/hl)
+    return remaining
+end
+
 
 -- hooks
 hook.Add("PlayerDeath","enduringstockpile_rads_death", clearRads)

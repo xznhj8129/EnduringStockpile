@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/entities/es_bomb_100kt"
+	"$nolod" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

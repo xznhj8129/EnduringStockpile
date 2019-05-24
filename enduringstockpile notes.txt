@@ -14,24 +14,27 @@ DEVNOTES
 -always spawn explosion at fireball ground
 -permanent health loss from total exposure
 -radioactive waste
+-renamed files for better sorting
+-added inverse-square law for radiation sources
 
 TODO
 settings panel
-    choose between old and advanced fallout/ARS
     set fallout halflife
 icons
 review shockwave
 review EMP
 finetune fallout (ENW, p 390-404)
-neutron activation
 iodine/rad-X
 hazmat suit
 liquidator biorobot suit
 neutron activation?
 cognitive effects from high doses (vomiting, blurred vision, ect)
+fallout contamination?
+decontamination? (pressure hose, scrub, ect)
 
 GUIDE
 W54         hbomb_small 1kt
+W54         hbomb_small 5kt
 Grable/arty h_nuke      10kt
 Fat Man     hbomb       20kt
 Ivy King    h_nuke5     50kt
@@ -66,6 +69,7 @@ REN-1000 (1 megaton)
 REN-5000 (5 megatons)
 REN-TAC (tactical, dial-a-yield)
 REN-STRAT (strategic, dial-a-yield)
+REN-ERTAC (tactical, neutron, dial-a-yield)
 Mk7 bomb (10 kilotons)
 B61 Mod 7 bomb (strategic, dial-a-yield)
 B61 Mod 12 bomb (tactical, dial-a-yield)
@@ -136,18 +140,32 @@ RANDOM NOTES
 map width: 32250u
 1m = 52.493u
 
+Rad	    mRad	μRad
+1	    1000	1000000
+0.1	    100	    100000
+0.01	10  	10000
+0.001	1	    1000
+0.0001	0.1	    100
+1E-05	0.01	10
+1E-06	0.001	1
+1E-07	1E-04	0.1
+1E-08	1E-05	0.01
+1E-09	1E-06	0.001
+
+
 ents.FindByModel
 models/props_lab/powerbox02d.mdl
 
 models/player/corpse1.mdl
-models/Humans/Charple01.mdl
 models/player/skeleton.mdl
-models/humans/charple01.mdl
+models/Humans/Charple01.mdl
+models/humans/charple01.mdl # these two models are different. Seriously, Valve.
 
 cit4:TakeDamage(100, self)
 Entity:IsLineOfSightClear( Vector target ) 
 
-Peak overpressure 	Maximum Wind Speed	
+Peak overpressure 	
+        Maximum Wind Speed	
 50 psi 	934 mph
 20 psi 	502 mph
 10 psi 	294 mph
