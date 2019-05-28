@@ -3,8 +3,8 @@ import math
 import matplotlib.pyplot as plt
 
 radpower = 1000
-n = 240
-hl = float(20)
+n = 365
+hl = float(8)
 
 """
 n0*(1/2)^(t/hl)

@@ -134,25 +134,6 @@ RADIATION BOMB POWER
 1mt     1.84111111111e+27
 5mt     5.61111111111e+27
 
-
-
-RANDOM NOTES
-map width: 32250u
-1m = 52.493u
-
-Rad	    mRad	μRad
-1	    1000	1000000
-0.1	    100	    100000
-0.01	10  	10000
-0.001	1	    1000
-0.0001	0.1	    100
-1E-05	0.01	10
-1E-06	0.001	1
-1E-07	1E-04	0.1
-1E-08	1E-05	0.01
-1E-09	1E-06	0.001
-
-
 ents.FindByModel
 models/props_lab/powerbox02d.mdl
 
@@ -160,9 +141,6 @@ models/player/corpse1.mdl
 models/player/skeleton.mdl
 models/Humans/Charple01.mdl
 models/humans/charple01.mdl # these two models are different. Seriously, Valve.
-
-cit4:TakeDamage(100, self)
-Entity:IsLineOfSightClear( Vector target ) 
 
 Peak overpressure 	
         Maximum Wind Speed	
@@ -208,13 +186,151 @@ models/sprops/cylinders/size_5/cylinder_12x24.mdl
 models/sprops/cylinders/size_5/cylinder_12x30.mdl
 models/Mechanics/roboticslarge/a1.mdld
 iodine: models/props_lab/jar01b.mdl
-chunk: models/props_debris/concrete_spawnchunk001c.mdl
 dosimeter: models/Items/battery.mdl
 dirty bomb: models/props/de_train/barrel.mdl
 
+chunks: 
+models/props_debris/concrete_spawnchunk001c.mdl
+...
+models/props_debris/concrete_spawnchunk001k.mdl
+
 lua_openscript_cl 
 
-
+cit4:TakeDamage(100, self)
+Entity:IsLineOfSightClear( Vector target ) 
+util.Decal( "YellowBlood" , Vector start, Vector end, filter=NULL )
+GM:SetPlayerSpeed( Player ply, number walkSpeed, number runSpeed )
 v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK!
 
+
+RANDOM NOTES
+map width: 32250u
+1m = 52.493u
+
+Rad	    mRad	μRad
+1	    1000	1000000
+0.1	    100	    100000
+0.01	10  	10000
+0.001	1	    1000
+0.0001	0.1	    100
+1E-05	0.01	10
+1E-06	0.001	1
+1E-07	1E-04	0.1
+1E-08	1E-05	0.01
+1E-09	1E-06	0.001
+
+
+GMOD BACKGROUND RADIATION = 1 μRad/min		
+	    μRad	mRad	Rad
+HOUR	60	    0.06	6E-05
+DAY	    1440	1.44	0.00144
+YEAR	525600	525.6	0.5256
+
+
+
+ACUTE RADIATION SYNDROME
+
+EXPOSURE:
+    >2000R/min
+        you taste metal
+
+    SYMPTOMS:
+        Low doses: 500-750R
+            Long onset (2 min)
+            Lasts 30 seconds
+        Effects:
+            Nausea
+            Headache
+            Vomiting (25%)
+            
+        Medium doses: 750-1000R
+            Medium onset: 30sec-1min
+            Lasts 30sec-1min
+        Effects:
+            Severe headache
+            Vomiting (100%)
+
+        High doses >1000R:
+            Fast onset: 10-30 sec
+            Lasts 2-5min
+        Effects:
+            Severe headache
+            Vomiting (100%)
+            Blurred vision
+            Slowdown
+            "your skin starts to blister"
+
+        Dose        Mort    Avg Damage
+        400-500R     5%     
+        500-750R    10%     
+        750-1000R   25%     
+        1000-1250R  50%     
+        1250-1500R  75%     
+        1500-2000R  90%     
+        2000-3000R  95%     
+        >3000R      100%        
+
+DEFAULT
+Dose damage simulation
+10000 simulations/dose
+Dose	Avg HP	Time		Mortality %
+50 	100 	10.0 sec 	0.0%
+100 	99 	19.0 sec 	0.0%
+150 	97 	30.0 sec 	0.0%
+200 	95 	39.0 sec 	0.0%
+250 	93 	50.0 sec 	0.0%
+300 	90 	60.0 sec 	0.0%
+350 	87 	70.0 sec 	0.0%
+400 	83 	80.0 sec 	0.0%
+450 	78 	90.0 sec 	0.0%
+500 	74 	100.0 sec 	0.0%
+550 	68 	109.0 sec 	0.0%
+600 	62 	120.0 sec 	0.0%
+650 	56 	130.0 sec 	0.0%
+700 	49 	140.0 sec 	0.0%
+750 	42 	149.0 sec 	0.0%
+800 	34 	160.0 sec 	0.0%
+850 	25 	169.0 sec 	0.0%
+900 	17 	179.0 sec 	1.02%
+950 	8 	184.0 sec 	16.63%
+1000 	2 	169.0 sec 	66.99%
+1050 	0 	143.0 sec 	96.77%
+1100 	0 	126.0 sec 	99.92%
+1150 	0 	115.0 sec 	100.0%
+1200 	0 	106.0 sec 	100.0%
+
+NEW
+Dose damage simulation
+10000 simulations/dose
+Dose	Avg HP	Time		Mortality %
+50 	99 	10.0 sec 	0.0%
+100 	98 	20.0 sec 	0.0%
+150 	96 	30.0 sec 	0.0%
+200 	94 	40.0 sec 	0.0%
+250 	91 	50.0 sec 	0.0%
+300 	88 	60.0 sec 	0.0%
+350 	84 	70.0 sec 	0.0%
+400 	80 	80.0 sec 	0.0%
+450 	75 	90.0 sec 	0.0%
+500 	69 	100.0 sec 	0.0%
+550 	64 	110.0 sec 	0.02%
+600 	57 	120.0 sec 	0.11%
+650 	51 	129.0 sec 	0.41%
+700 	44 	139.0 sec 	1.64%
+750 	36 	148.0 sec 	4.53%
+800 	29 	155.0 sec 	10.82%
+850 	21 	159.0 sec 	20.19%
+900 	15 	160.0 sec 	33.8%
+950 	9 	156.0 sec 	50.03%
+1000 	6 	148.0 sec 	65.23%
+1050 	3 	138.0 sec 	79.2%
+1100 	1 	127.0 sec 	88.89%
+1150 	1 	116.0 sec 	94.69%
+1200 	0 	107.0 sec 	97.83%
+1250 	0 	99.0 sec 	99.23%
+1300 	0 	92.0 sec 	99.77%
+1350 	0 	87.0 sec 	99.94%
+1400 	0 	83.0 sec 	99.97%
+1450 	0 	79.0 sec 	99.99%
+1500 	0 	75.0 sec 	100.0%
 

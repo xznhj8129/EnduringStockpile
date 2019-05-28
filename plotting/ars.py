@@ -41,3 +41,5 @@ plt.plot(d, ttd, color="red")
 plt.xlabel('Dose (rads)')
 plt.ylabel('Seconds to death')
 #plt.show()
+
+

@@ -8,7 +8,7 @@ function addRads(ply,r)
     if ply.IsPlayer() then
     
         if ply.hazsuited then
-            raddose = raddose / 5
+            raddose = raddose * 0.25
         end
         
         if ply.EnduringStockpile.radx then
@@ -153,30 +153,23 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 			
 				local rads, recentrads = getRads(ply)
 				if rads > 0 then
-					--PrintMessage( HUD_PRINTCONSOLE, "Dosimeter "..math.Round(rads).." Total "..math.Round(totaldose) )
-					local raddamage = rads * 0.001
-					
-					if raddamage < 1 then
-                        local ctd = math.Round(raddamage*100)
-                        local draw = math.random(0,100)
-                        if draw <= ctd then
-							ply:SetHealth(ply:Health() - 1) -- this way damage is silent
-						end
-					else
-					    ply:SetHealth(ply:Health() - raddamage) -- this way damage is silent
-					end
+		
+                    if math.random(0,100) <= math.Round((rads/1000)*20) then
+                        ply:SetHealth(ply:Health() - math.random(1,10))
+                    end
 					
 					if ply:Health() <= 0 then
 					    ply:Kill()
 					end
-					
-					if rads > 2000 then
-						local ctd = math.Round((rads/100000)*1000)
+                    
+                    if rads > 2000 then
+						local ctd = math.Round((rads/40000)*1000)
 						local draw = math.random(0,1000)
 						if draw <= ctd then
 							ply:Kill()
 						end
 					end
+                    
 				end
 				
 				local geigerrps = getGeigerRads(ply)
@@ -198,10 +191,10 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 					    end
 					end
 				end  
-				
-		        if recentrads <= rads then
+				--PrintMessage( HUD_PRINTCONSOLE, "REC "..geigerrps.."  /  "..rads)
+		        if geigerrps <= rads then
 			        if ply.EnduringStockpile.radaway then
-			            --PrintMessage( HUD_PRINTCONSOLE, "RAT "..ply.EnduringStockpile.radawaytime)
+			            
 		                removeRads(ply, math.random(5,20))
 		                ply.EnduringStockpile.radawaytime = ply.EnduringStockpile.radawaytime - 1
 		                if ply.EnduringStockpile.radawaytime <= 0 then
@@ -209,7 +202,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 		                    ply.EnduringStockpile.radawaytime = 0
 		                 end
 		            else
-				        removeRads(ply, math.random(1,10))
+				        removeRads(ply, math.random(0,11))
 				    end
 			    end
 			end
@@ -224,23 +217,25 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
             local rads, recentrads = getRads(v)
             if rads > 0 then
                 local raddamage = rads * 0.001
-				local dmg = DamageInfo()
-				dmg:SetDamage(raddamage)
-                dmg:SetDamageType(DMG_RADIATION)
-                dmg:SetAttacker(v)
-                v:TakeDamageInfo(dmg)
-				
-				if rads > 2000 then
-					local ctd = math.Round((rads/100000)*1000)
-					local draw = math.random(0,1000)
-					if draw <= ctd then
-				        dmg:SetDamage(1000000)
-                        v:TakeDamageInfo(dmg)
-					end
-				end
+                
+                if math.random(0,100) <= math.Round((rads/1000)*20) then
+                    local dmg = DamageInfo()
+                    dmg:SetDamage(math.random(1,10))
+                    dmg:SetDamageType(DMG_RADIATION)
+                    dmg:SetAttacker(v)
+                    v:TakeDamageInfo(dmg)
+                end
+                
+                if rads > 2000 then
+                    local ctd = math.Round((rads/40000)*1000)
+                    local draw = math.random(0,1000)
+                    if draw < ctd then
+                        v:TakeDamage(1000000, v, v )
+                    end
+                end
+            else
+                removeRads(v, math.random(1,11))
             end
-            
-            removeRads(v, math.random(1,10))
             
         else
             makePlyTable(v)
