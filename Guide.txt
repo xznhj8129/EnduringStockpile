@@ -17,7 +17,9 @@ Fallout
 
 EMP
 
-3. Weapons Provided
+3. Radiation model
+
+4. Weapons Provided
 
 Fixed-Yield Generic Warheads
 

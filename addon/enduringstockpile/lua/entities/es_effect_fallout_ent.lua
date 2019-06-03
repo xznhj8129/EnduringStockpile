@@ -11,6 +11,7 @@ ENT.Author                            =  "snowfrog"
 ENT.Contact                           =  ""
 
 ENT.RadiationEnergy = 5000
+ENT.Bursts = 0
 
 function ENT:Initialize()
     if (SERVER) then

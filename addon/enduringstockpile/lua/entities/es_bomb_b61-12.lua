@@ -143,47 +143,7 @@ function ENT:Explode()
         self.Decal = "nuke_small"
     end
     
-    if(self:WaterLevel() >= 1) then  -- explosion height type determination
-        local trdata   = {}
-        local trlength = Vector(0,0,9000)
-
-        trdata.start   = pos
-        trdata.endpos  = trdata.start + trlength
-        trdata.filter  = self
-        local tr = util.TraceLine(trdata) 
-
-        local trdat2   = {}
-        trdat2.start   = tr.HitPos
-        trdat2.endpos  = trdata.start - trlength
-        trdat2.filter  = self
-        trdat2.mask    = MASK_WATER + CONTENTS_TRANSLUCENT
-        
-        local tr2 = util.TraceLine(trdat2)
-        
-        if tr2.Hit then
-            self.BurstType = 2
-            self.TraceHitPos = tr2.HitPos
-        
-        end
-    else
-        local tracedata    = {}
-        tracedata.start    = pos
-        tracedata.endpos   = tracedata.start - Vector(0, 0, self.FireballSize)
-        tracedata.filter   = self.Entity
-        
-        local trace = util.TraceLine(tracedata)
-        self.TraceHitPos = trace.HitPos
-        
-        if trace.HitWorld then
-            self.BurstType = 0
-            --PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
-        else 
-            self.BurstType = 1   
-            --PrintMessage( HUD_PRINTCONSOLE, "Airburst")
-        end
-        local hitdist = pos:Distance(trace.HitPos)
-        --PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
-    end
+    self.BurstType, self.TraceHitPos = bursttype(self)
      
     if self.Yield == 10 then                                   
         self.Effect                           =  "h_nuke"                  
@@ -354,7 +314,7 @@ function ENT:Explode()
     ent:SetVar("Burn2Radius",self.Burn2Radius)
     ent:SetVar("Burn1Radius",self.Burn1Radius)
     
-    local ent = ents.Create("es_rad_prompt_radiation_ent")
+    local ent = ents.Create("es_effect_prompt_radiation_ent")
     ent:SetPos( pos ) 
     ent:Spawn()
     ent:Activate()
@@ -398,13 +358,13 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
-            local ent = ents.Create("es_rad_fallout_ent")
+            local ent = ents.Create("es_effect_fallout_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
             
-            local ent = ents.Create("es_rad_crater_ent")
+            local ent = ents.Create("es_effect_crater_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()

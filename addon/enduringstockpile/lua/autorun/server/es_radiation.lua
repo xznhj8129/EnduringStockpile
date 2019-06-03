@@ -46,26 +46,6 @@ function getGeigerRads(ply)
     return rps
 end
 
--- this function initializes the table on each player
-function makePlyTable(ply)
-    if not ply.EnduringStockpile then
-        ply.EnduringStockpile = {
-            TotalDose = 0,
-            Rads = 0,
-            RadsPerSecond = 0,
-            GeigerSound = 1,
-            GeigerRads = 0,
-            GeigerRPS = 0,
-            radx = false,
-            radxtime = 0,
-            radaway = false,
-            radawaytime = 0,
-            dosimeter = false
-        }
-    end
-end
-
-
 function removeRads(ply,r)
     makePlyTable(ply)
     local rads = ply.EnduringStockpile.Rads
@@ -79,57 +59,6 @@ function removeRads(ply,r)
     end
 end
 
-function clearRads(ply)
-    makePlyTable(ply)
-    ply.EnduringStockpile.TotalDose = 0
-    ply.EnduringStockpile.Rads = 0
-    ply.EnduringStockpile.RadsPerSecond = 0
-    ply.EnduringStockpile.GeigerRads = 0
-    ply.EnduringStockpile.GeigerRPS = 0
-    ply.EnduringStockpile.radx = false
-    ply.EnduringStockpile.dosimeter = false
-    ply.EnduringStockpile.radxtime = 0
-    ply.EnduringStockpile.radaway = false
-    ply.EnduringStockpile.radawaytime = 0
-end
-
-function inversesquare( d )
-    local distance = d / 52.521
-    local is = 1 / math.pow(distance, 2)
-    return is
-end
-
-function halflife( quantity , t, hln)
-    local remaining = quantity * math.pow(float(0.5), t/hl)
-    return remaining
-end
-
-
--- hooks
-hook.Add("PlayerDeath","enduringstockpile_rads_death", clearRads)
-
-hook.Add( "PlayerSay", "CheckDosimeter", function( ply, text, team )
-	if ( string.lower( text ) == "/dosimeter" ) then
-	    if ply.EnduringStockpile.dosimeter then
-		    ply:PrintMessage( HUD_PRINTTALK, "Your dosimeter reads "..math.Round(ply.EnduringStockpile.Rads).." rads, "..math.Round(ply.EnduringStockpile.TotalDose).." total")
-		else
-		    ply:PrintMessage( HUD_PRINTTALK, "You have no personal dosimeter")
-		end
-    end
-end )
-
-hook.Add( "PlayerSay", "GeigerMute", function( ply, text, team )
-	-- Make the chat message entirely lowercase
-	if string.lower(text) == "/geigersound" then
-        if ply.EnduringStockpile.GeigerSound == 1 then
-            ply:PrintMessage( HUD_PRINTTALK, "Geiger counter muted")
-            ply.EnduringStockpile.GeigerSound = 0
-        else
-            ply:PrintMessage( HUD_PRINTTALK, "Geiger counter unmuted")
-            ply.EnduringStockpile.GeigerSound = 1
-        end
-	end
-end )
 
 -- main timer
 timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infinite repetitions
@@ -146,13 +75,14 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 			    end
 			    
 			    local totaldose = ply.EnduringStockpile.TotalDose
+                --PrintMessage( HUD_PRINTCONSOLE, "TD     "..totaldose)
 			    if totaldose > 1000 then
 			        local maxh = 100-(math.pow((totaldose-1000)/100,1.25))
 			        ply:SetMaxHealth(maxh)
 			    end
 			
 				local rads, recentrads = getRads(ply)
-				if rads > 0 then
+				if rads > 1 then
 		
                     if math.random(0,100) <= math.Round((rads/1000)*20) then
                         ply:SetHealth(ply:Health() - math.random(1,10))
@@ -175,7 +105,17 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 				local geigerrps = getGeigerRads(ply)
 				if geigerrps > 0 then
 				    if ply.EnduringStockpile.dosimeter then 
-					    ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..math.Round(geigerrps).." rads/min")
+                        local milirads = math.Round(geigerrps*1000,2)
+                        local microrads = 1+math.Round(geigerrps*1000000,2)
+                        
+                        if milirads < 1 and microrads > 1 then
+                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..microrads.." microrads/min")
+                        elseif geigerrps < 1 and milirads > 0 then
+                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..milirads.." milirads/min")
+                        elseif geigerrps >= 1 then
+                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..math.Round(geigerrps,2).." rads/min")
+                        end
+                            
 					    if ply.EnduringStockpile.GeigerSound == 1 then
 						    if (geigerrps) >= 1000 then
 							    ply:EmitSound("geiger/rad_extreme.wav", 100, 100)
@@ -191,7 +131,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 					    end
 					end
 				end  
-				--PrintMessage( HUD_PRINTCONSOLE, "REC "..geigerrps.."  /  "..rads)
+
 		        if geigerrps <= rads then
 			        if ply.EnduringStockpile.radaway then
 			            

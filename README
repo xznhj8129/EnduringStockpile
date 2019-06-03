@@ -22,6 +22,8 @@ Version 1.5
     - Added Dosimeter
     - Added Iodine
     - Added Rad-Away
+    - Added radioactive debris
+    - Added low level radiation detection
 
 
 DESCRIPTION:
@@ -52,7 +54,7 @@ Blast damage: Blast damage now follows realistic ranges and power, props and ent
 Dial-a-yield: Some warheads and bombs have a selectable yield option just like in real life, which means you use wire to specify the power of explosion you want.
 
 Radiation model:
-Each player has a value that stores the radioactivity dose he has accumulated. Each Rad you have accumulated will deal you 0.001 damage per second. If not exposed to any radiation, this dose will decrease up to 10 units every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level (per hr = per minute, so that number divided by 60 is the rads/second). Exposures above 200 rads will start killing you very quickly. Large doses above 1000 rads, even if you survive them, will eventually deal permanent health handicap from massive damage to your DNA and chromosomes.
+Each player has a value that stores the radioactivity dose he has accumulated. Each Rad you have accumulated will deal you 0.001 damage per second. If not exposed to any radiation, this dose will decrease up to 10 units every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level. Exposures above 200 rads will start killing you very quickly. Large doses above 1000 rads, even if you survive them, will eventually deal permanent health handicap from massive damage to your DNA and chromosomes. To mute the geiger counter sounds, type /geigersound.
 
 Radiation Protection:
 This is in the works, in the meanwhile you can use Gbombs hazmat suit, it will cut your radiation exposure 80%. There is also two semi-realistic drugs, Iodine and Rad-Away. Iodine will protect you from 25% of radiation for 2 minutes, and Rad-Away will accelerate your accumulated rads elimination rate at the cost of 25HP, allowing you to survive exposure to large doses.
@@ -65,6 +67,23 @@ Fallout was completely reworked and now decays over time as in real life; on a 2
 
 Enhanced Radiaiton Weapons:
 New in 1.4, this is a small tactical warhead that uses an Enhanced Radiation device, commonly known as a Neutron Bomb. This bomb trades blast and heat power for a stronger burst of radiation, making it more lethal against players or NPC's while not having as powerful an explosion as normal bombs. A 1kt ERW has only half the power of a normal 1kt bomb, but the radiation power of a 5kt device; 5kt has the radiation power of a 10kt; and a 10kt that of a 20kt. They tend to be on the smaller scale of nukes, being intended for battlefield use, so 10kt is about the most powerful they come. The REN-ERTAC has 3 modes, 1kt, 5kt and 10kt.
+
+
+ROADMAP:
+DONE: realistic effect ranges
+DONE: more realistic flash-burn and ignition effects
+DONE: dial-a-yield weapons (use wire to select the yield of the nuke)
+DONE: realistic fallout with decay and dependent on ground/water or air burst
+DONE: different blast/fire effect range dependent on wether it was ground or air burst (as IRL)
+DONE: icons!
+DONE: prompt radiation burst and neutron bombs
+DONE: wire geiger counter that outputs the current radiation level in it's location
+DONE: protection against radioactivity such as pills or something
+TODO: hazmat suits
+TODO: improve blast shockwave
+TODO: control panel
+TODO: new geiger sounds
+TODO: new icons
 
 
 REFERENCES:
@@ -115,20 +134,5 @@ A: Overpowered... realistic... nuclear... weapons... Think about that for a seco
 
 Q: Can you make the Tsar Bomba/This specific bomb/Some fantasy bomb?
 A: No. The point of this mod is realism.
-
-Q: Any plans for the future?
-This is my roadmap:
-DONE: realistic effect ranges
-DONE: more realistic flash-burn and ignition effects
-DONE: dial-a-yield weapons (use wire to select the yield of the nuke)
-DONE: realistic fallout with decay and dependent on ground/water or air burst
-DONE: different blast/fire effect range dependent on wether it was ground or air burst (as IRL)
-DONE: icons!
-DONE: prompt radiation burst and neutron bombs
-DONE: wire geiger counter that outputs the current radiation level in it's location
-TO DO: protection against radioactivity such as pills or something
-TO DO: hazmat suits
-TO DO: improve blast shockwave
-TO DO: control panel
 
 Code and more info on Github: https://github.com/snow-frog/EnduringStockpile/

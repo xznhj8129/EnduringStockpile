@@ -1,19 +1,15 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "hb_base_dumb" )
+DEFINE_BASECLASS( "es_base_dumb" )
 
 
 ENT.Spawnable                         =  true         
 ENT.AdminSpawnable                    =  true 
-
 ENT.PrintName                        =  "Wire Geiger Counter"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
-
-ENT.Model                            =  "models/props_lab/powerbox02d.mdl"           
-
-ENT.TraceLength                      =  0         
+ENT.Model                            =  "models/props_lab/powerbox02d.mdl"                
 ENT.Mass                             =  30
 ENT.Shocktime                        =  1
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
@@ -37,19 +33,12 @@ function ENT:Initialize()
     self.RadCount = 0
     self.RadsPerHour = 0
     self.ClickSound = 0
-    self.Outputs  = Wire_CreateOutputs(self, { "RadsPerMin" })
+    self.Outputs  = Wire_CreateOutputs(self, { "RadsPerMin" }) --, "MiliRadsPerMin", "RadsPerHour" })
 	self.Inputs   = Wire_CreateInputs(self, { "Sound" })
-    Wire_TriggerOutput(self, "RadsPerMin", self.RadCount)
+    Wire_TriggerOutput(self, "RadsPerMin", 0)
+    Wire_TriggerOutput(self, "MiliRadsPerMin", 0)
+    Wire_TriggerOutput(self, "RadsPerHour", 0)
  end
-end
-
-function ENT:Explode()
-end
-
-function ENT:OnTakeDamage(dmginfo)
-end
-
-function ENT:PhysicsCollide( data, physobj )
 end
 
 function ENT:SpawnFunction( ply, tr )
@@ -79,7 +68,10 @@ function ENT:Think(ply)
     self.spawned = true
     if (SERVER) then
         if !self:IsValid() then return end
+        local milirads = math.Round(self.RadCount*1000)
         Wire_TriggerOutput(self, "RadsPerMin", self.RadCount)
+        --Wire_TriggerOutput(self, "MiliRadsPerMin", milirads)
+         
         if (self.ClickSound == 1) then
 	        if (self.RadCount) >= 1000 then
 		        self:EmitSound("geiger/rad_extreme.wav", 100, 100)

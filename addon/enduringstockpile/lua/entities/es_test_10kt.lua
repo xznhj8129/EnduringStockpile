@@ -4,9 +4,9 @@ DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
 ENT.Spawnable                        =  false        
 ENT.AdminSpawnable                   =  false 
-ENT.AdminOnly                        =  false
+ENT.AdminOnly                        =  true
 
-ENT.PrintName                        =  "TEST-10 warhead (10 kilotons)"
+ENT.PrintName                        =  "10kt Test Warhead"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
@@ -80,47 +80,7 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    if(self:WaterLevel() >= 1) then  -- explosion height type determination
-        local trdata   = {}
-        local trlength = Vector(0,0,9000)
-
-        trdata.start   = pos
-        trdata.endpos  = trdata.start + trlength
-        trdata.filter  = self
-        local tr = util.TraceLine(trdata) 
-
-        local trdat2   = {}
-        trdat2.start   = tr.HitPos
-        trdat2.endpos  = trdata.start - trlength
-        trdat2.filter  = self
-        trdat2.mask    = MASK_WATER + CONTENTS_TRANSLUCENT
-        
-        local tr2 = util.TraceLine(trdat2)
-        
-        if tr2.Hit then
-            self.BurstType = 2
-            self.TraceHitPos = tr2.HitPos
-        
-        end
-    else
-        local tracedata    = {}
-        tracedata.start    = pos
-        tracedata.endpos   = tracedata.start - Vector(0, 0, self.FireballSize)
-        tracedata.filter   = self.Entity
-        
-        local trace = util.TraceLine(tracedata)
-        self.TraceHitPos = trace.HitPos
-        
-        if trace.HitWorld then
-            self.BurstType = 0
-            PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
-        else 
-            self.BurstType = 1   
-            PrintMessage( HUD_PRINTCONSOLE, "Airburst")
-        end
-        local hitdist = pos:Distance(trace.HitPos)
-        PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
-    end
+    self.BurstType, self.TraceHitPos = bursttype(self)
     
     -- Nuclear effects variables
     -- Calculated from NUKEMAP.ORG, converted to gmod units and scaled down
@@ -163,7 +123,7 @@ function ENT:Explode()
     ent:SetVar("Burn2Radius",self.Burn2Radius)
     ent:SetVar("Burn1Radius",self.Burn1Radius)
     
-    local ent = ents.Create("es_rad_prompt_radiation_ent")
+    local ent = ents.Create("es_effect_prompt_radiation_ent")
     ent:SetPos( pos ) 
     ent:Spawn()
     ent:Activate()
@@ -207,13 +167,13 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
-            local ent = ents.Create("es_rad_fallout_ent")
+            local ent = ents.Create("es_effect_fallout_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
             
-            local ent = ents.Create("es_rad_crater_ent")
+            local ent = ents.Create("es_effect_crater_ent")
             ent:SetPos( pos ) 
             ent:Spawn()
             ent:Activate()
@@ -248,7 +208,7 @@ function ENT:Explode()
                 if !self:IsValid() then return end 
                 ParticleEffect("",self.TraceHitPos,Angle(0,0,0),nil)    
                 self:Remove()
-            end)    
+            end)
             --Here we do an emp check
             if(GetConVar("hb_nuclear_emp"):GetInt() >= 1) then
                 local ent = ents.Create("hb_emp_entity")
@@ -257,7 +217,7 @@ function ENT:Explode()
                 ent:Activate()
             end
     elseif self.BurstType == 2 then -- underwater burst
-        ParticleEffect(self.EffectWater, self.TraceHitPos, Angle(0,0,0), nil)
+        ParticleEffect(self.EffectWater, self.TraceHitPos, Angle(0,0,0), nil)        
     end
 end
 

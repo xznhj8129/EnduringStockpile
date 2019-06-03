@@ -13,7 +13,7 @@ default
                 hp-=dam
                 """
 
-print 'Dose damage simulation'
+print 'Instant dose damage simulation'
 n_sim = 1000
 print n_sim,'simulations/dose'
 

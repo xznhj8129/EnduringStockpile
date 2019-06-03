@@ -105,40 +105,16 @@ function ENT:Explode()
 	ent:SetVar("SOUND", self.ExplosionSound)
 	ent:SetVar("Shocktime", self.Shocktime)
 
-	 if(self:WaterLevel() >= 1) then
-		 local trdata   = {}
-		 local trlength = Vector(0,0,9000)
-		 
-	     trdata.start   = pos
-		 trdata.endpos  = trdata.start + trlength
-		 trdata.filter  = self
-		 
-		 local tr = util.TraceLine(trdata) 
-		 local trdat2   = {}
-	     trdat2.start   = tr.HitPos
-		 trdat2.endpos  = trdata.start - trlength
-		 trdat2.filter  = self
-		 trdat2.mask    = MASK_WATER + CONTENTS_TRANSLUCENT
-			
-		 local tr2 = util.TraceLine(trdat2)
-			 
-		 if tr2.Hit then
-		     ParticleEffect(self.EffectWater, tr2.HitPos, Angle(0,0,0), nil)
-		 end
-	 else
-		 local tracedata    = {}
-	     tracedata.start    = pos
-		 tracedata.endpos   = tracedata.start - Vector(0, 0, self.TraceLength)
-		 tracedata.filter   = self.Entity
-				
-		 local trace = util.TraceLine(tracedata)
-	     
-		 if trace.HitWorld then
-		     ParticleEffect(self.Effect,pos,Angle(0,0,0),nil)
-		 else 
-			 ParticleEffect(self.EffectAir,pos,Angle(0,0,0),nil) 
-		 end
-     end
+
+    local tracedata    = {}
+    tracedata.start    = pos
+    tracedata.endpos   = tracedata.start - Vector(0, 0, 20000)
+    tracedata.filter   = ent.Entity
+    tracedata.mask     = MASK_NPCWORLDSTATIC
+    local trace = util.TraceLine(tracedata)
+    local TraceHitPos = trace.HitPos
+
+
 	 if self.IsNBC then
 	     local nbc = ents.Create(self.NBCEntity)
 		 nbc:SetVar("HBOWNER",self.HBOWNER)
@@ -148,8 +124,8 @@ function ENT:Explode()
 	 end
 	 
      if GetConVar("hb_nuclear_fallout"):GetInt()== 1 then
-        local ent = ents.Create("es_rad_fallout_ent")
-        ent:SetPos( pos ) 
+        local ent = ents.Create("es_effect_fallout_ent")
+        ent:SetPos( TraceHitPos ) 
         ent:Spawn()
         ent:Activate()
         ent.RadRadius = self.FalloutRadius
@@ -170,9 +146,8 @@ function ENT:Think()
         
         local falloutlen = GetConVar("es_falloutlength"):GetInt()
        
-        
         for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
-            if v.GeigerCounter == 1  and v:IsLineOfSightClear(self) then
+            if v.GeigerCounter == 1 then
                 local dist = (self:GetPos() - v:GetPos()):Length()
                 local raddose = self.RadPower * inversesquare(dist)
                 v.RadCount = v.RadCount + raddose
