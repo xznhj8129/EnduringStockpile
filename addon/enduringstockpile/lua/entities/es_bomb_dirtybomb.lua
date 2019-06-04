@@ -1,11 +1,12 @@
 AddCSLuaFile()
 
-DEFINE_BASECLASS( "es_base_advanced" )
+DEFINE_BASECLASS( "es_base_nuclearweapon" )
 
 ENT.Spawnable		            	 =  true         
 ENT.AdminSpawnable		             =  true 
 
 ENT.PrintName		                 =  "Dirty Bomb"
+ENT.Information	                     =  "Conventional bomb full of radioactive waste, creates fallout"
 ENT.Author			                 =  "Business Cat + snowfrog"
 ENT.Contact		                     =  "nah"
 ENT.Category                         =  "EnduringStockpile"
@@ -114,6 +115,41 @@ function ENT:Explode()
     local trace = util.TraceLine(tracedata)
     local TraceHitPos = trace.HitPos
 
+
+    if(self:WaterLevel() >= 1) then
+		 local trdata   = {}
+		 local trlength = Vector(0,0,9000)
+		 
+	     trdata.start   = pos
+		 trdata.endpos  = trdata.start + trlength
+		 trdata.filter  = self
+		 
+		 local tr = util.TraceLine(trdata) 
+		 local trdat2   = {}
+	     trdat2.start   = tr.HitPos
+		 trdat2.endpos  = trdata.start - trlength
+		 trdat2.filter  = self
+		 trdat2.mask    = MASK_WATER + CONTENTS_TRANSLUCENT
+			
+		 local tr2 = util.TraceLine(trdat2)
+			 
+		 if tr2.Hit then
+		     ParticleEffect(self.EffectWater, tr2.HitPos, Angle(0,0,0), nil)
+		 end
+	 else
+		 local tracedata    = {}
+	     tracedata.start    = pos
+		 tracedata.endpos   = tracedata.start - Vector(0, 0, self.TraceLength)
+		 tracedata.filter   = self.Entity
+				
+		 local trace = util.TraceLine(tracedata)
+	     
+		 if trace.HitWorld then
+		     ParticleEffect(self.Effect,pos,Angle(0,0,0),nil)
+		 else 
+			 ParticleEffect(self.EffectAir,pos,Angle(0,0,0),nil) 
+		 end
+     end
 
 	 if self.IsNBC then
 	     local nbc = ents.Create(self.NBCEntity)
