@@ -194,6 +194,7 @@ dirty bomb: models/props/de_train/barrel.mdl
 
 nbc suit: models/player/hazmat/hazmat1980.mdl
 cod hazmat: models/dxn/cod_ghosts/hazmat_pm.mdl
+models/props_wasteland/laundry_washer001a.mdl
 
 chunks: 
 models/props_debris/concrete_spawnchunk001c.mdl
@@ -232,6 +233,10 @@ US background radiation average: 0.0118 uSv/min, 0.7123 uSv/h
 1 Sv = 100 REM
 1 Sv = 144 Gmod Rads
 1 Gmod Rad = 0.00694444 Sv (6.944 mSv)
+1 Roentgen (R) equals 0.877 rem or 0.00877 Sieverts.
+1 Roentgen = 1.26288 Gmod Rads
+1 Gmod Rad = 0.791840872 Roentgen
+
 
 GMOD BACKGROUND RADIATION = 1 μRad/min		
 	    μRad	mRad	Rad

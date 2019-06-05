@@ -8,7 +8,7 @@ ENT.Information		= ""
 ENT.Category		= "EnduringStockpile"
 
 ENT.Editable		= false
-ENT.Spawnable		= false
+ENT.Spawnable		= true
 ENT.AdminOnly		= true
 ENT.Contact		    =  ""  
 

@@ -36,8 +36,6 @@ function ENT:Initialize()
     self.Outputs  = Wire_CreateOutputs(self, { "RadsPerMin" }) --, "MiliRadsPerMin", "RadsPerHour" })
 	self.Inputs   = Wire_CreateInputs(self, { "Sound" })
     Wire_TriggerOutput(self, "RadsPerMin", 0)
-    Wire_TriggerOutput(self, "MiliRadsPerMin", 0)
-    Wire_TriggerOutput(self, "RadsPerHour", 0)
  end
 end
 

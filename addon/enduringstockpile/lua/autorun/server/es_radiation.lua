@@ -1,65 +1,5 @@
 AddCSLuaFile()
 
--- just some helper functions
-
-function addRads(ply,r)
-    makePlyTable(ply)
-    local raddose = r
-    if ply.IsPlayer() then
-    
-        if ply.hazsuited then
-            raddose = raddose * 0.25
-        end
-        
-        if ply.EnduringStockpile.radx then
-            raddose = raddose * 0.75
-        end
-        
-        ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + raddose
-        ply.EnduringStockpile.TotalDose = ply.EnduringStockpile.TotalDose + raddose
-        ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + raddose
-    else
-        
-        ply.EnduringStockpile.Rads = ply.EnduringStockpile.Rads + raddose
-        ply.EnduringStockpile.TotalDose = ply.EnduringStockpile.TotalDose + raddose
-        ply.EnduringStockpile.RadsPerSecond = ply.EnduringStockpile.RadsPerSecond + raddose
-        
-    end
-end
-
-function addGeigerRads(ply,r)
-    makePlyTable(ply)
-    ply.EnduringStockpile.GeigerRPS = ply.EnduringStockpile.GeigerRPS + r
-end
-
-function getRads(ply)
-    makePlyTable(ply)
-    local rps = ply.EnduringStockpile.RadsPerSecond
-    ply.EnduringStockpile.RadsPerSecond = 0
-    return ply.EnduringStockpile.Rads, rps
-end
-
-function getGeigerRads(ply)
-    makePlyTable(ply)
-    local rps = ply.EnduringStockpile.GeigerRPS
-    ply.EnduringStockpile.GeigerRPS = 0
-    return rps
-end
-
-function removeRads(ply,r)
-    makePlyTable(ply)
-    local rads = ply.EnduringStockpile.Rads
-    
-    if rads > 0 then
-        ply.EnduringStockpile.Rads = rads - r
-    end
-    
-    if rads < 0 or r>rads then
-        ply.EnduringStockpile.Rads = 0
-    end
-end
-
-
 -- main timer
 timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infinite repetitions
     for _, ply in pairs( player.GetAll() ) do
@@ -92,8 +32,8 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 					    ply:Kill()
 					end
                     
-                    if rads > 2000 then
-						local ctd = math.Round((rads/40000)*1000)
+                    if rads > 5000 then
+						local ctd = math.Round((rads/200000)*1000)
 						local draw = math.random(0,1000)
 						if draw <= ctd then
 							ply:Kill()

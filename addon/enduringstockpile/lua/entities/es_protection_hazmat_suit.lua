@@ -8,7 +8,7 @@ ENT.Information		= ""
 ENT.Category		= "EnduringStockpile"
 
 ENT.Editable		= false
-ENT.Spawnable		= false
+ENT.Spawnable		= true
 ENT.AdminOnly		= true
 ENT.Contact		    =  ""  
 
@@ -102,7 +102,7 @@ if CLIENT then
 end
 
 
-function gb5_spawn(ply)
+function hazmat_suit_spawn(ply)
 	ply.gasmasked=false
 	ply.hazsuited=false
 	ply.acid=0
@@ -111,4 +111,4 @@ function gb5_spawn(ply)
 		ply:StopSound("breathing")
 	net.Send(ply)
 end
-hook.Add( "PlayerSpawn", "gb5_spawn", gb5_spawn )	
+hook.Add( "PlayerSpawn", "hazmat_suit_spawn", hazmat_suit_spawn )	

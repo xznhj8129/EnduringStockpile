@@ -6,7 +6,8 @@ ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true
 ENT.AdminOnly                        =  false
 
-ENT.PrintName                        =  "B61 Mod 12 bomb (tactical, dial-a-yield)"
+ENT.PrintName                        =  "B61 Mod 12 bomb"
+ENT.Information	                     =  "Tactical dial-a-yield bomb, 1-5-10-20-50 kilotons"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
@@ -46,8 +47,8 @@ ENT.Decal                            = "nuke_small"
 
 function ENT:Initialize()
  if (SERVER) then
-     self:SetModel(self.Model)
-     self:SetMaterial(self.Material)
+    self:SetModel(self.Model)
+    self:SetMaterial(self.Material)
     self:PhysicsInit( SOLID_VPHYSICS )
     self:SetSolid( SOLID_VPHYSICS )
     self:SetMoveType( MOVETYPE_VPHYSICS )
@@ -144,6 +145,9 @@ function ENT:Explode()
     end
     
     self.BurstType, self.TraceHitPos = bursttype(self)
+    if self.BurstType == 1 then self.explosionpos = pos
+    else self.explosionpos = self.TraceHitPos end
+    
      
     if self.Yield == 10 then                                   
         self.Effect                           =  "h_nuke"                  
@@ -327,7 +331,7 @@ function ENT:Explode()
         if !self:IsValid() then return end 
         
         local ent = ents.Create("es_effect_shockwave_ent")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("DEFAULT_PHYSFORCE", self.DEFAULT_PHYSFORCE)
@@ -344,7 +348,7 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         local ent = ents.Create("es_effect_shockwave_ent_nounfreeze")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("DEFAULT_PHYSFORCE",10)
@@ -359,20 +363,20 @@ function ENT:Explode()
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
             local ent = ents.Create("es_effect_fallout_ent")
-            ent:SetPos( pos ) 
+            ent:SetPos( self.TraceHitPos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
             
             local ent = ents.Create("es_effect_crater_ent")
-            ent:SetPos( pos ) 
+            ent:SetPos( self.TraceHitPos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FireballSize
         end
  
         local ent = ents.Create("hb_shockwave_sound_lowsh")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("HBOWNER", self.HBOWNER)
@@ -387,7 +391,7 @@ function ENT:Explode()
     end)
     
     if self.BurstType == 0 then -- ground burst
-        ParticleEffect(self.Effect,pos,Angle(0,0,0),nil)    
+        ParticleEffect(self.Effect,self.TraceHitPos,Angle(0,0,0),nil)       
         timer.Simple(2, function()
             if !self:IsValid() then return end 
             ParticleEffect("",self.TraceHitPos,Angle(0,0,0),nil)    

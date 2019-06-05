@@ -89,7 +89,10 @@ function ENT:Think()
                 addRads(ply,effectivedose)
                 addGeigerRads(ply,effectivedose*4*60)
             end
-            PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
+            if GetConVar("es_debug"):GetInt()==1 then
+                PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
+            end
+            
         end
     end
     

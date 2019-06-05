@@ -6,7 +6,8 @@ ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true
 ENT.AdminOnly                        =  true
 
-ENT.PrintName                        =  "REN-STRAT warhead (strategic, dial-a-yield)"
+ENT.PrintName                        =  "REN-STRAT warhead"
+ENT.Information	                     =  "Strategic dial-a-yield warhead, 100-250-500-1000 kilotons"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
@@ -46,8 +47,8 @@ ENT.Decal                            = "nuke_small"
 
 function ENT:Initialize()
  if (SERVER) then
-     self:SetModel(self.Model)
-     self:SetMaterial(self.Material)
+    self:SetModel(self.Model)
+    self:SetMaterial(self.Material)
     self:PhysicsInit( SOLID_VPHYSICS )
     self:SetSolid( SOLID_VPHYSICS )
     self:SetMoveType( MOVETYPE_VPHYSICS )
@@ -121,6 +122,27 @@ function ENT:Explode()
     local pos = self:LocalToWorld(self:OBBCenter())
     
     if self.Yield == 100 then
+        self.FireballSize = 1700
+        self.Decal = "nuke_medium"
+        
+    elseif self.Yield == 250 then
+        self.FireballSize = 2500
+        self.Decal = "nuke_big"
+        
+    elseif self.Yield == 500 then
+        self.FireballSize = 3200
+        self.Decal = "nuke_big"
+        
+    else
+        self.FireballSize = 4300
+        self.Decal = "nuke_tsar"
+    end
+    
+    self.BurstType, self.TraceHitPos = bursttype(self)
+    if self.BurstType == 1 then self.explosionpos = pos
+    else self.explosionpos = self.TraceHitPos end
+    
+    if self.Yield == 100 then
         self.Effect                           =  "h_nuke2"
         self.EffectAir                        =  "h_nuke2_airburst"
         self.EffectWater                      =  "hbomb_underwater"
@@ -129,8 +151,6 @@ function ENT:Explode()
         self.Rad1000rem                       =  7400 -- 1000rem initial radiation range
         self.Rad500rem                        =  8000 -- 500rem range
         self.RadPower                         =  2.74111111111e+26 -- flux of prompt radiation pulse
-        self.FireballSize = 1700
-        self.Decal = "nuke_medium"
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  1700 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  14200 -- 5psi range, all constraints break
@@ -162,8 +182,6 @@ function ENT:Explode()
         self.Rad1000rem                       =  8500 -- 1000rem initial radiation range
         self.Rad500rem                        =  9200 -- 500rem range
         self.RadPower                         =  6.31111111111e+26 -- flux of prompt radiation pulse
-        self.FireballSize = 2500
-        self.Decal = "nuke_big"
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  2500 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  19200 -- 5psi range, all constraints break
@@ -195,8 +213,6 @@ function ENT:Explode()
         self.Rad1000rem                       =  9400 -- 1000rem initial radiation range
         self.Rad500rem                        =  10100 -- 500rem range
         self.RadPower                         =  1.07111111111e+27 -- flux of prompt radiation pulse
-        self.FireballSize = 3200
-        self.Decal = "nuke_big"
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  3200 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  24200 -- 5psi range, all constraints break
@@ -229,8 +245,6 @@ function ENT:Explode()
         self.Rad1000rem                       =  10200 -- 1000rem initial radiation range
         self.Rad500rem                        =  11000 -- 500rem range
         self.RadPower                         =  1.84111111111e+27 -- flux of prompt radiation pulse
-        self.FireballSize = 4300
-        self.Decal = "nuke_tsar"
         if self.BurstType == 1 then -- airburst
             self.TotalRadius                      =  4200 -- delete (fireball or 200psi, whichever bigger) range, everything vaporized (1400 minimum for the removal to work)
             self.DestroyRadius                    =  30500 -- 5psi range, all constraints break
@@ -253,8 +267,7 @@ function ENT:Explode()
         self.FalloutRadius                        =  self.IgniteRadius -- fallout range, no wind, use Ignite radius
         self.ExplosionRadius                      =  self.BlastRadius + (self.BlastRadius*0.2)
     end
-    
-    self.BurstType, self.TraceHitPos = bursttype(self)
+
     
     local ent = ents.Create("es_effect_flashburn_ent")
     ent:SetPos( pos ) 
@@ -280,7 +293,7 @@ function ENT:Explode()
         if !self:IsValid() then return end 
         
         local ent = ents.Create("es_effect_shockwave_ent")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("DEFAULT_PHYSFORCE", self.DEFAULT_PHYSFORCE)
@@ -297,7 +310,7 @@ function ENT:Explode()
         ent.decal=self.Decal
         
         local ent = ents.Create("es_effect_shockwave_ent_nounfreeze")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("DEFAULT_PHYSFORCE",10)
@@ -312,20 +325,20 @@ function ENT:Explode()
         
         if GetConVar("hb_nuclear_fallout"):GetInt()== 1 and self.BurstType!=1 then
             local ent = ents.Create("es_effect_fallout_ent")
-            ent:SetPos( pos ) 
+            ent:SetPos( self.TraceHitPos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FalloutRadius
             
             local ent = ents.Create("es_effect_crater_ent")
-            ent:SetPos( pos ) 
+            ent:SetPos( self.TraceHitPos ) 
             ent:Spawn()
             ent:Activate()
             ent.RadRadius = self.FireballSize
         end
  
         local ent = ents.Create("hb_shockwave_rumbling")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("HBOWNER", self.HBOWNER)
@@ -335,7 +348,7 @@ function ENT:Explode()
         ent:SetVar("SOUND", self.ExplosionSound)
         
         local ent = ents.Create("hb_shockwave_sound_lowsh")
-        ent:SetPos( pos ) 
+        ent:SetPos( self.explosionpos ) 
         ent:Spawn()
         ent:Activate()
         ent:SetVar("HBOWNER", self.HBOWNER)
@@ -350,7 +363,7 @@ function ENT:Explode()
     end)
     
     if self.BurstType == 0 then -- ground burst
-        ParticleEffect(self.Effect,pos,Angle(0,0,0),nil)    
+        ParticleEffect(self.Effect,self.TraceHitPos,Angle(0,0,0),nil)    
         timer.Simple(2, function()
             if !self:IsValid() then return end 
             ParticleEffect("",self.TraceHitPos,Angle(0,0,0),nil)    
@@ -376,13 +389,13 @@ function ENT:Explode()
 end
 
 function ENT:SpawnFunction( ply, tr )
-     if ( !tr.Hit ) then return end
+    if ( !tr.Hit ) then return end
     self.HBOWNER = ply
-     local ent = ents.Create( self.ClassName )
+    local ent = ents.Create( self.ClassName )
     ent:SetPhysicsAttacker(ply)
-     ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
-     ent:Spawn()
-     ent:Activate()
+    ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
+    ent:Spawn()
+    ent:Activate()
 
-     return ent
+    return ent
 end
