@@ -144,7 +144,7 @@ function ENT:Explode()
         self.Decal = "nuke_small"
     end
     
-    self.BurstType, self.TraceHitPos = bursttype(self)
+    self.BurstType, self.TraceHitPos = NuclearBurstType(self)
     if self.BurstType == 1 then self.explosionpos = pos
     else self.explosionpos = self.TraceHitPos end
     
@@ -417,13 +417,22 @@ function ENT:Explode()
 end
 
 function ENT:SpawnFunction( ply, tr )
-     if ( !tr.Hit ) then return end
+    if ( !tr.Hit ) then return end
     self.HBOWNER = ply
-     local ent = ents.Create( self.ClassName )
+    local ent = ents.Create( self.ClassName )
     ent:SetPhysicsAttacker(ply)
-     ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
-     ent:Spawn()
-     ent:Activate()
+    ent:SetPos( tr.HitPos + tr.HitNormal * 24 ) 
+    ent:Spawn()
+    ent:Activate()
 
-     return ent
+    return ent
+end
+
+function ENT:Think()
+    if (SERVER) then
+        if !self:IsValid() then return end
+        RadiationSource(self, 0.00001)
+        self:NextThink(CurTime() + 0.25)
+        return true
+    end
 end

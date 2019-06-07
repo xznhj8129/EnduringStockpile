@@ -39,7 +39,6 @@ ENT.ArmDelay                         =  1
 ENT.Timer                            =  0
 ENT.Shocktime                        =  2
 ENT.FalloutRadius                    =  10000
-ENT.RadRadius                        =  1000
 ENT.RadPower                         =  100
 
 ENT.DEFAULT_PHYSFORCE                = 155
@@ -174,13 +173,9 @@ function ENT:Explode()
 end
  
 function ENT:Think()
-    
     if (SERVER) then
         if !self:IsValid() then return end
-        local pos = self:GetPos()
-        
-        RadiationSource(self, self.RadRadius, self.RadPower)
-        
+        RadiationSource(self, self.RadPower)
         self:NextThink(CurTime() + 0.25)
         return true
     end

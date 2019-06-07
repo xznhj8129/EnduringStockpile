@@ -45,10 +45,11 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 				local geigerrps = getGeigerRads(ply)
 				if geigerrps > 0 then
 				    if ply.EnduringStockpile.dosimeter then 
+                        geigerrps = geigerrps + (math.random(10,20)/10000000)
                         local milirads = math.Round(geigerrps*1000,2)
-                        local microrads = 1+math.Round(geigerrps*1000000,2)
+                        local microrads = math.Round(geigerrps*1000000,2)
                         
-                        if milirads < 1 and microrads > 1 then
+                        if milirads < 1 and microrads > 2 then
                             ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..microrads.." microrads/min")
                         elseif geigerrps < 1 and milirads > 0 then
                             ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..milirads.." milirads/min")
@@ -65,7 +66,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 							    ply:EmitSound("geiger/rad_high.wav", 100, 100)
 						    elseif (geigerrps) >= 100 then
 							    ply:EmitSound("geiger/rad_med.wav", 100, 100)
-						    elseif (geigerrps) > 0 then
+						    elseif microrads > 2 then
 							    ply:EmitSound("geiger/rad_low.wav", 100, 100)
 						    end
 					    end

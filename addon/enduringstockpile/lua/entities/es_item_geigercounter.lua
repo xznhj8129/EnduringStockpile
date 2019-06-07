@@ -66,10 +66,9 @@ function ENT:Think(ply)
     self.spawned = true
     if (SERVER) then
         if !self:IsValid() then return end
-        local milirads = math.Round(self.RadCount*1000)
-        Wire_TriggerOutput(self, "RadsPerMin", self.RadCount)
-        --Wire_TriggerOutput(self, "MiliRadsPerMin", milirads)
-         
+        local rads = self.RadCount + (math.random(10,20)/10000000)
+        Wire_TriggerOutput(self, "RadsPerMin", rads)
+        
         if (self.ClickSound == 1) then
 	        if (self.RadCount) >= 1000 then
 		        self:EmitSound("geiger/rad_extreme.wav", 100, 100)

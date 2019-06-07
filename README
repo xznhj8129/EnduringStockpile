@@ -1,9 +1,12 @@
 Build-friendly nukes with realistic effects
-Version 1.5
+Version 1.6
 
-1.5 CHANGELOG:
+1.6 CHANGELOG:
 
-    Picked it up again and did some internally significant tweaks for radiation to be more realistic. Now radiation does a little less damage on the lower ends but is absolutely DEADLY at higher doses (which you can easily get in seconds if you fuck around in radioactive craters and immediate fallout). It now does a little less immediate damage to health, but it also now does PERMANENT damage, so even if you survive a big dose you will have a health penalty until you die because your chromosomes are damaged. This also happens for low-level irradiation over long periods of time.
+    Picked it up again and did some internally significant tweaks for radiation to be more realistic. Now radiation does a little less damage on the lower ends but is absolutely DEADLY at higher doses (which you can easily get in seconds if you fuck around in radioactive craters and immediate fallout). It now does a little less immediate damage to health, but it also now does PERMANENT damage, so even if you survive a big dose you will have a health penalty until you die because your chromosomes are damaged. This also happens for low-level irradiation over long periods of time. Many changes to the maths of radiation, such as inverse-square law as in real life. All nuclear bombs now emit a tiny amount of radiation (microrads scale).
+    
+    HUGE CHANGE: RADIATION SHIELDING
+    This is extremely important for realism, now all radiation sources (debris, radioactive waste, bombs, prompt radiation; not fallout) now take into consideration the shielding between you and them. For simplicity, i only consider gamma radiation. This is not perfect, but it will consider the thickness of whatever is between you and it and find out by how much it attenuates your dose. This means you can now build shielding to protect yourself from radiation. Water and air also act as shielding. This also means that radiation sources now have infinite range, you will always be exposed to some level of radiation. However, this will not harm you, it usually is not even detectable; it would take one real week to lose 1 HP from 100 milirads/min. This reflects how radiation behaves in real life. Props will shield you more than World (buildings, ect), which will shield you more than water, which is better than air. I not only consider inverse-square law for sources, but also how much air itself absorbs radiation. All things considered is a HUGE improvement. For reference, 1 Rad is 1000 milirads, and 1 miliRad is 1000 microRads; this means 1 microrad (average background radiation in game is 1.5 microrads/min) is 1/1000000th of a Rad; so don't panic if you see those levels. Microrads = basically nothing, Milirads = not too bad, Rads = dangerous. You can wire the geiger counter entity to multiply gates (x1000 for milirads, x1,000,000 for microrads) to see low levels. 
     
     Other changes, you now spawn with no dosimeter, so you won't know your exposure level nor radiation level whitout getting one. Just press E on it to equip it.
     
@@ -24,6 +27,9 @@ Version 1.5
     - Added Rad-Away
     - Added radioactive debris
     - Added low level radiation detection
+    - Added radiation shielding
+    - Added radioactive half-life decay
+    - All bombs now emit extremely small levels of radiation
 
 
 DESCRIPTION:
@@ -54,7 +60,9 @@ Blast damage: Blast damage now follows realistic ranges and power, props and ent
 Dial-a-yield: Some warheads and bombs have a selectable yield option just like in real life, which means you use wire to specify the power of explosion you want.
 
 Radiation model:
-Each player has a value that stores the radioactivity dose he has accumulated. Each Rad you have accumulated will deal you 0.001 damage per second. If not exposed to any radiation, this dose will decrease up to 10 units every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level. Exposures above 200 rads will start killing you very quickly. Large doses above 1000 rads, even if you survive them, will eventually deal permanent health handicap from massive damage to your DNA and chromosomes. To mute the geiger counter sounds, type /geigersound.
+Each player has a value that stores the radioactivity dose he has accumulated. Each Rad you have accumulated will deal you 0.001 damage per second. If not exposed to any radiation, this dose will decrease up to 10 units every second. To see what is your current dose, type "/dosimeter" in chat. You will be notified by your geiger counter of the current radiation level. Exposures above 200 rads will start killing you very quickly. Large doses above 1000 rads, even if you survive them, will eventually deal permanent health handicap from massive damage to your DNA and chromosomes. To mute the geiger counter sounds, type /geigersound. all radiation sources (debris, radioactive waste, bombs, prompt radiation; not fallout) now take into consideration the shielding between you and them and how much it attenuates your dose. This means you can now build shielding to protect yourself from radiation. Water and air also act as shielding. This also means that radiation sources now have infinite range, you will always be exposed to some level of radiation. However, this will not harm you, it usually is not even detectable; it would take one real week to lose 1 HP from 100 milirads/min. This reflects how radiation behaves in real life. Props will shield you more than World (buildings, ect), which will shield you more than water, which is better than air. It also considers how much air itself absorbs radiation. 
+
+For reference, 1 Rad is 1000 milirads, and 1 miliRad is 1000 microRads; this means 1 microrad (average background radiation in game is 1.5 microrads/min) is 1/1000000th of a Rad; so don't panic if you see those levels. Microrads = basically nothing, Milirads = not too bad, Rads = dangerous. You can wire the geiger counter entity to multiply gates (x1000 for milirads, x1,000,000 for microrads) to see low levels. 
 
 Radiation Protection:
 This is in the works, in the meanwhile you can use Gbombs hazmat suit, it will cut your radiation exposure 80%. There is also two semi-realistic drugs, Iodine and Rad-Away. Iodine will protect you from 25% of radiation for 2 minutes, and Rad-Away will accelerate your accumulated rads elimination rate at the cost of 25HP, allowing you to survive exposure to large doses.
@@ -79,6 +87,7 @@ DONE: icons!
 DONE: prompt radiation burst and neutron bombs
 DONE: wire geiger counter that outputs the current radiation level in it's location
 DONE: protection against radioactivity such as pills or something
+DONE: radiation shielding
 TODO: hazmat suits
 TODO: improve blast shockwave
 TODO: control panel

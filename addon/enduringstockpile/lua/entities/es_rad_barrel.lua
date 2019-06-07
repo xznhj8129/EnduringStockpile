@@ -15,14 +15,14 @@ ENT.EffectAir                        =  ""
 ENT.EffectWater                      =  "water_small"
 
 ENT.Bursts                           =  1
-ENT.RadRadius                        =  1000
 ENT.Mass                             =  200
 ENT.RadPower                         =  2000
+ENT.HalfLife                         =  3600
+ENT.Time                             =  0
 
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
 
-
-
+ 
 function ENT:SpawnFunction( ply, tr )
      if ( not tr.Hit ) then return end
 	 self.GBOWNER = ply
@@ -37,14 +37,14 @@ end
  
 
 function ENT:Think()
-    
     if (SERVER) then
         if !self:IsValid() then return end
-        local pos = self:GetPos()
         
-        RadiationSource(self, self.RadRadius, self.RadPower)
+        local radpower_left = NuclearHalfLife(self.RadPower, self.Time, self.HalfLife)
+        RadiationSource(self, radpower_left)
         
         self:NextThink(CurTime() + 0.25)
+        self.Time = self.Time+0.25
         return true
     end
 end

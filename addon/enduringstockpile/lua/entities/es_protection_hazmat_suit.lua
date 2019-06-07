@@ -60,9 +60,7 @@ if SERVER then
 			activator:EmitSound("items/suitchargeno1.wav", 50, 100)
 		else		
 			activator:EmitSound("gbombs_5/protection_used.wav",50,80)
-            
 			activator.hazsuited=true
-            
             activator.EnduringStockpile.originalmodel = activator:GetModel()
             activator:SetModel("models/player/hazmat/hazmat1980.mdl")
             activator.EnduringStockpile.nbc_suit = true

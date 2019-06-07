@@ -18,6 +18,8 @@ DEVNOTES
 -added inverse-square law for radiation sources
 -iodine/rad-X
 -low-level geiger counter support
+-radiation shielding
+-half-life decay
 
 TODO
 settings panel
@@ -32,7 +34,6 @@ neutron activation?
 cognitive effects from high doses (vomiting, blurred vision, ect)
 fallout contamination?
 decontamination? (pressure hose, scrub, ect)
-half-life decay
 
 
 GUIDE
@@ -213,6 +214,7 @@ v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK!
 RANDOM NOTES
 map width: 32250u
 1m = 52.493u
+1u = 1.905 cm
 
 Rad	    mRad	μRad
 1	    1000	1000000
@@ -226,6 +228,12 @@ Rad	    mRad	μRad
 1E-08	1E-05	0.01
 1E-09	1E-06	0.001
 
+HALVING DISTANCES (cm)
+AIR 9000
+WATER 18
+WORLD 7
+PROP 3
+
 US background radiation average: 0.0118 uSv/min, 0.7123 uSv/h
 
 1 REM = 1.44 Gmod Rads
@@ -238,7 +246,7 @@ US background radiation average: 0.0118 uSv/min, 0.7123 uSv/h
 1 Gmod Rad = 0.791840872 Roentgen
 
 
-GMOD BACKGROUND RADIATION = 1 μRad/min		
+GMOD BACKGROUND RADIATION = 1.5 μRad/min		
 	    μRad	mRad	Rad
 HOUR	60	    0.06	6E-05
 DAY	    1440	1.44	0.00144

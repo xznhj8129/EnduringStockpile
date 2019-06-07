@@ -80,7 +80,7 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    self.BurstType, self.TraceHitPos = bursttype(self)
+    self.BurstType, self.TraceHitPos = NuclearBurstType(self)
     if self.BurstType == 1 then 
         self.explosionpos = pos
     else 

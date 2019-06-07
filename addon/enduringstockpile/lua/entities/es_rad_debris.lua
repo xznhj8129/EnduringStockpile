@@ -11,9 +11,10 @@ ENT.Author			                 =  "snowfrog"
 ENT.Category                         =  "EnduringStockpile"
 ENT.Model                            =  ""
 
-ENT.RadRadius                        =  10000
 ENT.Mass                             =  100
 ENT.RadPower                         =  1000
+ENT.HalfLife                         =  3600
+ENT.Time                             =  0
 
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
 
@@ -58,14 +59,16 @@ function ENT:SpawnFunction( ply, tr )
 end
  
 function ENT:Think()
-    
     if (SERVER) then
         if !self:IsValid() then return end
-        local pos = self:GetPos()
-
-        RadiationSource(self, self.RadRadius, self.RadPower)
+        
+        local radpower_left = NuclearHalfLife(self.RadPower, self.Time, self.HalfLife)
+        RadiationSource(self, radpower_left)
         
         self:NextThink(CurTime() + 0.25)
+        self.Time = self.Time+0.25
         return true
     end
 end
+
+

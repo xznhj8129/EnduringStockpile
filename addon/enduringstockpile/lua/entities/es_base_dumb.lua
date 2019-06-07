@@ -44,7 +44,9 @@ function ENT:Initialize()
 	 local skincount = self:SkinCount()
 	 if (phys:IsValid()) then
 		 phys:SetMass(self.Mass)
+         phys:SetBuoyancyRatio(0)
 		 phys:Wake()
+         
      end
 	 if (skincount > 0) then
 	     self:SetSkin(math.random(0,skincount))

@@ -47,17 +47,31 @@ function ENT:Think()
             local trace = util.TraceLine(tracedata)
             local dist = (self:GetPos() - v:GetPos()):Length()
             local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
-            local effectivedose = 0
-            if v:IsLineOfSightClear(self) then --not shielded, line of sight
+            local effectivedose = promptdose
+            
+            if TraceLineOfSight(self,v)  then --not shielded, line of sight
                 effectivedose = promptdose
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
-            elseif !v:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
-                effectivedose = promptdose*0.5
+                
+            elseif !TraceLineOfSight(self,v) and !trace.HitWorld then --not shielded, no los
+                local shielding = TracePathShielding(self,v)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding)
+                end
+                effectivedose = promptdose / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
-            elseif !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
+                
+            elseif !TraceLineOfSight(self,v) and trace.HitWorld then --shielded, no los
+                local shielding = TracePathShielding(self,v)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding)
+                end
+                effectivedose = (self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)) / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
             end
+            
             if effectivedose>0 then
                 v.RadCount = v.RadCount + effectivedose*4*60
             end
@@ -74,21 +88,36 @@ function ENT:Think()
             local trace = util.TraceLine(tracedata)
             local dist = (self:GetPos() - ply:GetPos()):Length()
             local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
-            local effectivedose = 0
-            if ply:IsLineOfSightClear(self) then --not shielded, line of sight
+            local effectivedose = promptdose
+            
+            if TraceLineOfSight(self,ply)  then --not shielded, line of sight
                 effectivedose = promptdose
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
-            elseif !ply:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
-                effectivedose = promptdose*0.5
+                
+            elseif !TraceLineOfSight(self,ply) and !trace.HitWorld then --not shielded, no los
+                local shielding = TracePathShielding(self,ply)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding) 
+                end
+                effectivedose = promptdose / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
-            elseif !ply:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
+                
+            elseif !TraceLineOfSight(self,ply) and trace.HitWorld then --shielded, no los
+                local shielding = TracePathShielding(self,ply)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding)
+                end
+                effectivedose = (self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)) / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
             end
+            
             if effectivedose>0 then
                 addRads(ply,effectivedose)
                 addGeigerRads(ply,effectivedose*4*60)
             end
+            
             if GetConVar("es_debug"):GetInt()==1 then
                 PrintMessage( HUD_PRINTCONSOLE, "Player "..ply:Name().." exposed to "..effectivedose.." rads from prompt radiation")
             end
@@ -106,17 +135,31 @@ function ENT:Think()
             local trace = util.TraceLine(tracedata)
             local dist = (self:GetPos() - v:GetPos()):Length()
             local promptdose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 3.8)
-            local effectivedose = 0
-            if v:IsLineOfSightClear(self) then --not shielded, line of sight
+            local effectivedose = promptdose
+            
+            if TraceLineOfSight(self,v)  then --not shielded, line of sight
                 effectivedose = promptdose
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, LOS")
-            elseif !v:IsLineOfSightClear(self) and !trace.HitWorld then --not shielded, no los
-                effectivedose = promptdose*0.5
+                
+            elseif !TraceLineOfSight(self,v) and !trace.HitWorld then --not shielded, no los
+                local shielding = TracePathShielding(self,v)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding)
+                end
+                effectivedose = promptdose / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "NOTSH, NOLOS")
-            elseif !v:IsLineOfSightClear(self) and trace.HitWorld then --shielded, no los
-                effectivedose = self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)
+                
+            elseif !TraceLineOfSight(self,v) and trace.HitWorld then --shielded, no los
+                local shielding = TracePathShielding(self,v)
+                local shielding_val = 1
+                if shielding !=0 then
+                    shielding_val = math.pow(2,shielding)
+                end
+                effectivedose = (self.RadPower/(4*math.pi*math.pow(dist,2)) / math.pow(dist, 4.2)) / shielding_val
                 --PrintMessage( HUD_PRINTCONSOLE, "SH, NOLOS")
             end
+            
             if effectivedose>0 then
                 addRads(v,effectivedose)
             end

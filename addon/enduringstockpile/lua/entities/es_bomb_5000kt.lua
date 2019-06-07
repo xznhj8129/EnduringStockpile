@@ -7,7 +7,7 @@ ENT.AdminSpawnable                   =  true
 ENT.AdminOnly                        =  true
 
 ENT.PrintName                        =  "REN-5000 warhead"
-ENT.Information	                     =  "5000 kilotons, 5 megatons warhead"
+ENT.Information	                     =  "5000 kilotons/5 megatons warhead"
 ENT.Author                           =  "snowfrog"
 ENT.Contact                          =  ""
 ENT.Category                         =  "EnduringStockpile"
@@ -81,7 +81,7 @@ function ENT:Explode()
     if self.Exploding then return end
     local pos = self:LocalToWorld(self:OBBCenter())
     
-    self.BurstType, self.TraceHitPos = bursttype(self)
+    self.BurstType, self.TraceHitPos = NuclearBurstType(self)
     if self.BurstType == 1 then self.explosionpos = pos
     else self.explosionpos = self.TraceHitPos end
     
@@ -256,3 +256,13 @@ function ENT:SpawnFunction( ply, tr )
 
      return ent
 end
+
+function ENT:Think()
+    if (SERVER) then
+        if !self:IsValid() then return end
+        RadiationSource(self, 0.00001)
+        self:NextThink(CurTime() + 0.25)
+        return true
+    end
+end
+

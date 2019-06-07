@@ -2,8 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "es_base_dumb" )
 
-ENT.Spawnable			             =  true
-ENT.AdminSpawnable		             =  true
+ENT.Spawnable			             =  false
+ENT.AdminSpawnable		             =  false
 ENT.AdminOnly                        =  true
 
 ENT.PrintName		                 =  "Test isotope"
@@ -11,10 +11,9 @@ ENT.Author			                 =  "snowfrog"
 ENT.Category                         =  "EnduringStockpile"
 ENT.Model                            =  "models/props_lab/jar01b.mdl"                     
 
-ENT.RadRadius                        =  25000
 ENT.Mass                             =  20
 ENT.RadPower                         =  500
-ENT.HalfLife                         =  30
+ENT.HalfLife                         =  1800
 ENT.Time                             =  0
 
 
@@ -57,10 +56,9 @@ function ENT:Think()
     
     if (SERVER) then
         if !self:IsValid() then return end
-        local pos = self:GetPos()
         
-        local radpower_left = halflife(self.RadPower, self.Time, self.HalfLife)
-        RadiationSource(self, self.RadRadius, radpower_left)
+        local radpower_left = NuclearHalfLife(self.RadPower, self.Time, self.HalfLife)
+        RadiationSource(self, radpower_left)
         
         self:NextThink(CurTime() + 0.25)
         self.Time = self.Time+0.25
