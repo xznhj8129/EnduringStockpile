@@ -92,7 +92,6 @@ function TracePathShielding(startent,endent)
             local airthickness = trace.HitPos:Distance(startpos)
             local air_shielding = (airthickness * 1.905) / 9000
             halving_thicknesses = air_shielding + 1.25
-            PrintMessage( HUD_PRINTCONSOLE, "1")
         else
         
             local tr2    = {}
@@ -111,7 +110,6 @@ function TracePathShielding(startent,endent)
             local trace2 = util.TraceLine(tr2)
 
             local thickness = trace.HitPos:Distance(trace2.HitPos)
-            PrintMessage( HUD_PRINTCONSOLE, "TH "..thickness)
             
             local airthickness = trace.HitPos:Distance(startpos) + trace2.HitPos:Distance(entpos)
             local air_shielding = (airthickness * 1.905) / 9000
@@ -343,7 +341,7 @@ function makePlyTable(ply)
             dosimeter = false,
             nbc_suit = false,
             lead_suit = false,
-            originalmodel = nil
+            originalmodel = ply:GetModel()
         }
     end
 end

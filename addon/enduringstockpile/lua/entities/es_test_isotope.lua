@@ -3,7 +3,7 @@ AddCSLuaFile()
 DEFINE_BASECLASS( "es_base_dumb" )
 
 ENT.Spawnable			             =  false
-ENT.AdminSpawnable		             =  false
+ENT.AdminSpawnable		             =  true
 ENT.AdminOnly                        =  true
 
 ENT.PrintName		                 =  "Test isotope"
