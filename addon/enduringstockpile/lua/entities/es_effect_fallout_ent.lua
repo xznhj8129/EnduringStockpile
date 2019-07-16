@@ -69,7 +69,7 @@ function ENT:Think()
                         else
                             time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
                         end
-                        local raddose = math.Round((self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier))
+                        local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         v.RadCount = v.RadCount + raddose
                     end
                 end
@@ -106,7 +106,7 @@ function ENT:Think()
                         else
                             time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
                         end
-                        local raddose = math.Round((self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier))
+                        local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
                         --PrintMessage( HUD_PRINTCONSOLE, "RD "..raddose )
                         addGeigerRads(ply,raddose)
@@ -145,7 +145,7 @@ function ENT:Think()
                         else
                             time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
                         end
-                        local raddose = math.Round((self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier))
+                        local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
                         addRads(v,exposure)
                     end
@@ -154,7 +154,7 @@ function ENT:Think()
         end
 
         self.Bursts = self.Bursts + 0.25
-        if (self.Bursts >= (120*falloutlen)) then
+        if (self.Bursts >= (260*falloutlen)) then
             self:Remove()
         end
         self:NextThink(CurTime() + 0.25)

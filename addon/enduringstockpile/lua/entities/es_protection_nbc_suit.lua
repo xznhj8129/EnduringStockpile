@@ -2,8 +2,8 @@ AddCSLuaFile()
 
 DEFINE_BASECLASS( "base_anim" )
 
-ENT.PrintName		= "Hazmat Suit Remover"
-ENT.Author		    = ""
+ENT.PrintName		= "Hazmat suit"
+ENT.Author	    	= ""
 ENT.Information		= ""
 ENT.Category		= "EnduringStockpile"
 
@@ -12,10 +12,19 @@ ENT.Spawnable		= true
 ENT.AdminOnly		= true
 ENT.Contact		    =  ""  
 
+sound.Add( {
+	name = "breathing2",
+	channel = CHAN_STATIC,
+	volume = 1.0,
+	level = 50,
+	pitch = {50, 60},
+	sound = "player/breathe1.wav"
+} )
+
 function ENT:SpawnFunction( ply, tr )
 	if ( not tr.Hit ) then return end
 	local SpawnPos = tr.HitPos + tr.HitNormal * 16
-	local ent = ents.Create( "es_protection_hazmat_suit_remover" )
+	local ent = ents.Create( "es_protection_nbc_suit" )
 	ent:SetPos( SpawnPos )
 	ent:Spawn()
 	ent:Activate()
@@ -47,36 +56,35 @@ end
 
 if SERVER then
 	function ENT:Use( activator, caller )
-		if activator.hazsuited==true then	
-			activator:EmitSound("gbombs_5/protection_used.wav",50,190)
+		if activator.gasmasked==true or activator.hazsuited==true then
+			activator:EmitSound("items/suitchargeno1.wav", 50, 100)
+		else		
+			activator:EmitSound("gbombs_5/protection_used.wav",50,80)
 			activator.hazsuited=true
-			activator:SetRunSpeed(500)
-			activator:SetWalkSpeed(250)
+            activator.EnduringStockpile.originalmodel = activator:GetModel()
+            activator:SetModel("models/player/hazmat/hazmat1980.mdl")
+            activator.EnduringStockpile.nbc_suit = true
+			activator:SetRunSpeed(300)
+			activator:SetWalkSpeed(150)
+			activator:EmitSound("breathing2")
 			net.Start( "gbombs5_net" )        
-				net.WriteBit( false )
-				activator:StopSound("breathing")				
+				net.WriteBit( true )
 			net.Send(activator)
-			activator.hazsuited=false            
-            activator:SetModel(activator.EnduringStockpile.originalmodel)
-            activator.EnduringStockpile.nbc_suit = false
 			
 			self:Remove()
 		end
 	end
 end
 
-if CLIENT then
-	function ENT:OnRemove()
-		net.Receive( "gbombs5_net", function( len )
-			local mask_on = net.ReadBit()
-			if mask_on==1 then
-				hook.Add( "RenderScreenspaceEffects", "GasMask", GasMask)
-			else
-				hook.Remove("RenderScreenspaceEffects", "GasMask", GasMask)
-			end
-		end)
-    end
-end
+
+net.Receive( "gbombs5_net", function( len )
+	local mask_on = net.ReadBit()
+	if mask_on==1 then
+		hook.Add( "RenderScreenspaceEffects", "GasMask", GasMask)
+	else
+		hook.Remove("RenderScreenspaceEffects", "GasMask", GasMask)
+	end
+end)
 
 
 
@@ -85,10 +93,20 @@ if CLIENT then
 		self.Entity:DrawModel()
 		local squad = self:GetNetworkedString( 12 )
 		if ( LocalPlayer():GetEyeTrace().Entity == self.Entity and EyePos():Distance( self.Entity:GetPos() ) < 256 ) then
-		AddWorldTip( self.Entity:EntIndex(), ( "Hazmat Suit Remover" ), 0.5, self.Entity:GetPos(), self.Entity  )
+		AddWorldTip( self.Entity:EntIndex(), ( "Hazmat Suit" ), 0.5, self.Entity:GetPos(), self.Entity  )
 		end
 	end
-	language.Add( 'Hazmat Suit Remover', 'Hazmat Suit Remover' )
+	language.Add( 'Hazmat Suit', 'Hazmat Suit' )
 end
 
 
+function hazmat_suit_spawn(ply)
+	ply.gasmasked=false
+	ply.hazsuited=false
+	ply.acid=0
+	net.Start( "gbombs5_net" )        
+		net.WriteBit( false )
+		ply:StopSound("breathing")
+	net.Send(ply)
+end
+hook.Add( "PlayerSpawn", "hazmat_suit_spawn", hazmat_suit_spawn )	

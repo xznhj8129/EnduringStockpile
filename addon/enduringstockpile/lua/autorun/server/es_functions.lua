@@ -75,8 +75,8 @@ function TracePathShielding(startent,endent)
     local startpos = startent:LocalToWorld(startent:OBBCenter())
     local entpos = endent:LocalToWorld(endent:OBBCenter())
     local dist = startpos:Distance(entpos)
-    local sourceinwater = startent:WaterLevel() == 3
-    local destinwater = endent:WaterLevel() == 3
+    local sourceinwater = startent:WaterLevel() >= 1
+    local destinwater = endent:WaterLevel() >= 1
     
     local tracedata    = {}
     tracedata.start    = startpos
@@ -207,10 +207,44 @@ end
 
 -- direct radiation emitter
 function RadiationSource(source, radpower)
-    for _, ent in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
+    local pos = source:LocalToWorld(source:OBBCenter())
+    local maxloop = GetConVar("es_max_shieldingtrace"):GetInt()
+    local maxrange = GetConVar("es_max_radrange"):GetInt()
+    local emp_whitelist = {"gmod_wire_pod",
+        "gmod_wire_expression2",
+        "gmod_wire_gate",
+        "gmod_wire_value",
+        "gmod_wire_button",
+        "gmod_wire_dynamic_button",
+        "gmod_wire_input",
+        "gmod_button",
+        "gmod_hoverball"}
     
-        if ent.GeigerCounter == 1 then
-            local dist = (source:GetPos() - ent:GetPos()):Length()
+    if GetConVar("es_electronics_rad_damage"):GetInt()==1 then
+        for k, v in pairs(ents.FindInSphere(pos,20000)) do
+            if(table.HasValue(emp_whitelist,v:GetClass())) then
+                local dist = (source:GetPos() - v:GetPos()):Length()
+                local shielding = TracePathShielding(source,v) 
+                if shielding !=0 then
+                    power = radpower/math.pow(2,shielding)
+                else
+                    power = radpower
+                end
+                local raddose = power * InverseSquareLaw(dist)
+                local exposure = raddose / 60
+                AddRadElectronics(v, exposure)
+            end
+        end
+    end
+    
+    local loopcount = 0
+    for _, ent in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
+        if loopcount > maxloop then
+            break
+        end
+        local dist = (source:GetPos() - ent:GetPos()):Length()
+        if ent.GeigerCounter == 1 and dist<maxrange then
+            
             local shielding = TracePathShielding(source,ent) 
             if shielding !=0 then
                 power = radpower/math.pow(2,shielding)
@@ -220,12 +254,17 @@ function RadiationSource(source, radpower)
             local raddose = power * InverseSquareLaw(dist)
             ent.RadCount = ent.RadCount + raddose
         end
+        loopcount = loopcount + 1
     end
  
+    local loopcount = 0
     for _, ply in pairs( player.GetAll() ) do
+        if loopcount > maxloop then
+            break
+        end
         local dist = (source:GetPos() - ply:GetPos()):Length()
         
-        if ply:IsPlayer() and ply:Alive() then
+        if ply:IsPlayer() and ply:Alive() and dist<maxrange then
             local shielding = TracePathShielding(source,ply) 
             if shielding !=0 then
                 power = radpower/math.pow(2,shielding)
@@ -237,12 +276,18 @@ function RadiationSource(source, radpower)
             addGeigerRads(ply,raddose)
             addRads(ply,exposure)
         end
+        loopcount = loopcount + 1
     end
 
+    local loopcount = 0
     for _, ent in pairs( ents.FindByClass("npc_*") ) do
+        if loopcount > maxloop then
+            break
+        end
+        
         local dist = (source:GetPos() - ent:GetPos()):Length()
         
-        if ent:IsNPC() and ent:Health()>0 then
+        if ent:IsNPC() and ent:Health()>0 and dist<maxrange then
             local shielding = TracePathShielding(source,ent) 
             if shielding !=0 then
                 power = radpower/math.pow(2,shielding)
@@ -253,6 +298,7 @@ function RadiationSource(source, radpower)
             local exposure = raddose/60
             addRads(ent,exposure)
         end
+        loopcount = loopcount + 1
     end
 end
 
@@ -302,20 +348,32 @@ function NuclearBurstType(ent)
         HitPos = trace.HitPos
         
         if trace.HitWorld then
+            if GetConVar("es_debug"):GetInt()==1 then
+                PrintMessage( HUD_PRINTCONSOLE, "DET: Hit World")
+            end
+        elseif trace.Hit then
+            if GetConVar("es_debug"):GetInt()==1 then
+                PrintMessage( HUD_PRINTCONSOLE, "DET: Hit non-world")
+            end 
+        end
+        
+        if trace.HitWorld then
             BurstType = 0
             if GetConVar("es_debug"):GetInt()==1 then
-                PrintMessage( HUD_PRINTCONSOLE, "Surface burst")
+                PrintMessage( HUD_PRINTCONSOLE, "DET: Surface burst")
             end
         else 
             BurstType = 1   
             if GetConVar("es_debug"):GetInt()==1 then
-                PrintMessage( HUD_PRINTCONSOLE, "Airburst")
+                PrintMessage( HUD_PRINTCONSOLE, "DET: Airburst")
             end
         end
         local hitdist = pos:Distance(trace.HitPos)
+        
         if GetConVar("es_debug"):GetInt()==1 then
-            PrintMessage( HUD_PRINTCONSOLE, "Tracedist: "..hitdist)
+            PrintMessage( HUD_PRINTCONSOLE, "DET Tracedist: "..hitdist)
         end
+        
     end
     if HitPos == nil then
         HitPos = pos
@@ -347,6 +405,34 @@ function makePlyTable(ply)
 end
 
 
+-- add radiation to chips
+function AddRadElectronics(ent, raddose)
+    if not ent.EnduringStockpile then
+        ent.EnduringStockpile = {
+            TotalDose = 0,
+            Rads = 0
+        }
+    end
+    ent.EnduringStockpile.Rads = ent.EnduringStockpile.Rads + raddose
+    local rpm = raddose * 60
+    if ent.EnduringStockpile.Rads > 10000 or rpm > 25000 then
+        RadiationFryChip(ent)
+    end
+end
+
+-- radiation damage to chips
+function RadiationFryChip(v)
+    v:Ignite(2)
+    v:SetColor(Color(65,65,65,255))
+    local sound = string.Explode(" ",table.Random(emp_soundlist))[1]
+    v:EmitSound(sound)
+    timer.Simple(math.random(2,3)+math.random(), function()
+        if !v:IsValid() then return end
+        v:Remove()
+    end)
+end
+
+
 function clearPlyTable(ply)
     makePlyTable(ply)
     ply.EnduringStockpile.TotalDose = 0
@@ -371,8 +457,8 @@ hook.Add("PlayerDeath","enduringstockpile_rads_death", clearPlyTable)
 hook.Add( "PlayerSay", "CheckDosimeter", function( ply, text, team )
 	if ( string.lower( text ) == "/dosimeter" ) then
 	    if ply.EnduringStockpile.dosimeter then
-		    ply:PrintMessage( HUD_PRINTTALK, "Your dosimeter reads "..math.Round(ply.EnduringStockpile.Rads).." rads, "..math.Round(ply.EnduringStockpile.TotalDose).." total")
-		else
+		    ply:PrintMessage( HUD_PRINTTALK, "Your dosimeter reads "..math.Round(ply.EnduringStockpile.Rads).." rads accumulated dose, "..math.Round(ply.EnduringStockpile.TotalDose).." rads total absorbed dose")
+		else 
 		    ply:PrintMessage( HUD_PRINTTALK, "You have no personal dosimeter")
 		end
     end

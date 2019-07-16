@@ -6,7 +6,7 @@ ENT.Spawnable                        =  true
 ENT.AdminSpawnable                   =  true 
 ENT.AdminOnly                        =  false
 
-ENT.PrintName		                 =  "Mark 12 bomb"
+ENT.PrintName		                 =  "Mark 7 bomb"
 ENT.Information	                     =  "Tactical bomb, 10 kilotons"
 ENT.Author			                 =  "snowfrog"
 ENT.Contact		                     =  ""

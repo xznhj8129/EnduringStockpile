@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$basetexture" "vgui/entities/es_protection_nbc_suit"
+	"$nolod" 1
+	"$vertexalpha" 1
+	"$vertexcolor" 1
+}

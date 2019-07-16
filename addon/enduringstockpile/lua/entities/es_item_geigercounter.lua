@@ -46,6 +46,7 @@ function ENT:SpawnFunction( ply, tr )
      ent:SetPhysicsAttacker(ply)
      ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
      ent:Spawn()
+     ent:SetColor( Color( 255, 255, 0, 255 ) )
      ent:Activate()
 
      return ent

@@ -1,0 +1,49 @@
+1.7 CHANGELOG:
+- Updated radiation models
+- High radiation levels can now fry electronics
+- Shielding now applies to electronics
+- New icons
+- Added Nuclear reactor core
+
+
+1.6 CHANGELOG:
+All nuclear bombs now emit a tiny amount of radiation (microrads scale).
+
+HUGE CHANGE: RADIATION SHIELDING
+This is extremely important for realism, now all radiation sources (debris, radioactive waste, bombs, prompt radiation; not fallout) now take into consideration the shielding between you and them. For simplicity, i only consider gamma radiation. This is not perfect, but it will consider the thickness of whatever is between you and it and find out by how much it attenuates your dose. This means you can now build shielding to protect yourself from radiation. Water and air also act as shielding. This also means that radiation sources now have infinite range, you will always be exposed to some level of radiation. However, this will not harm you, it usually is not even detectable; it would take one real week to lose 1 HP from 100 milirads/min. This reflects how radiation behaves in real life. Props will shield you more than World (buildings, ect), which will shield you more than water, which is better than air. I not only consider inverse-square law for sources, but also how much air itself absorbs radiation. All things considered is a HUGE improvement.
+ 
+ For reference, 1 Rad is 1000 milirads, and 1 miliRad is 1000 microRads; this means 1 microrad (average background radiation in game is 1.5 microrads/min) is 1/1000000th of a Rad; so don't panic if you see those levels. Microrads = basically nothing, Milirads = not too bad, Rads = dangerous. You can wire the geiger counter entity to multiply gates (x1000 for milirads, x1,000,000 for microrads) to see low levels. 
+
+Other changes, you now spawn with no dosimeter, so you won't know your exposure level nor radiation level whitout getting one. Just press E on it to equip it.
+
+Added two anti-radiation drugs, not 100% realistic but useful for gameplay. Iodine will cut down your Rad absorption by 25% for 2 minutes. Does not stack. Rad-Away, will increase your Rad elimination rate for 2 minutes at the cost of 25HP. Does not stack.
+
+CHANGES:
+- Updated radiation models
+- Added Dosimeter
+- Added Iodine
+- Added Rad-Away
+- Added Radioactive debris
+- Added Low level radiation detection
+- Added Radiation shielding
+- Added Radioactive half-life decay
+- All bombs now emit extremely small levels of radiation
+
+
+1.5 CHANGELOG:
+
+Picked it up again and did some internally significant tweaks for radiation to be more realistic. Now radiation does a little less damage on the lower ends but is absolutely DEADLY at higher doses (which you can easily get in seconds if you fuck around in radioactive craters and immediate fallout). It now does a little less immediate damage to health, but it also now does PERMANENT damage, so even if you survive a big dose you will have a health penalty until you die because your chromosomes are damaged. This also happens for low-level irradiation over long periods of time.
+
+I'll add icons when i can get VTF plugins to work on Linux. Modding on linux is hell on earth, absolutely no tool works. I can't upload this to the workshop yet for this reason...
+
+CHANGES:
+- Updated radiation models, lots of tweaks
+- Optimized radiation code (autorun scripts)
+- Permanent chromosonal damage to health for large accumulated doses
+- Geiger counter now accurate and can emit sound if wired on
+- You are no longer protected from the crater if you are underground, there's supposed to be a crater there anyway
+- Added radioactive waste barrel
+- Added Dirty bomb
+
+1.4 CHANGELOG:
+- 4.0 is now 1.4

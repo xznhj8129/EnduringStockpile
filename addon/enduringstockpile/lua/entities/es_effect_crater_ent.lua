@@ -55,7 +55,7 @@ function ENT:Think()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
                     time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
+                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
                     v.RadCount = v.RadCount + raddose
                 end
             end
@@ -80,7 +80,7 @@ function ENT:Think()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
                     time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
+                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
                     local exposure = raddose/60
                     --PrintMessage( HUD_PRINTCONSOLE, "RD "..raddose )
                     addGeigerRads(ply,raddose)
@@ -107,7 +107,7 @@ function ENT:Think()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
                     time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = math.Round((10000 * dist_modifier * time_modifier * v_dist_modifier))
+                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
                     local exposure = raddose/60
                     addRads(v,exposure)
                 end

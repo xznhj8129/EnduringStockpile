@@ -20,11 +20,10 @@ DEVNOTES
 -low-level geiger counter support
 -radiation shielding
 -half-life decay
+-electronics damage
 
 TODO
 settings panel
-    set fallout halflife
-icons
 review shockwave
 review EMP
 finetune fallout (ENW, p 390-404)
@@ -34,6 +33,11 @@ neutron activation?
 cognitive effects from high doses (vomiting, blurred vision, ect)
 fallout contamination?
 decontamination? (pressure hose, scrub, ect)
+NEW SOUNDS! IMPORTANT!
+
+shockwave:
+"Maybe decrease prop knockback if it's heavier/increase it if it's already a thing?
+Testing this with breakable props mod and a house that weighs 50,000 gets knocked back just as much as a barrel when they're at the same distance and it's kind of a bummer."
 
 
 GUIDE
@@ -74,7 +78,7 @@ REN-5000 (5 megatons)
 REN-TAC (tactical, dial-a-yield)
 REN-STRAT (strategic, dial-a-yield)
 REN-ERTAC (tactical, neutron, dial-a-yield)
-Mk7 bomb (10 kilotons)
+Mk12 bomb (10 kilotons)
 B61 Mod 7 bomb (strategic, dial-a-yield)
 B61 Mod 12 bomb (tactical, dial-a-yield)
 B83 bomb (strategic, dial-a-yield)
@@ -123,6 +127,7 @@ Fallout length slider (1min - 120min)
 EMP Toggle
 Geiger Counter sound
 Permanent health loss
+Radiation damages electronics
 
 
 
@@ -189,9 +194,20 @@ models/sprops/cylinders/size_5/cylinder_12x18.mdl
 models/sprops/cylinders/size_5/cylinder_12x24.mdl
 models/sprops/cylinders/size_5/cylinder_12x30.mdl
 models/Mechanics/roboticslarge/a1.mdld
+
+models/thedoctor/radbarrel.mdl
+
 iodine: models/props_lab/jar01b.mdl
 dosimeter: models/Items/battery.mdl
 dirty bomb: models/props/de_train/barrel.mdl
+
+models/humans/charple01.mdl
+models/humans/charple02.mdl
+models/humans/charple03.mdl
+models/humans/charple04.mdl
+
+color 77,77,77,255
+models/props_c17/metalladder001
 
 nbc suit: models/player/hazmat/hazmat1980.mdl
 cod hazmat: models/dxn/cod_ghosts/hazmat_pm.mdl
@@ -208,7 +224,7 @@ cit4:TakeDamage(100, self)
 Entity:IsLineOfSightClear( Vector target ) 
 util.Decal( "YellowBlood" , Vector start, Vector end, filter=NULL )
 GM:SetPlayerSpeed( Player ply, number walkSpeed, number runSpeed )
-v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK!
+v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK! (fixed)
 
 
 RANDOM NOTES
@@ -286,7 +302,7 @@ EXPOSURE:
             Slowdown
             "your skin starts to blister"
 
-        Dose        Mort    Avg Damage
+        Dose        Mort
         400-500R     5%     
         500-750R    10%     
         750-1000R   25%     
@@ -317,10 +333,10 @@ Dose	Avg HP	Time		Mortality %
 750 	36 	148.0 sec 	4.53%
 800 	29 	155.0 sec 	10.82%
 850 	21 	159.0 sec 	20.19%
-900 	15 	160.0 sec 	33.8%
+900 	15 	160.0 sec 	33.80%
 950 	9 	156.0 sec 	50.03%
 1000 	6 	148.0 sec 	65.23%
-1050 	3 	138.0 sec 	79.2%
+1050 	3 	138.0 sec 	79.20%
 1100 	1 	127.0 sec 	88.89%
 1150 	1 	116.0 sec 	94.69%
 1200 	0 	107.0 sec 	97.83%

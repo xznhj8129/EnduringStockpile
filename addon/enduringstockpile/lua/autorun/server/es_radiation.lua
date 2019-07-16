@@ -2,6 +2,12 @@ AddCSLuaFile()
 
 -- main timer
 timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infinite repetitions
+    if GetConVar("es_falloutlength") == nil then
+        CreateConVar("es_falloutlength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+    end
+    if GetConVar("es_falloutlength"):GetInt() < 1 then
+        RunConsoleCommand("es_falloutlength", "1")
+    end
     for _, ply in pairs( player.GetAll() ) do
         if ply.EnduringStockpile then
 			if !ply:HasGodMode() then

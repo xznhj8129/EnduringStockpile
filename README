@@ -1,42 +1,11 @@
 Build-friendly nukes with realistic effects
-Version 1.6
-
-1.6 CHANGELOG:
-
-    Picked it up again and did some internally significant tweaks for radiation to be more realistic. Now radiation does a little less damage on the lower ends but is absolutely DEADLY at higher doses (which you can easily get in seconds if you fuck around in radioactive craters and immediate fallout). It now does a little less immediate damage to health, but it also now does PERMANENT damage, so even if you survive a big dose you will have a health penalty until you die because your chromosomes are damaged. This also happens for low-level irradiation over long periods of time. Many changes to the maths of radiation, such as inverse-square law as in real life. All nuclear bombs now emit a tiny amount of radiation (microrads scale).
-    
-    HUGE CHANGE: RADIATION SHIELDING
-    This is extremely important for realism, now all radiation sources (debris, radioactive waste, bombs, prompt radiation; not fallout) now take into consideration the shielding between you and them. For simplicity, i only consider gamma radiation. This is not perfect, but it will consider the thickness of whatever is between you and it and find out by how much it attenuates your dose. This means you can now build shielding to protect yourself from radiation. Water and air also act as shielding. This also means that radiation sources now have infinite range, you will always be exposed to some level of radiation. However, this will not harm you, it usually is not even detectable; it would take one real week to lose 1 HP from 100 milirads/min. This reflects how radiation behaves in real life. Props will shield you more than World (buildings, ect), which will shield you more than water, which is better than air. I not only consider inverse-square law for sources, but also how much air itself absorbs radiation. All things considered is a HUGE improvement. For reference, 1 Rad is 1000 milirads, and 1 miliRad is 1000 microRads; this means 1 microrad (average background radiation in game is 1.5 microrads/min) is 1/1000000th of a Rad; so don't panic if you see those levels. Microrads = basically nothing, Milirads = not too bad, Rads = dangerous. You can wire the geiger counter entity to multiply gates (x1000 for milirads, x1,000,000 for microrads) to see low levels. 
-    
-    Other changes, you now spawn with no dosimeter, so you won't know your exposure level nor radiation level whitout getting one. Just press E on it to equip it.
-    
-    Added two anti-radiation drugs, not 100% realistic but useful for gameplay. Iodine will cut down your Rad absorption by 25% for 2 minutes. Does not stack. Rad-Away, will increase your Rad elimination rate for 2 minutes at the cost of 25HP. Does not stack.
-
-    I'll add icons when i can get VTF plugins to work on Linux. Modding on linux is hell on earth, absolutely no tool works. I can't upload this to the workshop yet for this reason...
-
-    CHANGES:
-    - Updated radiation models, lots of tweaks
-    - Optimized radiation code (autorun scripts)
-    - Permanent chromosonal damage to health for large accumulated doses
-    - Geiger counter now accurate and can emit sound if wired on
-    - You are no longer protected from the crater if you are underground, there's supposed to be a crater there anyway
-    - Added Radioactive waste barrel
-    - Added Dirty bomb
-    - Added Dosimeter
-    - Added Iodine
-    - Added Rad-Away
-    - Added radioactive debris
-    - Added low level radiation detection
-    - Added radiation shielding
-    - Added radioactive half-life decay
-    - All bombs now emit extremely small levels of radiation
-
+Version 1.7
+See changelog file for changes
 
 DESCRIPTION:
-
 Realistic nuclear weapons, effects and radiation!
 
-This mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only gigantic early bombs and one-off test articles; no modern real-life deployed models) and somewhat unrealistic and arbitrary effects and power. I forked HBOMBS and started making some new entities, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, it's more of an expansion to it than a stand-alone mod for now, i never modded for Gmod before and didn't know Lua so i started from that. Much credit to it's author, this mod owes a lot to him. 
+This experimental mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only gigantic early bombs and one-off test articles; no modern real-life deployed models) and somewhat unrealistic and arbitrary effects and power. I forked HBOMBS and started making some new entities, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, it's more of an expansion to it than a stand-alone mod for now, i never modded for Gmod before and didn't know Lua so i started from that. Much credit to it's author, this mod owes a lot to him. 
 
 I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use totally different code from regular nukes for more realistic effects, based on real-life research and scientific models. Adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod, yet their retain the right power scaling and effects of real-life, miles ahead of any other nuke mod currently out. The radiation model is also much more advanced than anything else out there, using inspiration from real-life effects of radiation. 
 
@@ -44,14 +13,15 @@ It is in constant work and will be continually updated for better realism.
 This is my first mod, so please advise me of any bugs or errors and give me feedback. 
 All deserved credit for the original code and models goes to their respective authors, i just improved on their work.
 
-REQUIRED MODS:
-Wiremod (for dial-a-yield bombs)
+REQUIRED:
+Counter Strike Source
+Wiremod
 SProps
 HBOMBS Base Pack
 HBOMBS Material Pack
 
 FEATURES:
-Bomb power: All bombs now have realistic blast and heat damage values from real data, converted to Gmod units and scaled down 1:12. This means that the ranges for the effects of the explosion are realistic (enough), but divided by 12 from real life ranges. A bomb will have more powerful blast effects if it is exploded in the air, but produce no fallout.
+Bomb power: All bombs now have realistic blast and heat damage ranges from real data, converted to Gmod units and scaled down 1:12. This means that the ranges for the effects of the explosion are realistic (enough), but divided by 12 from real life ranges. A bomb will have more powerful blast effects if it is exploded in the air, but produce no fallout.
 
 Heat damage: The incinerate/ignite code in the bombs was completely redone. Now depending on how close you are from the bomb you will now either be burned slightly, be badly burned and maybe die, be burned to a crisp and die, or even be burned down to your bones. This depends on wether or not you are directly exposed to the heat flash, so hiding behind something will protect you from the flash burns as in real life. This also affects NPC's! Props close to the bomb will catch fire and be charred (material change).
 
@@ -71,28 +41,10 @@ Prompt Radiation:
 Prompt radiation is the initial blast of radiation (neutrons and gamma rays) that is produced in the first second the nuke explodes. This is subject to inverse-square law as well as absorption and scattering by the atmosphere, so it's range very rapidly falls off. It is most noticeable on smaller yield bombs, where the physical effects (blast, heat flash) are small enough that the lethal range of radiation actually outranges them. Being not in line-of-sight with the explosion will still give you half the dose you would have had if you were in direct line with it, because the atmosphere is bouncing gamma rays at you from the sky. Being shielded overhead and not in line of sight will only expose you to a fraction of the dose; gamma rays are extremely penetrative and still find a way to reach you, but it's much less. 
 
 Fallout:
-Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. This time was chosen so it's not too long for somewhat casual players. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. An slider will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout, the height at which it is considered an airburst depends on the size of the fireball, thus the explosion's power. 
+Fallout was completely reworked and now decays over time as in real life; on a 2-minute timescale. It starts falling down from the sky and the radiation level peaks about 10 seconds after the explosion, then it starts dropping off quite quickly. A slider will be added for long decay for those who want more realistic consequences. Instead of directly giving you damage, it will add to your radiation dose and you will feel the effects even if you are only exposed for a short while. You are shielded from fallout if you stay inside a building or underground, or if you have a hazmat suit (up to a certain point!). Fallout can expose you to massive doses of radiation, so it is vital that you shelter indoors or wear a hazmat suit if you are close to a bomb that explodes on the ground. Airbursts (bombs exploding in the air) do not produce fallout, the height at which it is considered an airburst depends on the size of the fireball, thus the explosion's power. 
 
 Enhanced Radiation Weapons:
 New in 1.4, this is a small tactical warhead that uses an Enhanced Radiation device, commonly known as a Neutron Bomb. This bomb trades blast and heat power for a stronger burst of radiation, making it more lethal against players or NPC's while not having as powerful an explosion as normal bombs. A 1kt ERW has only half the power of a normal 1kt bomb, but the radiation power of a 5kt device; 5kt has the radiation power of a 10kt; and a 10kt that of a 20kt. They tend to be on the smaller scale of nukes, being intended for battlefield use, so 10kt is about the most powerful they come. The REN-ERTAC has 3 modes, 1kt, 5kt and 10kt.
-
-
-ROADMAP:
-DONE: realistic effect ranges
-DONE: more realistic flash-burn and ignition effects
-DONE: dial-a-yield weapons (use wire to select the yield of the nuke)
-DONE: realistic fallout with decay and dependent on ground/water or air burst
-DONE: different blast/fire effect range dependent on wether it was ground or air burst (as IRL)
-DONE: icons!
-DONE: prompt radiation burst and neutron bombs
-DONE: wire geiger counter that outputs the current radiation level in it's location
-DONE: protection against radioactivity such as pills or something
-DONE: radiation shielding
-TODO: hazmat suits
-TODO: improve blast shockwave
-TODO: control panel
-TODO: new geiger sounds
-TODO: new icons
 
 
 REFERENCES:
@@ -122,8 +74,9 @@ B61 Mod 7 bomb - Strategic bomb with selectable yield, Modes are 1=20kt, 2=50kt,
 B61 Mod 12 bomb - Tactical bomb with selectable yield, Modes are 1=1kt, 2=5kt, 3=10kt, 4=20kt, 5=50kt, default (0)=50kt
 B83 bomb - Strategic bomb with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default (0)=1mt
 Dirty bomb - Conventional 500lb bomb but with radioactive material inside, creates lots of fallout
-Radioactive waste - A highly radioactive barrel of nuclear waste
-
+Nuclear waste barrel - A highly radioactive barrel of nuclear waste
+Radioactive debris - Spicy rocks from an RBMK reactor
+Nuclea reactor core - Highly radioactive core that can be powered up to massive levels of radiation, and potentially explode (coming soon)
 
 FAQ
 Q: Why are the warheads so tiny?
@@ -142,6 +95,6 @@ Q: The bombs are overpowered!
 A: Overpowered... realistic... nuclear... weapons... Think about that for a second. If you think there's something that could be adjusted for better effects and playability, tell me about it, but being overpowered is kind of the entire thing with nukes. 
 
 Q: Can you make the Tsar Bomba/This specific bomb/Some fantasy bomb?
-A: No. The point of this mod is realism.
+A: No. The point of this mod is realism and to leave it up to you to make anything you want instead of making specific weapons.
 
 Code and more info on Github: https://github.com/snow-frog/EnduringStockpile/
