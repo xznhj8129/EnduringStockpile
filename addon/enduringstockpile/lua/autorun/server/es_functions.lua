@@ -389,7 +389,7 @@ function makePlyTable(ply)
             TotalDose = 0,
             Rads = 0,
             RadsPerSecond = 0,
-            GeigerSound = 1,
+            GeigerSound = 0,
             GeigerRads = 0,
             GeigerRPS = 0,
             radx = false,

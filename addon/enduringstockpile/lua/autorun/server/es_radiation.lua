@@ -39,7 +39,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 					end
                     
                     if rads > 5000 then
-						local ctd = math.Round((rads/200000)*1000)
+						local ctd = math.Round((rads/500000)*1000)
 						local draw = math.random(0,1000)
 						if draw <= ctd then
 							ply:Kill()
@@ -56,11 +56,11 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
                         local microrads = math.Round(geigerrps*1000000,2)
                         
                         if milirads < 1 and microrads > 2 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..microrads.." microrads/min")
+                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..microrads.." microrads/min")
                         elseif geigerrps < 1 and milirads > 0 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..milirads.." milirads/min")
+                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..milirads.." milirads/min")
                         elseif geigerrps >= 1 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Geiger Counter: "..math.Round(geigerrps,2).." rads/min")
+                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..math.Round(geigerrps,2).." rads/min")
                         end
                             
 					    if ply.EnduringStockpile.GeigerSound == 1 then
@@ -114,7 +114,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
                 end
                 
                 if rads > 2000 then
-                    local ctd = math.Round((rads/40000)*1000)
+                    local ctd = math.Round((rads/500000)*1000)
                     local draw = math.random(0,1000)
                     if draw < ctd then
                         v:TakeDamage(1000000, v, v )

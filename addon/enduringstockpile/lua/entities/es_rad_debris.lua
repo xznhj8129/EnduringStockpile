@@ -37,6 +37,11 @@ function ENT:Initialize()
     self:SetUseType( ONOFF_USE ) -- doesen't fucking work
     self.EntList={}
     self.EntCount = 0
+    self.HalfLife = GetConVar("es_isotopes_halflife"):GetInt()
+    if self.HalfLife == nil then
+        CreateConVar("es_isotopes_halflife", "3600", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+        self.HalfLife = 3600
+    end
     local phys = self:GetPhysicsObject()
     local skincount = self:SkinCount()
     if (phys:IsValid()) then

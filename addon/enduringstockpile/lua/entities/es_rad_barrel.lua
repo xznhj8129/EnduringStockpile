@@ -9,7 +9,7 @@ ENT.PrintName		                 =  "Nuclear Waste Barrel"
 ENT.Author			                 =  "snowfrog"
 ENT.Category                         =  "EnduringStockpile"
 
-ENT.Model                            =  "models/props/de_train/barrel.mdl"                     
+ENT.Model                            =  "models/thedoctor/radbarrel.mdl"                     
 ENT.Effect                           =  ""
 ENT.EffectAir                        =  ""      
 ENT.EffectWater                      =  "water_small"
@@ -22,17 +22,23 @@ ENT.Time                             =  0
 
 ENT.GBOWNER                          =  nil             -- don't you fucking touch this.
 
- 
-function ENT:SpawnFunction( ply, tr )
-     if ( not tr.Hit ) then return end
-	 self.GBOWNER = ply
-     local ent = ents.Create( self.ClassName )
-	 ent:SetPhysicsAttacker(ply)
-     ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
-     ent:Spawn()
-     ent:Activate()
 
-     return ent
+function ENT:SpawnFunction( ply, tr )
+    if ( not tr.Hit ) then return end
+    self.GBOWNER = ply
+    local ent = ents.Create( self.ClassName )
+    self.HalfLife = GetConVar("es_isotopes_halflife"):GetInt()
+    if self.HalfLife == nil then
+        CreateConVar("es_isotopes_halflife", "3600", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+        self.HalfLife = 3600
+    end
+    ent:SetPhysicsAttacker(ply)
+    ent:SetPos( tr.HitPos + tr.HitNormal * 16 ) 
+    ent:Spawn()
+    ent:Activate()
+     
+
+    return ent
 end
  
 

@@ -21,6 +21,7 @@ DEVNOTES
 -radiation shielding
 -half-life decay
 -electronics damage
+-exploding nuclear reactor
 
 TODO
 settings panel
@@ -34,6 +35,7 @@ cognitive effects from high doses (vomiting, blurred vision, ect)
 fallout contamination?
 decontamination? (pressure hose, scrub, ect)
 NEW SOUNDS! IMPORTANT!
+HUD
 
 shockwave:
 "Maybe decrease prop knockback if it's heavier/increase it if it's already a thing?
@@ -90,10 +92,6 @@ B61-7       20-50-100-250
 B61-12      1-10-20-50
 B83         100-250-500-1000
 
-RADIATION
-DPS as a function of total dose
-5% chance to die per second per 1000 rads
-
 NEUTRON BOMB
 Radiation flux 8x normal
 Blast/Thermal power 1/2 normal
@@ -148,7 +146,7 @@ models/props_lab/powerbox02d.mdl
 
 models/player/corpse1.mdl
 models/player/skeleton.mdl
-models/Humans/Charple01.mdl
+models/Humans/Charple01.mdl #
 models/humans/charple01.mdl # these two models are different. Seriously, Valve.
 
 Peak overpressure 	
@@ -213,6 +211,8 @@ nbc suit: models/player/hazmat/hazmat1980.mdl
 cod hazmat: models/dxn/cod_ghosts/hazmat_pm.mdl
 models/props_wasteland/laundry_washer001a.mdl
 
+models/props_wasteland/rockcliff04a
+
 chunks: 
 models/props_debris/concrete_spawnchunk001c.mdl
 ...
@@ -226,6 +226,7 @@ util.Decal( "YellowBlood" , Vector start, Vector end, filter=NULL )
 GM:SetPlayerSpeed( Player ply, number walkSpeed, number runSpeed )
 v:IsLineOfSightClear(self) DOES NOT WORK ON PROPS! FUCK! (fixed)
 
+models/props_debris/destroyedceiling01a.mdl
 
 RANDOM NOTES
 map width: 32250u

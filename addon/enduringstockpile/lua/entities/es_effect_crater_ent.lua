@@ -6,6 +6,9 @@ DEFINE_BASECLASS( "base_anim" )
 ENT.Spawnable                         =  false
 ENT.AdminSpawnable                    =  false
 
+ENT.RadiationEnergy                     = 10000
+ENT.FalloutLen                          = 1
+
 ENT.PrintName                         =  "Radioactive Crater"
 ENT.Author                            =  "snowfrog"
 ENT.Contact                           =  ""
@@ -22,6 +25,11 @@ function ENT:Initialize()
         if self.RadRadius==nil then
            self.RadRadius=500
         end
+        self.FalloutLen = GetConVar("es_falloutlength"):GetInt()
+        if self.FalloutLen == nil then
+            CreateConVar("es_falloutlength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+            self.FalloutLen = 1
+        end
     end
 end
 
@@ -31,12 +39,6 @@ function ENT:Think()
     if (SERVER) then
         if !self:IsValid() then return end
         local pos = self:GetPos()
-        
-        if falloutlen == nil then
-            CreateConVar("es_falloutlength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-        end
-        
-        local falloutlen = GetConVar("es_falloutlength"):GetInt()
         
         for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
             if v.GeigerCounter == 1 then
@@ -54,8 +56,8 @@ function ENT:Think()
                     local dist = (self:GetPos() - v:GetPos()):Length()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                    time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
+                    time_modifier = math.pow(((400*self.FalloutLen)-self.Bursts) / (400*self.FalloutLen), 6)
+                    local raddose = (self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier)
                     v.RadCount = v.RadCount + raddose
                 end
             end
@@ -79,8 +81,8 @@ function ENT:Think()
                     local dist = (self:GetPos() - ply:GetPos()):Length()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                    time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
+                    time_modifier = math.pow(((400*self.FalloutLen)-self.Bursts) / (400*self.FalloutLen), 6)
+                    local raddose = (self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier)
                     local exposure = raddose/60
                     --PrintMessage( HUD_PRINTCONSOLE, "RD "..raddose )
                     addGeigerRads(ply,raddose)
@@ -106,8 +108,8 @@ function ENT:Think()
                     local dist = (self:GetPos() - v:GetPos()):Length()
                     local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                     local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                    time_modifier = math.pow(((400*falloutlen)-self.Bursts) / (400*falloutlen), 6)
-                    local raddose = (10000 * dist_modifier * time_modifier * v_dist_modifier)
+                    time_modifier = math.pow(((400*self.FalloutLen)-self.Bursts) / (400*self.FalloutLen), 6)
+                    local raddose = (self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier)
                     local exposure = raddose/60
                     addRads(v,exposure)
                 end
@@ -115,7 +117,7 @@ function ENT:Think()
         end
         
         self.Bursts = self.Bursts + 0.25
-        if (self.Bursts >= (300*falloutlen)) then
+        if (self.Bursts >= (300*self.FalloutLen)) then
             self:Remove()
         end
         self:NextThink(CurTime() + 0.25)

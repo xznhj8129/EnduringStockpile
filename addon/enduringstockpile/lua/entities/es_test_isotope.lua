@@ -28,6 +28,11 @@ function ENT:Initialize()
      self.EntCount = 0
      local phys = self:GetPhysicsObject()
      local skincount = self:SkinCount()
+    self.HalfLife = GetConVar("es_isotopes_halflife"):GetInt()
+    if self.HalfLife == nil then
+        CreateConVar("es_isotopes_halflife", "3600", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+        self.HalfLife = 3600
+    end
      if (phys:IsValid()) then
          phys:SetMass(self.Mass)
          phys:Wake()

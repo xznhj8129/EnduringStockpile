@@ -9,9 +9,9 @@ ENT.AdminSpawnable                    =  false
 ENT.PrintName                         =  "Radioactive Fallout"
 ENT.Author                            =  "snowfrog"
 ENT.Contact                           =  ""
-
 ENT.RadiationEnergy = 5000
 ENT.Bursts = 0
+ENT.FalloutLen = 1
 
 function ENT:Initialize()
     if (SERVER) then
@@ -25,6 +25,11 @@ function ENT:Initialize()
         if self.RadRadius==nil then
            self.RadRadius=500
         end
+        self.FalloutLen = GetConVar("es_falloutlength"):GetInt()
+        if self.FalloutLen == nil then
+            CreateConVar("es_falloutlength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
+            self.FalloutLen = 1
+        end
     end
 end
 
@@ -34,13 +39,7 @@ function ENT:Think()
     if (SERVER) then
         if !self:IsValid() then return end
         local pos = self:GetPos()
-        
-        if falloutlen == nil then
-            CreateConVar("es_falloutlength", "1", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-        end
-        
-        local falloutlen = GetConVar("es_falloutlength"):GetInt()
-        
+
         for _, v in pairs( ents.FindByModel("models/props_lab/powerbox02d.mdl")) do
             if v.GeigerCounter == 1 then
                 -- tracer to find if entity is in the open
@@ -64,10 +63,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*falloutlen) then
-                            time_modifier = self.Bursts / (19*falloutlen)
+                        if self.Bursts<(19*self.FalloutLen) then
+                            time_modifier = self.Bursts / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         v.RadCount = v.RadCount + raddose
@@ -101,10 +100,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - ply:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*falloutlen) then
-                            time_modifier = self.Bursts / (19*falloutlen)
+                        if self.Bursts<(19*self.FalloutLen) then
+                            time_modifier = self.Bursts / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
@@ -140,10 +139,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*falloutlen) then
-                            time_modifier = self.Bursts / (19*falloutlen)
+                        if self.Bursts<(19*self.FalloutLen) then
+                            time_modifier = self.Bursts / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*falloutlen)-(self.Bursts-19)) / (200*falloutlen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
@@ -154,7 +153,7 @@ function ENT:Think()
         end
 
         self.Bursts = self.Bursts + 0.25
-        if (self.Bursts >= (260*falloutlen)) then
+        if (self.Bursts >= (260*self.FalloutLen)) then
             self:Remove()
         end
         self:NextThink(CurTime() + 0.25)
