@@ -49,20 +49,16 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 				end
 				
 				local geigerrps = getGeigerRads(ply)
+				--print(geigerrps)
+				ply:SetNetworkedInt("EnduringStockPileGeigerHud",geigerrps)
+				ply:SetNetworkedBool("EnduringStockPileDoHud",ply.EnduringStockpile.dosimeter)
+				ply:SetNetworkedInt("EnduringStockPileDosimeter",math.Round(ply.EnduringStockpile.TotalDose,2))
+				ply:SetNetworkedInt("EnduringStockPileDosimeterAcc",math.Round(ply.EnduringStockpile.Rads,2))
+                
 				if geigerrps > 0 then
-				    if ply.EnduringStockpile.dosimeter then 
+				    if ply.EnduringStockpile.dosimeter then
                         geigerrps = geigerrps + (math.random(10,20)/10000000)
-                        local milirads = math.Round(geigerrps*1000,2)
-                        local microrads = math.Round(geigerrps*1000000,2)
-                        
-                        if milirads < 1 and microrads > 2 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..microrads.." microrads/min")
-                        elseif geigerrps < 1 and milirads > 0 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..milirads.." milirads/min")
-                        elseif geigerrps >= 1 then
-                            ply:PrintMessage( HUD_PRINTCENTER , "Dosimeter: "..math.Round(geigerrps,2).." rads/min")
-                        end
-                            
+						ply:SetNetworkedInt("EnduringStockPileGeigerHud",geigerrps)
 					    if ply.EnduringStockpile.GeigerSound == 1 then
 						    if (geigerrps) >= 1000 then
 							    ply:EmitSound("geiger/rad_extreme.wav", 100, 100)
@@ -77,7 +73,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
 						    end
 					    end
 					end
-				end  
+				end
 
 		        if geigerrps <= rads then
 			        if ply.EnduringStockpile.radaway then

@@ -1,5 +1,32 @@
 DEVNOTES
 
+TODO
+settings panel
+review shockwave
+review EMP
+finetune fallout (ENW, p 390-404)
+liquidator biorobot suit
+neutron activation?
+cognitive effects from high doses (vomiting, blurred vision, ect)
+acute radiation syndrome
+fallout contamination (see GChem)
+decontamination
+NEW GEIGER SOUNDS! IMPORTANT!
+Particle-based Advanced Fallout (see GChem)
+Stormfox Weather integration
+JMod integration?
+Better (bigger) reactor model
+Rework radioisotopes of fallout/crater into short, medium and long half-life types
+
+
+IN PROGRESS
+-changed dirty bomb model because CS:source model
+-HUD
+-exploding nuclear reactor
+-hazmat suit
+
+
+DONE
 -fixed geiger rad display system
 -reworked shockwave annihilaiton zone
 -added convars to control fallout length
@@ -21,21 +48,7 @@ DEVNOTES
 -radiation shielding
 -half-life decay
 -electronics damage
--exploding nuclear reactor
 
-TODO
-settings panel
-review shockwave
-review EMP
-finetune fallout (ENW, p 390-404)
-hazmat suit
-liquidator biorobot suit
-neutron activation?
-cognitive effects from high doses (vomiting, blurred vision, ect)
-fallout contamination?
-decontamination? (pressure hose, scrub, ect)
-NEW SOUNDS! IMPORTANT!
-HUD
 
 shockwave:
 "Maybe decrease prop knockback if it's heavier/increase it if it's already a thing?
@@ -269,6 +282,54 @@ HOUR	60	    0.06	6E-05
 DAY	    1440	1.44	0.00144
 YEAR	525600	525.6	0.5256
 
+
+FALLOUT
+FROM Effects of Nuclear Weapons p390-404
+    About 3 x 10^23 fission product atoms, weighing roughly 2 ounces, are formed per kiloton (or 125 pounds per megaton) of fission energy yield.
+    By the end of a day, the rate of beta-particle emission will have decreased by a factor of about 2,000 from its I-minute value, and there will have been an even larger decrease in the gamma-ray energy emission rate.
+    for every sevenfold increase in time after the explosion, the dose rate decreases by a factor of ten.
+    
+RELATIVE THEORETICAL DOSE RATES FROM EARLY FALLOUT AT VARIOUS
+TIMES AFTER A NUCLEAR EXPLOSION
+Time (hours)    Relative dose rate
+1               1000
+1.5             610
+2               400
+3               230
+5               130
+6               100
+10              63
+15              40
+24              23
+36              15
+48              10
+72              6.2
+100             4
+200             1.7
+400             0.69
+600             0.4
+800             0.31
+1000            0.24
+
+
+REAL ISOTOPES
+Radioactive substance 	half-life
+iodine-131 	8.04 days
+Cobalt-60  5.26 years 
+plutonium-241 (-> Am241) 	14.4 years
+caesium-137 	30 years
+strontium-90 	29.12 years
+Americium-241  430 years 
+plutonium-240 	6,563 years
+plutonium-239 	24,110 years
+
+GMOD ISOTOPES
+Super-short: 30sec
+Short: 2min
+Medium: 10min
+Long: 60min
+Super-long: 24h
+Ultra-long: 1yr (yes one real year)
 
 
 ACUTE RADIATION SYNDROME

@@ -454,16 +454,6 @@ end
 -- hooks
 hook.Add("PlayerDeath","enduringstockpile_rads_death", clearPlyTable)
 
-hook.Add( "PlayerSay", "CheckDosimeter", function( ply, text, team )
-	if ( string.lower( text ) == "/dosimeter" ) then
-	    if ply.EnduringStockpile.dosimeter then
-		    ply:PrintMessage( HUD_PRINTTALK, "Your dosimeter reads "..math.Round(ply.EnduringStockpile.Rads).." rads accumulated dose, "..math.Round(ply.EnduringStockpile.TotalDose).." rads total absorbed dose")
-		else 
-		    ply:PrintMessage( HUD_PRINTTALK, "You have no personal dosimeter")
-		end
-    end
-end )
-
 hook.Add( "PlayerSay", "GeigerMute", function( ply, text, team )
 	-- Make the chat message entirely lowercase
 	if string.lower(text) == "/geigersound" then

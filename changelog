@@ -1,3 +1,12 @@
+1.8 CHANGELOG:
+- Nuclear reactor core explodes
+- HUD replaces notification messages for geiger counter
+- Updates to radiation halflife settings
+- More convars
+- Changed Dirty Bomb model
+- Changed and included Radioactive Waste Barrel
+
+
 1.7 CHANGELOG:
 - Updated radiation models
 - High radiation levels can now fry electronics

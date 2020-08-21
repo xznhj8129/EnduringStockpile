@@ -1,0 +1,58 @@
+Realistic nuclear weapons, effects and radiation!
+Version 1.8
+
+SEE DISCUSSION FORUM FOR FULL DESCRIPTION!
+DESCRIPTION:
+This experimental mod was made to fix several shortcomings of Gbombs-based nukes. Among the issues were no small warheads meant for building (only gigantic early bombs and one-off test articles; no modern real-life deployed models) and somewhat unrealistic and arbitrary effects and power. I forked HBOMBS and started making some new entities, then i decided to go all the way and create an entire Full Realism nuke mod. This is a modification of HBOMBS, it's more of an expansion to it than a stand-alone mod for now, i never modded for Gmod before and didn't know Lua so i started from that. Much credit to it's author, this mod owes a lot to him. 
+
+I made small yet life-size warheads in various yields including a few selectable-yield devices and 4 types of aircraft bombs. They use totally different code from regular nukes for more realistic effects, based on real-life research and scientific models. Adjustments have been made to the scale (1:12), duration and effects of explosions to keep things reasonable for Garry's Mod, yet their retain the right power scaling and effects of real-life, miles ahead of any other nuke mod currently out. 
+
+The radiation model is also much more advanced than anything else out there, using inspiration from real-life effects of radiation. 
+
+It is in constant work and will be continually updated for better realism.
+This is my first mod, so please advise me of any bugs or errors and give me feedback. 
+All deserved credit for the original code and models goes to their respective authors.
+
+REQUIRED:
+Counter Strike Source
+Wiremod
+SProps
+HBOMBS Base Pack
+HBOMBS Material Pack
+Hazmat Conscripts Playermodels
+
+FEATURES:
+-Large selection of compact build-friendly nuclear devices
+-Realistic blast, heat, radiation damage and effects taken straight from authoritative source on nuclear weapon effects
+-Effects scaled 1:12 from real-life to game
+-Ultra-realistic radiation model
+-Realistic radiation protection and shielding
+-Dial-a-yield weapons
+-Neutron bombs
+-Dirty bombs
+-Explosive nuclear reactor core
+
+In this mod you will find the following:
+REN-1 warhead (1 kiloton) (visuals of Davy Crockett, no flash)
+REN-5 warhead (5 kilotons) (visuals of Davy Crockett, with flash)
+REN-10 warhead (10 kilotons) (visuals of Artillery shell)
+REN-20 warhead (20 kilotons) (visuals of Fat Man)
+REN-50 warhead (50 kilotons) (visuals of Ivy King)
+REN-100 warhead (100 kilotons) (visuals of Gadget)
+REN-250 warhead (250 kilotons) (visuals of Little Boy)
+REN-500 warhead (500 kilotons) (visuals of Ivy Mike)
+REN-1000 warhead (1 megaton) (visuals of Castle Bravo)
+REN-5000 warhead (5 megatons) (visuals of Tsar Bomba)
+REN-TAC warhead - Tactical warhead with selectable yield, Modes are 0=1kt, 1=5kt, 2=10kt, 3=20kt, 4=50kt, default (0)=1kt
+REN-STRAT warhead - Strategic warhead with selectable yield, Modes are 0=100kt, 1=250kt, 2=500kt, 3=1mt, default (0)=100kt
+REN-ERTAC warhead - Enhanced Radiation tactical warhead (neutron bomb), Modes are 0=1kt, 1=5kt, 2=10kt, default (0)=1kt
+Mk12 Bomb - Tactical bomb, same thing as REN-10
+B61 Mod 7 bomb - Strategic bomb with selectable yield, Modes are 1=20kt, 2=50kt, 3=100kt, 4=250kt; default (0)=100kt
+B61 Mod 12 bomb - Tactical bomb with selectable yield, Modes are 1=1kt, 2=5kt, 3=10kt, 4=20kt, 5=50kt, default (0)=50kt
+B83 bomb - Strategic bomb with selectable yield, Modes are 1=100kt, 2=250kt, 3=500kt, 4=1mt, default (0)=1mt
+Dirty bomb - Conventional 500lb bomb but with radioactive material inside, creates lots of fallout
+Nuclear waste barrel - A highly radioactive barrel of nuclear waste
+Radioactive debris - Spicy rocks from an RBMK reactor
+Nuclea reactor core - Highly radioactive core that can be powered up to massive levels of radiation, and potentially explode with catastrophic consequences
+
+Code and more info on Github: https://github.com/snow-frog/EnduringStockpile/
