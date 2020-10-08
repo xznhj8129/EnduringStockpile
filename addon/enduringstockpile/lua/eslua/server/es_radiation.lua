@@ -98,7 +98,7 @@ timer.Create( "radiation_damage_think", 1, 0, function() -- 1 second timer, infi
     for _, v in pairs( ents.FindByClass("npc_*") ) do
         if v.EnduringStockpile then
             local rads, recentrads = getRads(v)
-            if rads > 0 then
+            if rads > 1 then
                 local raddamage = rads * 0.001
                 
                 if math.random(0,100) <= math.Round((rads/1000)*20) then

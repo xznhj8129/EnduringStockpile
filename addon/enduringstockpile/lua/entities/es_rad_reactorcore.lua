@@ -17,13 +17,15 @@ ENT.EffectWater                 =  "water_medium"
 ENT.ExplosionSound              =  "gbombs_5/explosions/heavy_bomb/ex2.mp3"
 
 ENT.Mass                        = 25000
-ENT.RadPower                    = 25000
+ENT.RadPower                    = 100
+ENT.DebrisN                     = 20
 ENT.SetPower                    = 0
-ENT.Explodes                    = 0
-ENT.FalloutLen                  = 2
-ENT.FalloutEnergy               = 500
+ENT.Started                     = 0
+ENT.Explodes                    = 1
+ENT.FalloutLen                  = 5
+ENT.FalloutEnergy               = 100
 ENT.FalloutRadius               = 40000
-ENT.CraterRadius                = 1000
+ENT.CraterRadius                = 500
 ENT.Wrecked                     = false
 ENT.HalfLife                    = 1800
 ENT.Time                        = 0
@@ -62,7 +64,7 @@ function ENT:Initialize()
         self.FalloutLen = GetConVar("es_reactor_falloutlen"):GetInt()
         if self.FalloutLen == nil then
             CreateConVar("es_reactor_falloutlen", "3", { FCVAR_REPLICATED, FCVAR_ARCHIVE, FCVAR_NOTIFY } )
-            self.FalloutLen = 3
+            self.FalloutLen = 5
         end
         self.HalfLife = GetConVar("es_isotopes_halflife"):GetInt()
         if self.HalfLife == nil then
@@ -77,25 +79,22 @@ function ENT:Initialize()
         self:SetUseType( ONOFF_USE ) -- doesen't fucking work
         
         local phys = self:GetPhysicsObject()
-        local skincount = self:SkinCount()
         if (phys:IsValid()) then
             phys:SetMass(self.Mass)
             phys:SetBuoyancyRatio(0)
             phys:Wake()
-        end
-        if (skincount > 0) then
-            self:SetSkin(math.random(0,skincount))
         end
         self.Exploded = false
         self.Used    = false
         self.Arming = false
         self.Exploding = false
         if !(WireAddon == nil) then 
-            self.Inputs   = Wire_CreateInputs(self, { "Power" }) 
-            self.Outputs  = Wire_CreateOutputs(self, { "RadPower" })
+            self.Inputs   = Wire_CreateInputs(self, { "Startup" , "Power"}) 
+            self.Outputs  = Wire_CreateOutputs(self, { "Running", "RadPower" })
         end
     end
 end
+
 
 function ENT:ExploSound(pos)
     if not self.Exploded then return end
@@ -116,10 +115,16 @@ end
 function ENT:TriggerInput(iname, value)
     if (!self:IsValid()) then return end
     if self.Wrecked then return end
-    if (iname == "Power") then
+    if (iname == "Startup") and self.Started==0 then
+        if value>=1 then
+            sound.Play("capacitor1.mp3", self:GetPos(), 100, 100, 1)
+            self.Started = 1
+            self.RadPower = 25000
+        end
+    end    
+    if (iname == "Power") and self.Started==1 then
         self.SetPower = value
         self.RadPower = ((value/100)*975000) + 25000
-        Wire_TriggerOutput(self, "RadPower", self.RadPower)
     end    
 end 
 
@@ -231,6 +236,10 @@ function ENT:Think()
     if (SERVER) then
         if !self:IsValid() then return end
         
+        --ambient/machines/60hzhum.wav
+        --ambient/machines/machine2.wav
+        --sound.Play("capacitor1.mp3", self:GetPos(), 100, 100, 1)
+        
         if self.Wrecked then
             local radpower_left = NuclearHalfLife(self.RadPower, self.Time, self.HalfLife)
             RadiationSource(self, radpower_left)
@@ -239,8 +248,8 @@ function ENT:Think()
             RadiationSource(self, self.RadPower)
         end
 
-        if self.Explodes == 1 and !self.Wrecked then
-            if self.SetPower > 1000 then
+        if self.Explodes == 1 and !self.Wrecked and self.Started==1 then
+            if self.SetPower > 250 then
                 if !self:IsValid() then return end 
                 self.Exploded = true
                 self:Explode()
@@ -248,6 +257,7 @@ function ENT:Think()
             if self.SetPower > 110 then
                 local boomchance = (self.SetPower-110)/4
                 if math.random(0,100) <= math.Round(boomchance) then
+                    sound.Play("ambient/explosions/exp1.wav", self:GetPos(), 100, 100, 1)
                     self:Ignite(30)
                     timer.Simple(5,function()
                         if !self:IsValid() then return end 
@@ -258,9 +268,9 @@ function ENT:Think()
             end
         end
         
-        
+        Wire_TriggerOutput(self, "Running", self.Started)
+        Wire_TriggerOutput(self, "RadPower", self.RadPower)
         self:NextThink(CurTime() + 0.25)
-        
         return true
     end
 end

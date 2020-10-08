@@ -39,6 +39,7 @@ ENT.ArmDelay                         =  1
 ENT.Timer                            =  0
 ENT.Shocktime                        =  2
 ENT.FalloutRadius                    =  10000
+ENT.FalloutEnergy                    =  2000
 ENT.RadPower                         =  100
 
 ENT.DEFAULT_PHYSFORCE                = 155
@@ -167,7 +168,7 @@ function ENT:Explode()
         ent:Spawn()
         ent:Activate()
         ent.RadRadius = self.FalloutRadius
-        ent.RadiationEnergy = 2000
+        ent.RadiationEnergy = self.FalloutEnergy
      end
      self:Remove()
 end

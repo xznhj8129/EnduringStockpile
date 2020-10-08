@@ -10,7 +10,7 @@ ENT.PrintName                         =  "Radioactive Fallout"
 ENT.Author                            =  "snowfrog"
 ENT.Contact                           =  ""
 ENT.RadiationEnergy = 5000
-ENT.Bursts = 0
+ENT.Time = 0
 ENT.FalloutLen = 1
 
 function ENT:Initialize()
@@ -19,7 +19,7 @@ function ENT:Initialize()
         self:SetSolid( SOLID_NONE )
         self:SetMoveType( MOVETYPE_NONE )
         self:SetUseType( ONOFF_USE ) 
-        self.Bursts = 0
+        self.Time = 0
         self.HBOWNER = self:GetVar("HBOWNER")
         self.RadRadius = self:GetVar("Rad_Radius")
         if self.RadRadius==nil then
@@ -45,7 +45,7 @@ function ENT:Think()
                 -- tracer to find if entity is in the open
                 local tracedata    = {}
                 tracedata.start    = v:GetPos() + Vector(0,0,80)
-                tracedata.endpos   = tracedata.start - Vector(0, 0, -4000)
+                tracedata.endpos   = tracedata.start - Vector(0, 0, -500)
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
@@ -63,10 +63,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*self.FalloutLen) then
-                            time_modifier = self.Bursts / (19*self.FalloutLen)
+                        if self.Time<(19*self.FalloutLen) then
+                            time_modifier = self.Time / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Time-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         v.RadCount = v.RadCount + raddose
@@ -81,7 +81,7 @@ function ENT:Think()
                 -- tracer to find if entity is in the open
                 local tracedata    = {}
                 tracedata.start    = ply:GetPos() + Vector(0,0,80)
-                tracedata.endpos   = tracedata.start - Vector(0, 0, -4000)
+                tracedata.endpos   = tracedata.start - Vector(0, 0, -500)
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
@@ -100,10 +100,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - ply:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*self.FalloutLen) then
-                            time_modifier = self.Bursts / (19*self.FalloutLen)
+                        if self.Time<(19*self.FalloutLen) then
+                            time_modifier = self.Time / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Time-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
@@ -121,7 +121,7 @@ function ENT:Think()
                 -- tracer to find if entity is in the open
                 local tracedata    = {}
                 tracedata.start    = v:GetPos() + Vector(0,0,80)
-                tracedata.endpos   = tracedata.start - Vector(0, 0, -4000)
+                tracedata.endpos   = tracedata.start - Vector(0, 0, -500)
                 tracedata.filter   = self.Entity
                 local trace = util.TraceLine(tracedata)
                 if !trace.HitWorld then -- not shielded
@@ -139,10 +139,10 @@ function ENT:Think()
                         local dist = (self:GetPos() - v:GetPos()):Length()
                         local dist_modifier = math.Clamp((self.RadRadius - dist) / self.RadRadius, 0, 1)
                         local v_dist_modifier = math.Clamp((2000-v_dist) / v_dist, 0, 1)
-                        if self.Bursts<(19*self.FalloutLen) then
-                            time_modifier = self.Bursts / (19*self.FalloutLen)
+                        if self.Time<(19*self.FalloutLen) then
+                            time_modifier = self.Time / (19*self.FalloutLen)
                         else
-                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Bursts-19)) / (200*self.FalloutLen), 6)
+                            time_modifier = math.pow(((200*self.FalloutLen)-(self.Time-19)) / (200*self.FalloutLen), 6)
                         end
                         local raddose = self.RadiationEnergy * dist_modifier * time_modifier * v_dist_modifier
                         local exposure = raddose/60
@@ -152,8 +152,8 @@ function ENT:Think()
             end
         end
 
-        self.Bursts = self.Bursts + 0.25
-        if (self.Bursts >= (260*self.FalloutLen)) then
+        self.Time = self.Time + 0.25
+        if (self.Time >= (260*self.FalloutLen)) then
             self:Remove()
         end
         self:NextThink(CurTime() + 0.25)
